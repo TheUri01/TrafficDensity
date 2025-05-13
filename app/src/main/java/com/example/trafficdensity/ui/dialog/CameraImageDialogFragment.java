@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView; // <-- Sử dụng ImageView
 import android.widget.TextView;
 import android.util.Log;
-import android.content.Intent;
 import android.graphics.Point;
 import android.view.Display;
 
@@ -38,7 +37,7 @@ import java.util.List;
 // ---------------------------
 
 // --- Import Activity mới cho ảnh toàn màn hình ---
-import com.example.trafficdensity.ui.dialog.FullScreenImageActivity; // <-- Import Activity mới
+ // <-- Import Activity mới
 // --------------------------------------------------
 
 

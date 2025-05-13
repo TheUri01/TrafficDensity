@@ -20,9 +20,6 @@ import android.os.Looper; // Import Looper
 import com.bumptech.glide.Glide; // Thư viện tải ảnh
 import com.bumptech.glide.load.engine.DiskCacheStrategy; // Để cấu hình cache của Glide
 
-// Import key từ DialogFragment
-import com.example.trafficdensity.ui.dialog.CameraImageDialogFragment;
-
 import com.example.trafficdensity.R; // Import R class của ứng dụng
 
 import java.util.Locale; // Để định dạng số float
