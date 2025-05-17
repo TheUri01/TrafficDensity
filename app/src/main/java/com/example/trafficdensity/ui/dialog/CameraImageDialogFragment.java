@@ -81,7 +81,7 @@ public class CameraImageDialogFragment extends DialogFragment {
     private static final String IMAGE_URL_BASE = "https://giaothong.hochiminhcity.gov.vn/render/ImageHandler.ashx?id=%s&t=%d";
 
 
-    private static final String BASE_API_URL = "https://eadf-35-247-40-140.ngrok-free.app"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY BẰNG URL NGROK THỰC TẾ
+    private static final String BASE_API_URL = "https://5342-35-237-16-27.ngrok-free.app"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY BẰNG URL NGROK THỰC TẾ
 
     private TrafficApiService trafficApiService; // Biến để giữ đối tượng service
     // ---------------------

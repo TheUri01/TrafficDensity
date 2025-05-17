@@ -1,45 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <TextView
-        android:id="@+id/text_camera_name_dialog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="11sp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textStyle="bold"
-        tools:text="Tên Camera - Ngã tư XYZ" />
-
-    <ImageView
-        android:id="@+id/image_camera_feed_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?android:attr/selectableItemBackground"
-        tools:src="@drawable/ic_menu_camera" />
-    <TextView
-    android:id="@+id/text_current_density"
+    android:padding="16dp"
+    android:background="@drawable/dialog_background" > <TextView
+    android:id="@+id/text_camera_name_dialog"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-    tools:text="Mật độ hiện tại: Đang tải..." />
+    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+    android:textStyle="bold"
+    android:textColor="@android:color/black" android:gravity="center"
+    android:layout_marginBottom="12dp" tools:text="Tên Camera" />
 
-    <TextView
-        android:id="@+id/text_maximum_density"
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/darker_gray" > <ImageView
+        android:id="@+id/image_camera_feed_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        tools:src="@drawable/ic_menu_camera" />
+
+<!--        <com.example.trafficdensity.ui.dialog.OverlayView-->
+<!--            android:id="@+id/overlay_view_dialog"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="center"/>-->
+
+    </FrameLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
+        android:orientation="vertical"
+        android:layout_marginTop="12dp" android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/info_background" > <TextView
+        android:id="@+id/text_current_density"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        tools:text="Số lượng xe: Đang tải..." />
+        android:textColor="@android:color/black" android:textStyle="bold" android:gravity="center_horizontal" tools:text="Mật độ hiện tại: 0.75" />
+
+        <TextView
+            android:id="@+id/text_maximum_density" android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small" android:textColor="@android:color/black" android:gravity="center_horizontal" tools:text="Summary: Xe ô tô: 15; Xe máy: 30" />
+
+    </LinearLayout>
 
 </LinearLayout>
