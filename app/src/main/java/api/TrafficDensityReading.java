@@ -15,6 +15,8 @@ public class TrafficDensityReading {
 
     @SerializedName("summary")
     private String summary;
+    @SerializedName("image_path")
+    private String image_path;
     // ---------------------------
 
 
@@ -36,5 +38,7 @@ public class TrafficDensityReading {
     public String getSummary() {
         return summary;
     }
+
+    public String getImagePath(){return image_path;}
 }
 // -----------------------------}

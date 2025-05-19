@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <network-security-config>
-<domain-config cleartextTrafficPermitted="true">
-    <domain includeSubdomains="true">192.168.1.8</domain>
-</domain-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+
+    <domain-config cleartextTrafficPermitted="false">
+        <domain includeSubdomains="true"> http://f6e6-34-147-109-70.ngrok-free.app/</domain>
+    </domain-config>
+
 </network-security-config>

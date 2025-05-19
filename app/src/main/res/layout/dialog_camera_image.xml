@@ -35,7 +35,7 @@
     tools:text="Mật độ hiện tại: Đang tải..." />
 
     <TextView
-        android:id="@+id/text_maximum_density"
+        android:id="@+id/text_summary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"

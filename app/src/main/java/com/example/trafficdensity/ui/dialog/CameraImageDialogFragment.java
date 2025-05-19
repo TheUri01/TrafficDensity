@@ -1,8 +1,9 @@
 package com.example.trafficdensity.ui.dialog; // Đảm bảo đúng package của bạn
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent; // Import Intent
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -11,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView; // <-- Sử dụng ImageView
 import android.widget.TextView;
 import android.util.Log;
+import android.view.WindowManager;
 import android.graphics.Point;
 import android.view.Display;
+import android.content.Intent; // <-- Import Intent
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +25,9 @@ import com.bumptech.glide.Glide; // Thư viện tải ảnh
 import com.bumptech.glide.load.engine.DiskCacheStrategy; // Để cấu hình cache của Glide
 
 import com.example.trafficdensity.R; // Import R class của ứng dụng
+import com.example.trafficdensity.ui.dialog.FullScreenImageActivity; // <-- Import FullScreenImageActivity
+
+// import com.github.chrisbanes.photoview.PhotoView; // <-- Xóa import PhotoView
 
 import java.util.concurrent.TimeUnit; // Để dễ đọc thời gian
 
@@ -36,52 +42,60 @@ import api.TrafficDensityReading; // Import data class
 import java.util.List;
 // ---------------------------
 
-// --- Import Activity mới cho ảnh toàn màn hình ---
- // <-- Import Activity mới
-// --------------------------------------------------
-
+import java.util.Locale; // Để định dạng số float
 
 public class CameraImageDialogFragment extends DialogFragment {
 
     // Các key cho arguments
     public static final String ARG_CAMERA_NAME = "camera_name";
     public static final String ARG_CAMERA_ID = "camera_id";
+    // --- Thêm key cho BASE_API_URL để truyền sang FullScreenImageActivity ---
+    public static final String EXTRA_BASE_API_URL = "com.example.trafficdensity.BASE_API_URL";
+    // --------------------------------------------------------------------
 
-    public static final String EXTRA_IMAGE_URL = "extra_image_url";
-    public static final String EXTRA_CAMERA_NAME = "extra_camera_name";
-    public static final String EXTRA_DENSITY = "extra_density";
-    public static final String EXTRA_SUMMARY = "extra_summary";
-    public static final String EXTRA_BASE_API_URL = "extra_base_api_url";
-    private float currentDensity = 0.0f;
-    private String currentSummary = "Đang tải...";
 
-    private long timestamp_api;
+    // Các key cho Intent extras khi mở FullScreenImageActivity
+    public static final String EXTRA_CAMERA_ID = "com.example.trafficdensity.CAMERA_ID";
+    public static final String EXTRA_IMAGE_URL = "com.example.trafficdensity.IMAGE_URL";
+    public static final String EXTRA_CAMERA_NAME = "com.example.trafficdensity.CAMERA_NAME";
+    public static final String EXTRA_DENSITY = "com.example.trafficdensity.DENSITY";
+    public static final String EXTRA_SUMMARY = "com.example.trafficdensity.SUMMARY";
+
+
     private String cameraName;
     private String cameraId;
-    private String currentImageUrl; // Biến để lưu URL ảnh hiện tại
 
     private ImageView imageCameraFeed; // <-- Sử dụng ImageView
-    // --- Thêm TextViews để hiển thị mật độ ---
-    private TextView textCameraName; // Đã có ở trên, nhưng đảm bảo khai báo ở đây
+    private TextView textCameraName; // TextView cho tên camera
     private TextView textCurrentDensity;
-    // --- Đổi tên TextView để hiển thị Summary thay vì Maximum ---
-    private TextView textSummary; // <-- Sử dụng TextView này cho summary
-    // -----------------------------------------
+    private TextView textSummary;
+    // --- Thêm biến để lưu đường dẫn ảnh nhận từ API ---
+    private String currentImagePath = null;
+    // --- Thêm biến để lưu dữ liệu mật độ và summary hiện tại ---
+    private float currentDensity = 0.0f;
+    private long currentTimestamp = 0;
+    private String currentSummary = "Không có thông tin";
+    // -------------------------------------------------------
 
     private Handler handler = new Handler(); // Dùng Handler để chạy Runnable trên Main Thread
     private Runnable updateImageRunnable;
-    private Runnable updateDensityRunnable; // Runnable để cập nhật mật độ
+    // Thời gian cập nhật ảnh: 15 giây
+    private static final long UPDATE_IMAGE_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15);
 
-    // Thời gian cập nhật: 15 giây
-    private static final long UPDATE_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15);
+    // Thời gian cập nhật dữ liệu mật độ (có thể khác với cập nhật ảnh)
+    // Đặt cùng tần suất với script Python gửi dữ liệu (ví dụ: 15 giây)
+    private static final long UPDATE_DENSITY_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15);
+
 
     private static final String TAG = "CameraImageDialog"; // Tag cho Log
 
+    // Base URL để lấy ảnh tĩnh từ backend (giữ nguyên) - KHÔNG DÙNG NỮA ĐỂ TẢI ẢNH CHÍNH
+    // private static final String IMAGE_URL_BASE = "https://giaothong.hochiminhcity.gov.vn/render/ImageHandler.ashx?id=%s&t=%d";
 
-    private static final String IMAGE_URL_BASE = "https://giaothong.hochiminhcity.gov.vn/render/ImageHandler.ashx?id=%s&t=%d";
-
-
-    private static final String BASE_API_URL = "https://eadf-35-247-40-140.ngrok-free.app"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY BẰNG URL NGROK THỰC TẾ
+    // --- Cấu hình API ---
+    // Base URL của API backend của bạn (địa chỉ Flask API)
+    // Đảm bảo đây là URL có thể truy cập từ thiết bị Android (IP nội bộ, ngrok URL, Cloud IP/Domain)
+    private static final String BASE_API_URL = "http://fdea-34-147-109-70.ngrok-free.app/"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY
 
     private TrafficApiService trafficApiService; // Biến để giữ đối tượng service
     // ---------------------
@@ -110,18 +124,9 @@ public class CameraImageDialogFragment extends DialogFragment {
         // setStyle(DialogFragment.STYLE_NO_TITLE, 0);
 
         // --- Khởi tạo Retrofit và API Service ---
-        // Khởi tạo ở đây hoặc nhận từ Activity/Fragment chứa nó (khởi tạo 1 lần duy nhất trong app tốt hơn)
-        // Nếu bạn đã khởi tạo Retrofit ở nơi khác (ví dụ: Application class), hãy truyền instance đó vào đây.
-        // Kiểm tra xem BASE_API_URL đã được thay đổi chưa
-        if ("YOUR_NGROK_URL_HERE".equals(BASE_API_URL)) {
-            Log.e(TAG, "BASE_API_URL is not updated! Please replace 'YOUR_NGROK_URL_HERE' with your actual ngrok URL.");
-            // Bạn có thể muốn hiển thị thông báo lỗi cho người dùng hoặc đóng dialog
-        }
-
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_API_URL) // Đặt Base URL của API
-                .addConverterFactory(GsonConverterFactory.create()) // Thêm converter để xử lý JSON (cần thư viện Gson)
+                .addConverterFactory(GsonConverterFactory.create()) // Thêm converter để xử lý JSON
                 .build();
 
         trafficApiService = retrofit.create(TrafficApiService.class); // Tạo instance của API service
@@ -138,12 +143,9 @@ public class CameraImageDialogFragment extends DialogFragment {
 
         // Tìm Views trong layout
         textCameraName = view.findViewById(R.id.text_camera_name_dialog);
-        imageCameraFeed = view.findViewById(R.id.image_camera_feed_dialog); // <-- Find ImageView
-        // --- Tìm TextViews mới ---
+        imageCameraFeed = view.findViewById(R.id.image_camera_feed_dialog); // <-- Cast to ImageView
         textCurrentDensity = view.findViewById(R.id.text_current_density);
-        // --- Tìm TextView cho Summary (sử dụng lại ID text_maximum_density) ---
-        textSummary = view.findViewById(R.id.text_maximum_density); // <-- Sử dụng lại ID này
-        // -------------------------
+        textSummary = view.findViewById(R.id.text_summary);
         Log.d(TAG, "Views found in onCreateView");
 
         // Hiển thị tên camera
@@ -153,15 +155,15 @@ public class CameraImageDialogFragment extends DialogFragment {
             textCameraName.setText("Thông tin Camera");
         }
 
-        // --- Thiết lập OnClickListener cho ImageView ---
+        // --- Thêm OnClickListener cho ImageView để mở màn hình toàn màn hình ---
         imageCameraFeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "ImageView clicked. Opening full screen image.");
-                openFullScreenImage(); // Gọi phương thức mở Activity mới
+                Log.d(TAG, "ImageView clicked. Attempting to open FullScreenImageActivity.");
+                openFullScreenImage();
             }
         });
-        // ---------------------------------------------
+        // -------------------------------------------------------------------
 
 
         // Khởi tạo Runnable để cập nhật ảnh
@@ -171,23 +173,27 @@ public class CameraImageDialogFragment extends DialogFragment {
                 Log.d(TAG, "Updating image for camera: " + cameraId);
                 loadImage(); // Tải ảnh mới
 
-                // Hẹn giờ chạy lại Runnable sau khoảng thời gian xác định
-                handler.postDelayed(this, UPDATE_INTERVAL_MS);
+                // Hẹn giờ chạy lại Runnable sau khoảng thời gian cập nhật ảnh
+                handler.postDelayed(this, UPDATE_IMAGE_INTERVAL_MS);
             }
         };
 
         // --- Khởi tạo Runnable để cập nhật dữ liệu mật độ ---
-        updateDensityRunnable = new Runnable() {
+        // Runnable này sẽ chạy định kỳ để lấy dữ liệu mật độ mới
+        Runnable updateDensityRunnable = new Runnable() {
             @Override
             public void run() {
                 Log.d(TAG, "Fetching density data for camera: " + cameraId);
                 fetchDensityData(); // Lấy dữ liệu mật độ mới
 
-                // Hẹn giờ chạy lại Runnable sau khoảng thời gian xác định
-                handler.postDelayed(this, UPDATE_INTERVAL_MS);
+                // Hẹn giờ chạy lại Runnable sau khoảng thời gian cập nhật mật độ
+                handler.postDelayed(this, UPDATE_DENSITY_INTERVAL_MS);
             }
         };
-        // ----------------------------------------------------
+        // Bắt đầu Runnable cập nhật mật độ lần đầu ngay sau khi view được tạo
+        // và hẹn giờ cho các lần tiếp theo
+        handler.postDelayed(updateDensityRunnable, 0); // Chạy ngay lập tức lần đầu
+
 
         return view;
     }
@@ -197,10 +203,7 @@ public class CameraImageDialogFragment extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
         Log.d(TAG, "onViewCreated");
         // Tải ảnh lần đầu ngay sau khi view được tạo
-        loadImage();
-        // --- Lấy dữ liệu mật độ lần đầu ngay sau khi view được tạo ---
-        fetchDensityData(); // Gọi phương thức lấy dữ liệu mật độ
-        // -----------------------------------------------------------
+        // loadImage(); // Không gọi ở đây nữa, sẽ gọi sau khi fetchDensityData lấy được image_path
     }
 
     @Override
@@ -224,12 +227,10 @@ public class CameraImageDialogFragment extends DialogFragment {
             dialog.getWindow().setLayout(dialogWidth, dialogHeight);
         }
 
-        // Bắt đầu chu kỳ cập nhật ảnh định kỳ sau lần tải ảnh đầu tiên trong onViewCreated
-        handler.postDelayed(updateImageRunnable, UPDATE_INTERVAL_MS);
+        // Bắt đầu chu kỳ cập nhật ảnh định kỳ
+        // updateImageRunnable sẽ được bắt đầu sau khi fetchDensityData thành công lần đầu
+        // handler.postDelayed(updateImageRunnable, UPDATE_IMAGE_INTERVAL_MS); // Không gọi ở đây nữa
 
-        // --- Bắt đầu chu kỳ cập nhật mật độ định kỳ ---
-        handler.postDelayed(updateDensityRunnable, UPDATE_INTERVAL_MS);
-        // ----------------------------------------------------------
     }
 
     @Override
@@ -253,7 +254,8 @@ public class CameraImageDialogFragment extends DialogFragment {
         Log.d(TAG, "onPause");
         // Dừng cập nhật khi dialog bị tạm dừng
         handler.removeCallbacks(updateImageRunnable);
-        handler.removeCallbacks(updateDensityRunnable); // Dừng cập nhật mật độ
+        // Dừng Runnable cập nhật mật độ khi dialog bị tạm dừng
+        handler.removeCallbacksAndMessages(null); // Dừng tất cả callbacks và messages
     }
 
 
@@ -263,7 +265,8 @@ public class CameraImageDialogFragment extends DialogFragment {
         Log.d(TAG, "onDismiss");
         // Khi dialog bị đóng, dừng hẹn giờ cập nhật ảnh và mật độ
         handler.removeCallbacks(updateImageRunnable);
-        handler.removeCallbacks(updateDensityRunnable);
+        // Dừng Runnable cập nhật mật độ khi dialog bị dismiss
+        handler.removeCallbacksAndMessages(null); // Dừng tất cả callbacks và messages
     }
 
     @Override
@@ -272,12 +275,11 @@ public class CameraImageDialogFragment extends DialogFragment {
         Log.d(TAG, "onDestroyView");
         // Đảm bảo dừng Runnable nếu View bị hủy trước khi dialog bị dismiss
         handler.removeCallbacks(updateImageRunnable);
-        handler.removeCallbacks(updateDensityRunnable); // Dừng cập nhật mật độ
+        // Dừng Runnable cập nhật mật độ khi View bị hủy
+        handler.removeCallbacksAndMessages(null); // Dừng tất cả callbacks và messages
         imageCameraFeed = null;
-        // Giải phóng TextViews
-        textCameraName = null; // Đảm bảo giải phóng
+        textCameraName = null;
         textCurrentDensity = null;
-        textSummary = null; // Giải phóng TextView summary
     }
 
     @Override
@@ -291,70 +293,65 @@ public class CameraImageDialogFragment extends DialogFragment {
 
     // Phương thức để tải ảnh từ URL và hiển thị lên ImageView
     private void loadImage() {
+        // Sử dụng currentImagePath để xây dựng URL đến Flask API
+        if (cameraId != null && imageCameraFeed != null && currentImagePath != null) {
+            // Xây dựng URL đầy đủ đến endpoint /api/images/<camera_id> của Flask API
+            // Giả định BASE_API_URL kết thúc bằng '/', và image_path là chỉ tên file (ví dụ: "camera_id.jpg")
+            // HOẶC image_path là đường dẫn đầy đủ trên server (ví dụ: "processed_images/camera_id.jpg")
+            // Dựa trên Flask API code, image_path là đường dẫn trên server (ví dụ: "processed_images/camera_id.jpg")
+            // Endpoint phục vụ ảnh là /api/images/<camera_id>
+            // Vậy URL cần là BASE_API_URL + "api/images/" + cameraId
 
-        if (cameraId != null && imageCameraFeed != null) {
-            currentImageUrl = String.format(IMAGE_URL_BASE, cameraId, timestamp_api); // Lưu URL ảnh hiện tại
+            String imageUrlToLoad = BASE_API_URL + "api/images/" + cameraId + "_" + currentTimestamp;
 
-            Log.d(TAG, "Attempting to load static image from URL: " + currentImageUrl);
+
+            Log.d(TAG, "Attempting to load processed image from URL: " + imageUrlToLoad);
 
             Glide.with(this)
-                    .load(currentImageUrl) // Tải ảnh từ URL đã lưu
+                    .load(imageUrlToLoad)
                     .placeholder(R.drawable.ic_menu_camera)
                     .error(R.drawable.ic_menu_gallery)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE) // Không cache ảnh tĩnh vì nó thay đổi
+                    // Tắt cache để luôn tải ảnh mới nhất
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
-                    .into(imageCameraFeed); //
+                    .into(new com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull android.graphics.drawable.Drawable resource, @Nullable com.bumptech.glide.request.transition.Transition<? super android.graphics.drawable.Drawable> transition) {
+                            imageCameraFeed.setImageDrawable(resource);
+                            Log.d(TAG, "Processed image loaded successfully for ID: " + cameraId);
+                        }
+
+                        @Override
+                        public void onLoadCleared(@Nullable android.graphics.drawable.Drawable placeholder) {
+                            Log.d(TAG, "Processed image load cleared for ID: " + cameraId);
+                        }
+
+                        @Override
+                        public void onLoadFailed(@Nullable android.graphics.drawable.Drawable errorDrawable) {
+                            imageCameraFeed.setImageDrawable(errorDrawable);
+                            Log.e(TAG, "Processed image load FAILED for ID: " + cameraId + ", URL: " + imageUrlToLoad);
+                            // Có thể kiểm tra thêm lỗi từ Glide nếu cần
+                        }
+                    });
 
         } else {
-            Log.e(TAG, "Camera ID is null or image view is null in loadImage().");
+            Log.w(TAG, "Cannot load image: Camera ID is null, image view is null, or currentImagePath is null.");
             if (imageCameraFeed != null) {
-                imageCameraFeed.setImageResource(R.drawable.ic_menu_gallery);
+                imageCameraFeed.setImageResource(R.drawable.ic_menu_gallery); // Hiển thị ảnh lỗi
             }
         }
     }
 
-    // --- Phương thức để mở Activity hiển thị ảnh toàn màn hình ---
-    private void openFullScreenImage() {
-        if (currentImageUrl != null && !currentImageUrl.isEmpty()) {
-            Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
-            intent.putExtra(EXTRA_IMAGE_URL, currentImageUrl);
-
-
-            intent.putExtra(EXTRA_CAMERA_NAME, cameraName);
-            intent.putExtra(EXTRA_DENSITY, currentDensity);
-            intent.putExtra(EXTRA_SUMMARY, currentSummary);
-            intent.putExtra(EXTRA_BASE_API_URL, BASE_API_URL);
-            // ---------------------------------------------------------
-
-            startActivity(intent);
-            Log.d(TAG, "Started FullScreenImageActivity with URL: " + currentImageUrl +
-                    ", Name: " + cameraName + ", Density: " + currentDensity + ", Summary: " + currentSummary);
-        }
-        else {
-            Log.w(TAG, "Cannot open full screen image: currentImageUrl is null or empty.");
-            // Tùy chọn: Hiển thị thông báo cho người dùng
-        }
-    }
-    // -----------------------------------------------------------
-
-
-
+    // --- PHƯƠNG THỨC ĐỂ LẤY DỮ LIỆU MẬT ĐỘ TỪ API ---
     private void fetchDensityData() {
         // Kiểm tra xem API service và camera ID đã sẵn sàng chưa
         if (trafficApiService == null || cameraId == null) {
             Log.e(TAG, "API service or Camera ID is null, cannot fetch density data.");
-            //Hiển thị trạng thái lỗi trên TextViews
+            // Tùy chọn: Hiển thị trạng thái lỗi trên TextViews
             if (textCurrentDensity != null) textCurrentDensity.setText("Mật độ hiện tại: Lỗi");
-            if (textSummary != null) textSummary.setText("Summary: Lỗi"); // Cập nhật TextView summary
+            if (textSummary != null) textSummary.setText("Summary: Lỗi");
             return;
         }
-        if ("YOUR_NGROK_URL_HERE".equals(BASE_API_URL)) {
-            Log.e(TAG, "BASE_API_URL is not updated! Cannot fetch data.");
-            if (textCurrentDensity != null) textCurrentDensity.setText("Mật độ hiện tại: Lỗi URL");
-            if (textSummary != null) textSummary.setText("Summary: Lỗi URL"); // Cập nhật TextView summary
-            return;
-        }
-
 
         // Tạo cuộc gọi API để lấy dữ liệu cho camera ID cụ thể này
         // Sử dụng tham số query 'camera_ids' để chỉ yêu cầu dữ liệu của 1 camera
@@ -362,8 +359,9 @@ public class CameraImageDialogFragment extends DialogFragment {
 
         Log.d(TAG, "Fetching density data for camera ID: " + cameraId + " from API...");
 
-
+        // Thực hiện cuộc gọi API bất đồng bộ
         call.enqueue(new Callback<List<TrafficDensityReading>>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(@NonNull Call<List<TrafficDensityReading>> call, @NonNull Response<List<TrafficDensityReading>> response) {
                 if (response.isSuccessful() && response.body() != null) {
@@ -374,51 +372,97 @@ public class CameraImageDialogFragment extends DialogFragment {
                     // danh sách này chỉ nên chứa 0 hoặc 1 phần tử.
                     if (!densityReadings.isEmpty()) {
                         TrafficDensityReading reading = densityReadings.get(0);
+                        Log.d(TAG, "Received data for " + reading.getCameraId() + ": Density=" + reading.getDensity() + ", ImagePath=" + reading.getImagePath() + ", Summary=" + reading.getSummary());
 
-                        // Log dữ liệu nhận được để debug, bao gồm cả summary
-                        Log.d(TAG, "Received data for " + reading.getCameraId() +
-                                ": Density=" + reading.getDensity() +
-                                ", Summary='" + reading.getSummary() +
-                                ", Timestamp= " + reading.getTimestamp() + "'"); // Log summary
-                        timestamp_api = reading.getTimestamp();
-                        // --- Cập nhật TextViews với dữ liệu mật độ và summary ---
-                        if (textCurrentDensity != null) {
-                            currentDensity = reading.getDensity();
-                            textCurrentDensity.setText(String.format("Mật độ hiện tại: %.2f", reading.getDensity()));
-                        }
-                        if (textSummary != null) {
-                            currentSummary = reading.getSummary();
-                            textSummary.setText("Summary: " + reading.getSummary()); // Hiển thị summary
-                        }
+                        // --- Cập nhật biến thành viên với dữ liệu mới ---
+                        currentDensity = reading.getDensity();
+                        currentSummary = reading.getSummary();
+                        currentTimestamp = reading.getTimestamp();
+                        currentImagePath = reading.getImagePath(); // <-- LƯU IMAGE PATH NHẬN ĐƯỢC
                         // ---------------------------------------------
+
+                        // --- Cập nhật TextViews với dữ liệu mật độ ---
+                        if (textCurrentDensity != null) {
+                            textCurrentDensity.setText(String.format(Locale.US, "Mật độ hiện tại: %.2f", currentDensity)); // Định dạng số float
+                        }
+
+                        // Hiển thị summary (tùy chọn)
+                         if (textSummary != null) { // Cần thêm TextView cho summary nếu muốn hiển thị
+                            textSummary.setText("Summary: " + currentSummary);
+                         }
+
+
+                        // ---------------------------------------------
+
+                        // --- Tải ảnh sau khi nhận được image_path ---
+                        loadImage(); // Gọi loadImage() sau khi có image_path
+                        // -------------------------------------------
+
+                        // --- Bắt đầu chu kỳ cập nhật ảnh định kỳ sau khi fetch thành công lần đầu ---
+                        // Kiểm tra để tránh double-posting nếu đã chạy
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            if (updateImageRunnable != null && !handler.hasCallbacks(updateImageRunnable)) {
+                                handler.postDelayed(updateImageRunnable, UPDATE_IMAGE_INTERVAL_MS);
+                                Log.d(TAG, "Image update runnable scheduled.");
+                            }
+                        }
+                        // -----------------------------------------------------------------------
+
 
                     } else {
                         Log.w(TAG, "API Call Successful but no data received for camera ID: " + cameraId);
                         // Tùy chọn: Hiển thị trạng thái "Không có dữ liệu"
                         if (textCurrentDensity != null) textCurrentDensity.setText("Mật độ hiện tại: Không có dữ liệu");
-                        if (textSummary != null) textSummary.setText("Summary: Không có dữ liệu"); // Cập nhật TextView summary
+                        if (textSummary != null) textSummary.setText("Summary: Không có dữ liệu");
+                        // Đặt imagePath về null để loadImage không cố gắng tải ảnh lỗi
+                        currentImagePath = null;
                     }
 
                 } else {
-                    // API trả về lỗi (ví dụ: 404 Not Found, 500 Internal Server Error)
+                    // API trả về lỗi
                     Log.e(TAG, "API Call Failed. Response code: " + response.code() + ", Message: " + response.message());
                     // Tùy chọn: Hiển thị trạng thái lỗi
-                    if (textCurrentDensity != null) textCurrentDensity.setText("Mật độ hiện tại: Lỗi tải (" + response.code() + ")");
-                    if (textSummary != null) textSummary.setText("Summary: Lỗi tải (" + response.code() + ")"); // Cập nhật TextView summary
+                    if (textCurrentDensity != null) textCurrentDensity.setText("Mật độ hiện tại: Lỗi tải");
+                    if (textSummary != null) textSummary.setText("Summary: Lỗi tải");
+                    currentImagePath = null; // Đặt imagePath về null khi có lỗi API
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<TrafficDensityReading>> call, @NonNull Throwable t) {
-                // Lỗi mạng hoặc lỗi khác (ví dụ: không kết nối được đến server)
+                // Lỗi mạng hoặc lỗi khác
                 Log.e(TAG, "API Call Failed (Network Error): " + t.getMessage(), t);
                 // Tùy chọn: Hiển thị trạng thái lỗi mạng
                 if (textCurrentDensity != null) textCurrentDensity.setText("Mật độ hiện tại: Lỗi mạng");
-                if (textSummary != null) textSummary.setText("Summary: Lỗi mạng"); // Cập nhật TextView summary
+                if (textSummary != null) textSummary.setText("Summary: Lỗi mạng");
+                currentImagePath = null; // Đặt imagePath về null khi có lỗi mạng
             }
-
-
         });
     }
+    // -------------------------------------------------------------
 
+    // --- Phương thức để mở FullScreenImageActivity ---
+    private void openFullScreenImage() {
+        // Chỉ mở khi có URL ảnh hợp lệ
+        if (currentImagePath != null && !currentImagePath.isEmpty()) {
+            // Xây dựng URL đầy đủ đến endpoint /api/images/<camera_id> của Flask API
+            String fullImageUrl = BASE_API_URL + "api/images/" + cameraId;
+
+            Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
+            intent.putExtra(EXTRA_CAMERA_ID, cameraId);
+            intent.putExtra(EXTRA_IMAGE_URL, fullImageUrl); // Truyền URL ảnh
+            intent.putExtra(EXTRA_CAMERA_NAME, cameraName); // Truyền tên camera
+            intent.putExtra(EXTRA_DENSITY, currentDensity); // Truyền mật độ
+            intent.putExtra(EXTRA_SUMMARY, currentSummary); // Truyền summary
+            intent.putExtra(EXTRA_BASE_API_URL, BASE_API_URL); // <-- Truyền BASE_API_URL
+
+            startActivity(intent);
+            Log.d(TAG, "Started FullScreenImageActivity with URL: " + fullImageUrl);
+        } else {
+            Log.w(TAG, "Cannot open full screen image: currentImagePath is null or empty.");
+            // Tùy chọn: Hiển thị thông báo cho người dùng
+            // Toast.makeText(getActivity(), "Không có ảnh để hiển thị.", Toast.LENGTH_SHORT).show();
+        }
+    }
+    // -------------------------------------------------
 }
