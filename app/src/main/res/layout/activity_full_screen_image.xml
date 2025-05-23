@@ -3,40 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/black" > <ImageView
-    android:id="@+id/full_screen_image_view"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    android:scaleType="fitCenter" android:adjustViewBounds="true" tools:src="@drawable/ic_menu_camera" /> <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom" android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#80000000"> <TextView
-    android:id="@+id/text_fullscreen_camera_name"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textAppearance="@style/TextAppearance.AppCompat.Large"
-    android:textColor="@android:color/white" android:textStyle="bold"
-    tools:text="Camera Name: Ngã tư XYZ" />
+    android:background="@android:color/black"
+    tools:context=".ui.fullscreen.FullScreenImageActivity">
 
-    <TextView
-        android:id="@+id/text_fullscreen_density"
+    <ImageView
+        android:id="@+id/full_screen_image_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        android:adjustViewBounds="true"
+        tools:src="@drawable/ic_menu_camera" />
+
+    <com.example.trafficdensity.ui.fullscreen.OverlayView
+        android:id="@+id/full_screen_overlay_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" />
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/white" tools:text="Mật độ hiện tại: 0.75" />
-
-    <TextView
-        android:id="@+id/text_fullscreen_summary"
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="#E0000000"> <TextView
+        android:id="@+id/text_fullscreen_camera_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/white" tools:text="Summary: Xe ô tô: 15; Xe máy: 30" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:shadowColor="#000000"
+        android:shadowDx="1.5"
+        android:shadowDy="1.5"
+        android:shadowRadius="2.0"
+        tools:text="Camera Name: Ngã tư XYZ" />
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/text_fullscreen_density"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="2.0"
+            android:textSize="11sp"
+            tools:text="Mật độ hiện tại: 0.75" />
+
+        <TextView
+            android:id="@+id/text_fullscreen_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:shadowColor="#000000"
+            android:shadowDx="1.5"
+            android:shadowDy="1.5"
+            android:shadowRadius="2.0"
+            android:textSize="11sp"
+            tools:text="Summary: Xe ô tô: 15; Xe máy: 30" />
+
+    </LinearLayout>
 
 </FrameLayout>

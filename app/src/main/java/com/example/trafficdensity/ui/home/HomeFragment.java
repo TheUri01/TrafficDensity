@@ -1,5 +1,6 @@
 package com.example.trafficdensity.ui.home; // Đảm bảo đúng package của bạn
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +72,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     // --- Cấu hình API ---
     // Base URL của API backend của bạn (ngrok hoặc IP máy chủ)
     // THAY ĐỔI ĐỊA CHỈ NÀY BẰNG URL NGROK HOẶC ĐỊA CHỈ IP THỰC TẾ CỦA BẠN
-    private static final String BASE_API_URL = "https://5342-35-237-16-27.ngrok-free.app"; // <-- CẬP NHẬT ĐỊA CHỈ NÀY
+    private static final String BASE_API_URL = "http://6666-34-83-127-61.ngrok-free.app"; // <-- CẬP NHẬT ĐỊA CHỈ NÀY
 
     private TrafficApiService trafficApiService; // Biến để giữ đối tượng service
     // ---------------------
@@ -179,7 +180,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
 
     // --- Phương thức giả định để tải danh sách CameraInfo ---
     // THAY THẾ BẰNG LOGIC TẢI DANH SÁCH CAMERA THỰC TẾ CỦA BẠN
-    private List<CameraInfo> loadCameraList() {
+    public List<CameraInfo> loadCameraList() {
         List<CameraInfo> dummyList = new ArrayList<>();
         // Thêm các CameraInfo giả định hoặc tải từ nguồn thực tế
         // Đảm bảo camera ID trong đây khớp với camera ID trong dữ liệu API
@@ -468,15 +469,17 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
         Log.d(TAG, "onStart");
         // Bắt đầu chu kỳ cập nhật mật độ khi Fragment hiển thị
         // Kiểm tra nếu Runnable đã được post trước đó để tránh double-posting
-        if (updateDensityRunnable != null && !handler.hasCallbacks(updateDensityRunnable)) {
-            // Nếu cameraList đã được tải trong onCreate/onViewCreated, bắt đầu cập nhật
-            if (cameraList != null && !cameraList.isEmpty()) {
-                startDensityUpdates();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (updateDensityRunnable != null && !handler.hasCallbacks(updateDensityRunnable)) {
+                // Nếu cameraList đã được tải trong onCreate/onViewCreated, bắt đầu cập nhật
+                if (cameraList != null && !cameraList.isEmpty()) {
+                    startDensityUpdates();
+                } else {
+                    Log.w(TAG, "Camera list is null/empty in onStart, cannot start density updates yet.");
+                }
             } else {
-                Log.w(TAG, "Camera list is null/empty in onStart, cannot start density updates yet.");
+                Log.d(TAG, "Density update runnable already scheduled or not ready in onStart, skipping postDelayed.");
             }
-        } else {
-            Log.d(TAG, "Density update runnable already scheduled or not ready in onStart, skipping postDelayed.");
         }
     }
 

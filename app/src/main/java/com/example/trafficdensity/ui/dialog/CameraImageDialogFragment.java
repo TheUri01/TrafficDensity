@@ -3,6 +3,7 @@ package com.example.trafficdensity.ui.dialog; // Đảm bảo đúng package c�
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,14 +25,19 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide; // Thư viện tải ảnh
 import com.bumptech.glide.load.engine.DiskCacheStrategy; // Để cấu hình cache của Glide
 
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.trafficdensity.R; // Import R class của ứng dụng
-import com.example.trafficdensity.ui.dialog.FullScreenImageActivity; // <-- Import FullScreenImageActivity
+import com.example.trafficdensity.ui.fullscreen.FullScreenImageActivity; // <-- Import FullScreenImageActivity
+import com.example.trafficdensity.ui.fullscreen.OverlayView;
 
 // import com.github.chrisbanes.photoview.PhotoView; // <-- Xóa import PhotoView
 
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit; // Để dễ đọc thời gian
 
 // --- Import cho API Call ---
+import api.Detection;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Call;
@@ -60,12 +66,15 @@ public class CameraImageDialogFragment extends DialogFragment {
     public static final String EXTRA_CAMERA_NAME = "com.example.trafficdensity.CAMERA_NAME";
     public static final String EXTRA_DENSITY = "com.example.trafficdensity.DENSITY";
     public static final String EXTRA_SUMMARY = "com.example.trafficdensity.SUMMARY";
+    public static final String EXTRA_DETECTIONS = "extra_detections";
 
 
     private String cameraName;
     private String cameraId;
 
     private ImageView imageCameraFeed; // <-- Sử dụng ImageView
+    private OverlayView overlayView; // <-- Biến cho OverlayView trong dialog
+
     private TextView textCameraName; // TextView cho tên camera
     private TextView textCurrentDensity;
     private TextView textSummary;
@@ -73,6 +82,9 @@ public class CameraImageDialogFragment extends DialogFragment {
     private String currentImagePath = null;
     // --- Thêm biến để lưu dữ liệu mật độ và summary hiện tại ---
     private float currentDensity = 0.0f;
+
+    private List<Detection> currentDetections = new ArrayList<>();
+
     private long currentTimestamp = 0;
     private String currentSummary = "Không có thông tin";
     // -------------------------------------------------------
@@ -95,9 +107,11 @@ public class CameraImageDialogFragment extends DialogFragment {
     // --- Cấu hình API ---
     // Base URL của API backend của bạn (địa chỉ Flask API)
     // Đảm bảo đây là URL có thể truy cập từ thiết bị Android (IP nội bộ, ngrok URL, Cloud IP/Domain)
-    private static final String BASE_API_URL = "http://fdea-34-147-109-70.ngrok-free.app/"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY
+    private static final String BASE_API_URL = "http://6666-34-83-127-61.ngrok-free.app/"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY
 
     private TrafficApiService trafficApiService; // Biến để giữ đối tượng service
+    private int originalImageWidth = 512;
+    private int originalImageHeight = 288;
     // ---------------------
 
 
@@ -138,14 +152,14 @@ public class CameraImageDialogFragment extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView");
-        // Inflate layout cho dialog (sử dụng layout dialog_camera_image.xml đã tạo trước đó)
         View view = inflater.inflate(R.layout.dialog_camera_image, container, false);
 
         // Tìm Views trong layout
+        overlayView = view.findViewById(R.id.overlay_view_dialog);
         textCameraName = view.findViewById(R.id.text_camera_name_dialog);
-        imageCameraFeed = view.findViewById(R.id.image_camera_feed_dialog); // <-- Cast to ImageView
+        imageCameraFeed = view.findViewById(R.id.image_camera_feed_dialog);
         textCurrentDensity = view.findViewById(R.id.text_current_density);
-        textSummary = view.findViewById(R.id.text_summary);
+        textSummary = view.findViewById(R.id.text_density);
         Log.d(TAG, "Views found in onCreateView");
 
         // Hiển thị tên camera
@@ -265,6 +279,7 @@ public class CameraImageDialogFragment extends DialogFragment {
         Log.d(TAG, "onDismiss");
         // Khi dialog bị đóng, dừng hẹn giờ cập nhật ảnh và mật độ
         handler.removeCallbacks(updateImageRunnable);
+        overlayView = null;
         // Dừng Runnable cập nhật mật độ khi dialog bị dismiss
         handler.removeCallbacksAndMessages(null); // Dừng tất cả callbacks và messages
     }
@@ -279,6 +294,7 @@ public class CameraImageDialogFragment extends DialogFragment {
         handler.removeCallbacksAndMessages(null); // Dừng tất cả callbacks và messages
         imageCameraFeed = null;
         textCameraName = null;
+        overlayView = null;
         textCurrentDensity = null;
     }
 
@@ -308,36 +324,55 @@ public class CameraImageDialogFragment extends DialogFragment {
             Log.d(TAG, "Attempting to load processed image from URL: " + imageUrlToLoad);
 
             Glide.with(this)
-                    .load(imageUrlToLoad)
+                    .load(imageUrlToLoad) // Tải ảnh từ URL đã xây dựng
                     .placeholder(R.drawable.ic_menu_camera)
                     .error(R.drawable.ic_menu_gallery)
-                    // Tắt cache để luôn tải ảnh mới nhất
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .skipMemoryCache(true)
-                    .into(new com.bumptech.glide.request.target.CustomTarget<android.graphics.drawable.Drawable>() {
+                    .diskCacheStrategy(DiskCacheStrategy.NONE) // Không cache ảnh tĩnh vì nó thay đổi
+                    .skipMemoryCache(true) // Bỏ qua cache bộ nhớ
+                    // --- Sử dụng CustomTarget để lấy kích thước ảnh sau khi tải ---
+                    .into(new CustomTarget<Drawable>() {
                         @Override
-                        public void onResourceReady(@NonNull android.graphics.drawable.Drawable resource, @Nullable com.bumptech.glide.request.transition.Transition<? super android.graphics.drawable.Drawable> transition) {
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                             imageCameraFeed.setImageDrawable(resource);
-                            Log.d(TAG, "Processed image loaded successfully for ID: " + cameraId);
+                            Log.d(TAG, "Image loaded successfully into ImageView from Flask API.");
+
+                            // --- Cập nhật OverlayView với kích thước ảnh gốc ---
+                            // Kích thước hiển thị của ImageView chỉ có sau khi layout được đo đạc.
+                            // Sử dụng post để chạy sau khi layout hoàn thành.
+                            imageCameraFeed.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (overlayView != null) {
+                                        // Truyền detections hiện tại (có thể là rỗng hoặc từ fetch đầu tiên)
+                                        // và kích thước ảnh gốc đã set.
+                                        // OverlayView sẽ tự tính toán scaling dựa trên kích thước hiển thị của nó
+                                        // và kích thước ảnh gốc.
+                                        Log.d(TAG, "Updating OverlayView after image load (count: " + currentDetections.size() + ") with original size: " + originalImageWidth + "x" + originalImageHeight);
+                                        overlayView.setDetections(currentDetections, originalImageWidth, originalImageHeight);
+                                        Log.d(TAG, "OverlayView updated after image load.");
+                                    } else {
+                                        Log.w(TAG, "OverlayView is null when attempting to update after image load.");
+                                    }
+                                }
+                            });
+                            // ----------------------------------------------------------
                         }
 
                         @Override
-                        public void onLoadCleared(@Nullable android.graphics.drawable.Drawable placeholder) {
-                            Log.d(TAG, "Processed image load cleared for ID: " + cameraId);
+                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                            Log.d(TAG, "Image load cleared.");
                         }
 
                         @Override
-                        public void onLoadFailed(@Nullable android.graphics.drawable.Drawable errorDrawable) {
+                        public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                            Log.e(TAG, "Image load FAILED from Flask API URL: " + imageUrlToLoad);
                             imageCameraFeed.setImageDrawable(errorDrawable);
-                            Log.e(TAG, "Processed image load FAILED for ID: " + cameraId + ", URL: " + imageUrlToLoad);
-                            // Có thể kiểm tra thêm lỗi từ Glide nếu cần
                         }
                     });
-
         } else {
-            Log.w(TAG, "Cannot load image: Camera ID is null, image view is null, or currentImagePath is null.");
+            Log.e(TAG, "currentImageFilename, ImageView, or BASE_API_URL is null/invalid in loadImage().");
             if (imageCameraFeed != null) {
-                imageCameraFeed.setImageResource(R.drawable.ic_menu_gallery); // Hiển thị ảnh lỗi
+                imageCameraFeed.setImageResource(R.drawable.ic_menu_gallery);
             }
         }
     }
@@ -378,6 +413,7 @@ public class CameraImageDialogFragment extends DialogFragment {
                         currentDensity = reading.getDensity();
                         currentSummary = reading.getSummary();
                         currentTimestamp = reading.getTimestamp();
+                        currentDetections = reading.getDetections() != null ? reading.getDetections() : new ArrayList<>(); // <-- LƯU DETECTIONS
                         currentImagePath = reading.getImagePath(); // <-- LƯU IMAGE PATH NHẬN ĐƯỢC
                         // ---------------------------------------------
 
@@ -388,7 +424,8 @@ public class CameraImageDialogFragment extends DialogFragment {
 
                         // Hiển thị summary (tùy chọn)
                          if (textSummary != null) { // Cần thêm TextView cho summary nếu muốn hiển thị
-                            textSummary.setText("Summary: " + currentSummary);
+                             String[] temp = currentSummary.split(";");
+                            textSummary.setText("Số lượng: " + "\n" + temp[0] + "\n" + temp[1] + "\n" + temp[2] + "\n" + temp[3]);
                          }
 
 
@@ -446,7 +483,7 @@ public class CameraImageDialogFragment extends DialogFragment {
         // Chỉ mở khi có URL ảnh hợp lệ
         if (currentImagePath != null && !currentImagePath.isEmpty()) {
             // Xây dựng URL đầy đủ đến endpoint /api/images/<camera_id> của Flask API
-            String fullImageUrl = BASE_API_URL + "api/images/" + cameraId;
+            String fullImageUrl = BASE_API_URL + "api/images/" + cameraId + "_" + currentTimestamp;
 
             Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
             intent.putExtra(EXTRA_CAMERA_ID, cameraId);
@@ -455,6 +492,7 @@ public class CameraImageDialogFragment extends DialogFragment {
             intent.putExtra(EXTRA_DENSITY, currentDensity); // Truyền mật độ
             intent.putExtra(EXTRA_SUMMARY, currentSummary); // Truyền summary
             intent.putExtra(EXTRA_BASE_API_URL, BASE_API_URL); // <-- Truyền BASE_API_URL
+            intent.putExtra(EXTRA_DETECTIONS, (ArrayList<Detection>) currentDetections); // <-- Truyền danh sách detections (cần cast sang ArrayList)
 
             startActivity(intent);
             Log.d(TAG, "Started FullScreenImageActivity with URL: " + fullImageUrl);

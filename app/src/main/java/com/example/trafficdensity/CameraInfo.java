@@ -20,4 +20,13 @@ public class CameraInfo {
     public String getName() { return name; }
     public LatLng getLocation() { return location; }
     public String getVideoUrl() { return imageUrl; }
+
+
+    public double getLatitude() {
+        return this.location.latitude;
+    }
+
+    public double getLongitude() {
+        return this.location.longitude;
+    }
 }
