@@ -265,237 +265,122 @@ public class GraphData {
         // Các lời gọi addEdge() được tạo tự động từ file Location Node.docx
 // Các cạnh được tạo hai chiều (đồ thị vô hướng).
 
-        addEdge("Nguyễn Thị Nhỏ- Nguyễn Chí Thanh", "Nguyễn Thị Nhỏ-Tân Thành");
-        // (Nguyễn Thị Nhỏ-Tân Thành-NTN – HBàng)
-        addEdge("Nguyễn Thị Nhỏ-Tân Thành", "NTN – HBàng");
-        // (NTN – HBàng-NTN-TCChiếu)
-        addEdge("NTN – HBàng", "NTN-TCChiếu");
-        // (NTN-TCChiếu-NTN-TTử)
-        addEdge("NTN-TCChiếu", "NTN-TTử");
-        // (NTN-TTử-Xóm Vôi -Trang Tử)
-        addEdge("NTN-TTử", "Xóm Vôi -Trang Tử");
-        // (NgCThanh- HTQ-Nguyễn Thị Nhỏ- Nguyễn Chí Thanh)
-        addEdge("NgCThanh- HTQ", "Nguyễn Thị Nhỏ- Nguyễn Chí Thanh");
-        // (NgCThanh- HTQ-HTQ-TT)
-        addEdge("NgCThanh- HTQ", "HTQ-TT");
-        // (HTQ-TT-HTQ -HB)
-        addEdge("HTQ-TT", "HTQ -HB");
-        // (HTQ-TT-Nguyễn Thị Nhỏ-Tân Thành)
-        addEdge("HTQ-TT", "Nguyễn Thị Nhỏ-Tân Thành");
-        // (Võ Trường Toản – HB-NTN – HBàng)
-        addEdge("Võ Trường Toản – HB", "NTN – HBàng");
-        // (HTQ -HB-Võ Trường Toản – HB)
-        addEdge("HTQ -HB", "Võ Trường Toản – HB");
-        // (Xóm Vôi -NT-Võ Trường Toản – HB)
-        addEdge("Xóm Vôi -NT", "Võ Trường Toản – HB");
-        // (Xóm Vôi -NT-NTN – HBàng)
-        addEdge("Xóm Vôi -NT", "NTN – HBàng");
-        // (Xóm Vôi -NT-PG-NT)
-        addEdge("Xóm Vôi -NT", "PG-NT");
-        // (Xóm Vôi - Trần Chánh Chiêu-Xóm Vôi -NT)
-        addEdge("Xóm Vôi - Trần Chánh Chiêu", "Xóm Vôi -NT");
-        // (Xóm Vôi - Trần Chánh Chiêu-NTN-TCChiếu)
-        addEdge("Xóm Vôi - Trần Chánh Chiêu", "NTN-TCChiếu");
-        // (Xóm Vôi -Trang Tử-Xóm Vôi - Trần Chánh Chiêu)
-        addEdge("Xóm Vôi -Trang Tử", "Xóm Vôi - Trần Chánh Chiêu");
-        // (Tạ Uyên - Nguyễn Chí Thanh-NgCThanh- HTQ)
-        addEdge("Tạ Uyên - Nguyễn Chí Thanh", "NgCThanh- HTQ");
-        // (Tạ Uyên - Tân Thành-Tạ Uyên - Nguyễn Chí Thanh)
-        addEdge("Tạ Uyên - Tân Thành", "Tạ Uyên - Nguyễn Chí Thanh");
-        // (Tạ Uyên - Tân Thành-HTQ-TT)
-        addEdge("Tạ Uyên - Tân Thành", "HTQ-TT");
-        // (Tạ Uyên - Tân Thành-DTG-TT)
-        addEdge("Tạ Uyên - Tân Thành", "DTG-TT");
-        // (Tạ Uyên - Phạm Hữu Chí-Tạ Uyên - Tân Thành)
-        addEdge("Tạ Uyên - Phạm Hữu Chí", "Tạ Uyên - Tân Thành");
-        // (Tạ Uyên - Phạm Hữu Chí-DTG-PHC)
-        addEdge("Tạ Uyên - Phạm Hữu Chí", "DTG-PHC");
-        // (Tạ Uyên - Phạm Hữu Chí-Tạ Uyên - Hồng Bàng)
-        addEdge("Tạ Uyên - Phạm Hữu Chí", "Tạ Uyên - Hồng Bàng");
-        // (Tạ Uyên - Hồng Bàng-PH-NT)
-        addEdge("Tạ Uyên - Hồng Bàng", "PH-NT");
-        // (Tạ Uyên - Hồng Bàng-HTQ -HB)
-        addEdge("Tạ Uyên - Hồng Bàng", "HTQ -HB");
-        // (Tạ Uyên - Hồng Bàng-DTG-HB)
-        addEdge("Tạ Uyên - Hồng Bàng", "DTG-HB");
-        // (PG-NT-HTQ-HB)
-        addEdge("PG-NT", "HTQ-HB");
-        // (PG-TCC-PG-NT)
-        addEdge("PG-TCC", "PG-NT");
-        // (PG-TCC-Xóm Vôi - Trần Chánh Chiêu)
-        addEdge("PG-TCC", "Xóm Vôi - Trần Chánh Chiêu");
-        // (PG-TT-PG-TCC)
-        addEdge("PG-TT", "PG-TCC");
-        // (PG-TT-Xóm Vôi -Trang Tử)
-        addEdge("PG-TT", "Xóm Vôi -Trang Tử");
-        // (PH-NT-PG-NT)
-        addEdge("PH-NT", "PG-NT");
-        // (PH-NT-PH-TCC)
-        addEdge("PH-NT", "PH-TCC");
-        // (PH-TCC-PG-TCC)
-        addEdge("PH-TCC", "PG-TCC");
-        // (PH-TrangTử-PH-TCC)
-        addEdge("PH-TrangTử", "PH-TCC");
-        // (PH-TrangTử-PG-TT)
-        addEdge("PH-TrangTử", "PG-TT");
-        // (DTG-NCT-Tạ Uyên - Nguyễn Chí Thanh)
-        addEdge("DTG-NCT", "Tạ Uyên - Nguyễn Chí Thanh");
-        // (DTG-TT-DTG-NCT)
-        addEdge("DTG-TT", "DTG-NCT");
-        // (DTG-PHC-DTG-TT)
-        addEdge("DTG-PHC", "DTG-TT");
-        // (DTG-TH-DTG-PHC)
-        addEdge("DTG-TH", "DTG-PHC");
-        // (DTG-HB-DTG-TH)
-        addEdge("DTG-HB", "DTG-TH");
-        // (DTG-NgT-DTG-HB)
-        addEdge("DTG-NgT", "DTG-HB");
-        // (DTG-THD-DTG-NgT)
-        addEdge("DTG-THD", "DTG-NgT");
-        // (DTG-HTLO-DTG-THD)
-        addEdge("DTG-HTLO", "DTG-THD");
-        // (NNT-LVS-PH-Trang Tử)
-        addEdge("NNT-LVS", "PH-Trang Tử");
-        // (NNT-HTLO-NNT-LVS)
-        addEdge("NNT-HTLO", "NNT-LVS");
-        // (NNT-PVK-NNT-HTLO)
-        addEdge("NNT-PVK", "NNT-HTLO");
-        // (NNT-BS-NNT-PVK)
-        addEdge("NNT-BS", "NNT-PVK");
-        // (NNT-GP-NNT-BS)
-        addEdge("NNT-GP", "NNT-BS");
-        // (NNT-VVK-NNT-GP)
-        addEdge("NNT-VVK", "NNT-GP");
-        // (TT-LVS-PH-Trang Tử)
-        addEdge("TT-LVS", "PH-Trang Tử");
-        // (TT-LVS-NNT-LVS)
-        addEdge("TT-LVS", "NNT-LVS");
-        // (HL-HB-Tạ Uyên - Hồng Bàng)
-        addEdge("HL-HB", "Tạ Uyên - Hồng Bàng");
-        // (HL-HB-DTG-HB)
-        addEdge("HL-HB", "DTG-HB");
-        // (HL-NT-HL-HB)
-        addEdge("HL-NT", "HL-HB");
-        // (HL-NT-PH-NT)
-        addEdge("HL-NT", "PH-NT");
-        // (HL-NT-DTG-NgT)
-        addEdge("HL-NT", "DTG-NgT");
-        // (HL-THD-HL-NT)
-        addEdge("HL-THD", "HL-NT");
-        // (HL-THD-DTG-THD)
-        addEdge("HL-THD", "DTG-THD");
-        // (HL- HTLO-HL-THD)
-        addEdge("HL- HTLO", "HL-THD");
-        // (HL- HTLO-TT-LVS)
-        addEdge("HL- HTLO", "TT-LVS");
-        // (HL- HTLO-DTG-HTLO)
-        addEdge("HL- HTLO", "DTG-HTLO");
-        // (GC-HTLO-HL- HTLO)
-        addEdge("GC-HTLO", "HL- HTLO");
-        // (GC-HTLO-NNT-HTLO)
-        addEdge("GC-HTLO", "NNT-HTLO");
-        // (GC-PVK-GC-HTLO)
-        addEdge("GC-PVK", "GC-HTLO");
-        // (GC-PVK-NNT-PVK)
-        addEdge("GC-PVK", "NNT-PVK");
-        // (GC-BS-GC-PVK)
-        addEdge("GC-BS", "GC-PVK");
-        // (GC-BS-NNT-BS)
-        addEdge("GC-BS", "NNT-BS");
-        // (GC-GP-GC-BS)
-        addEdge("GC-GP", "GC-BS");
-        // (GC-GP-NNT-GP)
-        addEdge("GC-GP", "NNT-GP");
-        // (GC-VVK-GC-GP)
-        addEdge("GC-VVK", "GC-GP");
-        // (GC-VVK-NNT-VVK)
-        addEdge("GC-VVK", "NNT-VVK");
-        // (DNT-NCT-DTG-NCT)
-        addEdge("DNT-NCT", "DTG-NCT");
-        // (DNT-TT-DNT-NCT)
-        addEdge("DNT-TT", "DNT-NCT");
-        // (DTG-TT-DNT-TT)
-        addEdge("DTG-TT", "DNT-TT");
-        // (DNT-PHC-DNT-TT)
-        addEdge("DNT-PHC", "DNT-TT");
-        // (DNT-PHC-DTG-PHC)
-        addEdge("DNT-PHC", "DTG-PHC");
-        // (DNT-TH-DNT-PHC)
-        addEdge("DNT-TH", "DNT-PHC");
-        // (DNT-TH-DTG-TH)
-        addEdge("DNT-TH", "DTG-TH");
-        // (DNT-HB-DNT-TH)
-        addEdge("DNT-HB", "DNT-TH");
-        // (DNT-HB-DTG-HB)
-        addEdge("DNT-HB", "DTG-HB");
-        // (DNT-HB-DTG-HB) - Lặp lại, có thể là lỗi chính tả hoặc ý định
-        addEdge("DNT-HB", "DTG-HB");
-        // (DNT-NT-DNT-HB)
-        addEdge("DNT-NT", "DNT-HB");
-        // (DNT-NT-DTG-NgT)
-        addEdge("DNT-NT", "DTG-NgT");
-        // (DNT-THD-DNT-NT)
-        addEdge("DNT-THD", "DNT-NT");
-        // (DNT-THD-DTG-THD)
-        addEdge("DNT-THD", "DTG-THD");
-        // (DNT-HTLO-DNT-THD)
-        addEdge("DNT-HTLO", "DNT-THD");
-        // (DNT-HTLO-DTG-HTLO)
-        addEdge("DNT-HTLO", "DTG-HTLO");
-        // (KB-HTLO-GC-HTLO)
-        addEdge("KB-HTLO", "GC-HTLO");
-        // (KB-PVK-KB-HTLO)
-        addEdge("KB-PVK", "KB-HTLO");
-        // (KB-PVK-GC-PVK)
-        addEdge("KB-PVK", "GC-PVK");
-        // (KB-VVK-GC-VVK)
-        addEdge("KB-VVK", "GC-VVK");
-        // (VT-VCH-PH-VCH)
-        addEdge("VT-VCH", "PH-VCH");
-        // (VT-PH-VT-VCH)
-        addEdge("VT-PH", "VT-VCH");
-        // (VT-THD-VT-PH)
-        addEdge("VT-THD", "VT-PH");
-        // (VT-VVK-VT-THD)
-        addEdge("VT-VVK", "VT-THD");
-        // (VT-VVK-KB-VVK)
-        addEdge("VT-VVK", "KB-VVK");
-        // (PCD-NCT-DNT-NCT)
-        addEdge("PCD-NCT", "DNT-NCT");
-        // (PCD-TT-PCD-NCT)
-        addEdge("PCD-TT", "PCD-NCT");
-        // (PCD-TT-DNT-TT)
-        addEdge("PCD-TT", "DNT-TT");
-        // (PCD-PHC-PCD-TT)
-        addEdge("PCD-PHC", "PCD-TT");
-        // (PCD-PHC-DNT-PHC)
-        addEdge("PCD-PHC", "DNT-PHC");
-        // (PH-HB-DNT-HB)
-        addEdge("PH-HB", "DNT-HB");
-        // (PH-LT-PH-HB)
-        addEdge("PH-LT", "PH-HB");
-        // (PH-NT-PH-LT)
-        addEdge("PH-NT", "PH-LT");
-        // (PH-NT-DNT-NT)
-        addEdge("PH-NT", "DNT-NT");
-        // (PH-THD-PH-NT)
-        addEdge("PH-THD", "PH-NT");
-        // (PH-THD-DNT-THD)
-        addEdge("PH-THD", "DNT-THD");
-        // (PH-HTLO-PH-THD)
-        addEdge("PH-HTLO", "PH-THD");
-        // (PH-HTLO-DNT-HTLO)
-        addEdge("PH-HTLO", "DNT-HTLO");
-        // (PH-VCH-PH-HTLO)
-        addEdge("PH-VCH", "PH-HTLO");
-        // (PH-THD-PH-VCH)
-        addEdge("PH-THD", "PH-VCH");
-        // (PH-THD-VT-THD)
-        addEdge("PH-THD", "VT-THD");
-        // (PH-VVK-PH-THD)
-        addEdge("PH-VVK", "PH-THD");
-        // (PH-VVK-VT-VVK)
-        addEdge("PH-VVK", "VT-VVK");
+        addEdge("Nguyễn_Thị_Nhỏ_Nguyễn_Chí_Thanh", "Nguyễn_Thị_Nhỏ_Tân_Thành");
+        addEdge("Nguyễn_Thị_Nhỏ_Tân_Thành", "NTN_HBàng");
+        addEdge("NTN_HBàng", "NTN_TCChiếu");
+        addEdge("NTN_TCChiếu", "NTN_TTử");
+        addEdge("NTN_TTử", "Xóm_Vôi_Trang_Tử");
+        addEdge("NgCThanh_HTQ", "Nguyễn_Thị_Nhỏ_Nguyễn_Chí_Thanh");
+        addEdge("NgCThanh_HTQ", "HTQ_TT");
+        addEdge("HTQ_TT", "HTQ_HB");
+        addEdge("HTQ_TT", "Nguyễn_Thị_Nhỏ_Tân_Thành");
+        addEdge("Võ_Trường_Toản_HB", "NTN_HBàng");
+        addEdge("HTQ_HB", "Võ_Trường_Toản_HB");
+        addEdge("Xóm_Vôi_NT", "Võ_Trường_Toản_HB");
+        addEdge("Xóm_Vôi_NT", "NTN_HBàng");
+        addEdge("Xóm_Vôi_NT", "PG_NT");
+        addEdge("Xóm_Vôi_Trần_Chánh_Chiêu", "Xóm_Vôi_NT");
+        addEdge("Xóm_Vôi_Trần_Chánh_Chiêu", "NTN_TCChiếu");
+        addEdge("Xóm_Vôi_Trang_Tử", "Xóm_Vôi_Trần_Chánh_Chiêu");
+        addEdge("Tạ_Uyên_Nguyễn_Chí_Thanh", "NgCThanh_HTQ");
+        addEdge("Tạ_Uyên_Tân_Thành", "Tạ_Uyên_Nguyễn_Chí_Thanh");
+        addEdge("Tạ_Uyên_Tân_Thành", "HTQ_TT");
+        addEdge("Tạ_Uyên_Tân_Thành", "DTG_TT");
+        addEdge("Tạ_Uyên_Phạm_Hữu_Chí", "Tạ_Uyên_Tân_Thành");
+        addEdge("Tạ_Uyên_Phạm_Hữu_Chí", "DTG_PHC");
+        addEdge("Tạ_Uyên_Phạm_Hữu_Chí", "Tạ_Uyên_Hồng_Bàng");
+        addEdge("Tạ_Uyên_Hồng_Bàng", "PH_NT");
+        addEdge("Tạ_Uyên_Hồng_Bàng", "HTQ_HB");
+        addEdge("Tạ_Uyên_Hồng_Bàng", "DTG_HB");
+        addEdge("PG_NT", "HTQ_HB");
+        addEdge("PG_TCC", "PG_NT");
+        addEdge("PG_TCC", "Xóm_Vôi_Trần_Chánh_Chiêu");
+        addEdge("PG_TT", "PG_TCC");
+        addEdge("PG_TT", "Xóm_Vôi_Trang_Tử");
+        addEdge("PH_NT", "PG_NT");
+        addEdge("PH_NT", "PH_TCC");
+        addEdge("PH_TCC", "PG_TCC");
+        addEdge("PH_TrangTử", "PH_TCC");
+        addEdge("PH_TrangTử", "PG_TT");
+        addEdge("DTG_NCT", "Tạ_Uyên_Nguyễn_Chí_Thanh");
+        addEdge("DTG_TT", "DTG_NCT");
+        addEdge("DTG_PHC", "DTG_TT");
+        addEdge("DTG_TH", "DTG_PHC");
+        addEdge("DTG_HB", "DTG_TH");
+        addEdge("DTG_NgT", "DTG_HB");
+        addEdge("DTG_THD", "DTG_NgT");
+        addEdge("DTG_HTLO", "DTG_THD");
+        addEdge("NNT_LVS", "PH_TrangTử");
+        addEdge("NNT_HTLO", "NNT_LVS");
+        addEdge("NNT_PVK", "NNT_HTLO");
+        addEdge("NNT_BS", "NNT_PVK");
+        addEdge("NNT_GP", "NNT_BS");
+        addEdge("NNT_VVK", "NNT_GP");
+        addEdge("TT_LVS", "PH_TrangTử");
+        addEdge("TT_LVS", "NNT_LVS");
+        addEdge("HL_HB", "Tạ_Uyên_Hồng_Bàng");
+        addEdge("HL_HB", "DTG_HB");
+        addEdge("HL_NT", "HL_HB");
+        addEdge("HL_NT", "PH_NT");
+        addEdge("HL_NT", "DTG_NgT");
+        addEdge("HL_THD", "HL_NT");
+        addEdge("HL_THD", "DTG_THD");
+        addEdge("HL_HTLO", "HL_THD");
+        addEdge("HL_HTLO", "TT_LVS");
+        addEdge("HL_HTLO", "DTG_HTLO");
+        addEdge("GC_HTLO", "HL_HTLO");
+        addEdge("GC_HTLO", "NNT_HTLO");
+        addEdge("GC_PVK", "GC_HTLO");
+        addEdge("GC_PVK", "NNT_PVK");
+        addEdge("GC_BS", "GC_PVK");
+        addEdge("GC_BS", "NNT_BS");
+        addEdge("GC_GP", "GC_BS");
+        addEdge("GC_GP", "NNT_GP");
+        addEdge("GC_VVK", "GC_GP");
+        addEdge("GC_VVK", "NNT_VVK");
+        addEdge("DNT_NCT", "DTG_NCT");
+        addEdge("DNT_TT", "DNT_NCT");
+        addEdge("DTG_TT", "DNT_TT");
+        addEdge("DNT_PHC", "DNT_TT");
+        addEdge("DNT_PHC", "DTG_PHC");
+        addEdge("DNT_TH", "DNT_PHC");
+        addEdge("DNT_TH", "DTG_TH");
+        addEdge("DNT_HB", "DNT_TH");
+        addEdge("DNT_HB", "DTG_HB");
+        addEdge("DNT_HB", "DTG_HB"); // Cạnh lặp lại, giữ nguyên theo danh sách bạn cung cấp
+        addEdge("DNT_NT", "DNT_HB");
+        addEdge("DNT_NT", "DTG_NgT");
+        addEdge("DNT_THD", "DNT_NT");
+        addEdge("DNT_THD", "DTG_THD");
+        addEdge("DNT_HTLO", "DNT_THD");
+        addEdge("DNT_HTLO", "DTG_HTLO");
+        addEdge("KB_HTLO", "GC_HTLO");
+        addEdge("KB_PVK", "KB_HTLO");
+        addEdge("KB_PVK", "GC_PVK");
+        addEdge("KB_VVK", "GC_VVK");
+        addEdge("VT_VCH", "PH_VCH");
+        addEdge("VT_PH", "VT_VCH");
+        addEdge("VT_THD", "VT_PH");
+        addEdge("VT_VVK", "VT_THD");
+        addEdge("VT_VVK", "KB_VVK");
+        addEdge("PCD_NCT", "DNT_NCT");
+        addEdge("PCD_TT", "PCD_NCT");
+        addEdge("PCD_TT", "DNT_TT");
+        addEdge("PCD_PHC", "PCD_TT");
+        addEdge("PCD_PHC", "DNT_PHC");
+        addEdge("PH_HB", "DNT_HB");
+        addEdge("PH_LT", "PH_HB");
+        addEdge("PH_NT", "PH_LT");
+        addEdge("PH_NT", "DNT_NT");
+        addEdge("PH_THD", "PH_NT");
+        addEdge("PH_THD", "DNT_THD");
+        addEdge("PH_HTLO", "PH_THD");
+        addEdge("PH_HTLO", "DNT_HTLO");
+        addEdge("PH_VCH", "PH_HTLO");
+        addEdge("PH_THD", "PH_VCH");
+        addEdge("PH_THD", "VT_THD");
+        addEdge("PH_VVK", "PH_THD");
+        addEdge("PH_VVK", "VT_VVK");
         addEdge("Nguyễn_Văn_Cừ_Nguyễn_Trãi", "Nguyễn_Văn_Cừ_Phan_Văn_Trị");
         addEdge("Nguyễn_Văn_Cừ_Phan_Văn_Trị", "Nguyễn_Văn_Cừ_Trần_Hưng_Đạo");
         addEdge("Nguyễn_Văn_Cừ_Trần_Hưng_Đạo", "Nguyễn_Văn_Cừ_Võ_Văn_Kiệt");
@@ -553,246 +438,246 @@ public class GraphData {
         addEdge("HMD_THD", "HMD_PVTri");
         addEdge("HMD_PVTri", "LHPhong_PVTri");
 
-        addEdge("HMD_PVTri", "HMD_NgTrai");
-        addEdge("HMD_NgTrai", "HMD_ADV");
-        addEdge("HMD_ADV", "HMD_TPhu");
-        addEdge("SVH_TP_ADV", "SVH_NgChiThanh");
-        addEdge("YK_ADV", "YK_HV"); // Assuming ADV and HV are on the same "street" for YK
-        addEdge("BHNghia_PVTri", "BHNghia_THD");
-        addEdge("BHNghia_THD", "BHNghia_NgThuc");
-        addEdge("BHNghia_NgThuc", "BHNghia_BachVan");
-        addEdge("BHNghia_BachVan", "BHNghia_DaoTan");
-        addEdge("TTKhai_BachVan", "TTKhai_NgThuc");
-        addEdge("TTKhai_NgThuc", "TTKhai_THD");
-        addEdge("NgDuyDuong_ADV", "NgDuyDuong_HV");
-        addEdge("AB_NgTrai", "AB_TPhu");
-        addEdge("AB_TPhu", "AB_THD");
-        addEdge("AB_THD", "AB_BachVan");
-        addEdge("AB_BachVan", "AB_VVK");
-        addEdge("NVDung_VVK", "NVDung_THD");
-        addEdge("NQ_THD", "NQ_NgTrai");
-        addEdge("NQ_NgTrai", "NQ_MTT");
-        addEdge("NQ_MTT", "NQ_HV_NGT_ADV");
-        addEdge("NQ_VVK", "NQ_AnDiem");
-        addEdge("Ngã_6_Nguyễn_Tri_Phương", "NK_NgChiThanh");
-        addEdge("NK_NgChiThanh", "NK_TangBatHo");
-        addEdge("NK_TangBatHo", "NK_BaTrieu");
-        addEdge("NK_BaTrieu", "NK_PHChi");
-        addEdge("NK_PHChi", "NK_HB");
-        addEdge("HB_TanDa", "HB_NgTrai");
-        addEdge("TanDa_THD", "TanDa_TanHang");
-        addEdge("TanDa_THD", "HB_NgTrai");
-        addEdge("TanDa_VVK", "TanDa_TanHang");
-        addEdge("LTK_NgChiThanh", "LTK_TangBatHo");
-        addEdge("LTK_TangBatHo", "LTK_BaTieu");
-        addEdge("LTK_BaTieu", "LTK_PHChi");
-        addEdge("LTK_PHChi", "LTK_HB");
-        addEdge("PĐTV_NgTrai", "PĐTV_THD");
-        addEdge("TranHoa_THD", "TranDien_THD");
-        addEdge("PhamDon_THD", "PhamDon_TanHang");
-        addEdge("TQP_NgTrai", "TQP_HTLO");
-        addEdge("TQP_HTLO", "TQP_THD");
-        addEdge("TQP_THD", "TQP_HB");
-        addEdge("TQP_HB", "TQP_PHChi");
-        addEdge("LNH_HB", "LHN_LaoTu");
-        addEdge("LHN_LaoTu", "LNH_NgTrai");
-        addEdge("LNH_NgTrai", "LNH_THD");
-        addEdge("LNH_THD", "LNH_HTLO");
-        addEdge("ThuanKieu_NgChiThanh", "ThuanKieu_TanThanh");
-        addEdge("ThuanKieu_TanThanh", "ThuanKieu_PHChi");
-        addEdge("ThuanKieu_PHChi", "ThuanKieu_TanHung");
-        addEdge("CVL_HB", "CVL_NgTrai");
-        addEdge("CVL_NgTrai", "CVL_THD");
-        addEdge("CVL_THD", "CVL_HTLO_NguyenThi_MacCuu");
-        addEdge("NguyenThi_VVK", "MacCuu_VVK");
-        addEdge("MacCuu_VVK", "VanKiep_VVK");
-        addEdge("HTLO_VVK", "HTLO_NgAnKhuong");
-        addEdge("NgAnKkhuong_THDuc", "NgAnKhuong_VVK");
+//        addEdge("HMD_PVTri", "HMD_NgTrai");
+//        addEdge("HMD_NgTrai", "HMD_ADV");
+//        addEdge("HMD_ADV", "HMD_TPhu");
+//        addEdge("SVH_TP_ADV", "SVH_NgChiThanh");
+//        addEdge("YK_ADV", "YK_HV"); // Assuming ADV and HV are on the same "street" for YK
+//        addEdge("BHNghia_PVTri", "BHNghia_THD");
+//        addEdge("BHNghia_THD", "BHNghia_NgThuc");
+//        addEdge("BHNghia_NgThuc", "BHNghia_BachVan");
+//        addEdge("BHNghia_BachVan", "BHNghia_DaoTan");
+//        addEdge("TTKhai_BachVan", "TTKhai_NgThuc");
+//        addEdge("TTKhai_NgThuc", "TTKhai_THD");
+//        addEdge("NgDuyDuong_ADV", "NgDuyDuong_HV");
+//        addEdge("AB_NgTrai", "AB_TPhu");
+//        addEdge("AB_TPhu", "AB_THD");
+//        addEdge("AB_THD", "AB_BachVan");
+//        addEdge("AB_BachVan", "AB_VVK");
+//        addEdge("NVDung_VVK", "NVDung_THD");
+//        addEdge("NQ_THD", "NQ_NgTrai");
+//        addEdge("NQ_NgTrai", "NQ_MTT");
+//        addEdge("NQ_MTT", "NQ_HV_NGT_ADV");
+//        addEdge("NQ_VVK", "NQ_AnDiem");
+//        addEdge("Ngã_6_Nguyễn_Tri_Phương", "NK_NgChiThanh");
+//        addEdge("NK_NgChiThanh", "NK_TangBatHo");
+//        addEdge("NK_TangBatHo", "NK_BaTrieu");
+//        addEdge("NK_BaTrieu", "NK_PHChi");
+//        addEdge("NK_PHChi", "NK_HB");
+//        addEdge("HB_TanDa", "HB_NgTrai");
+//        addEdge("TanDa_THD", "TanDa_TanHang");
+//        addEdge("TanDa_THD", "HB_NgTrai");
+//        addEdge("TanDa_VVK", "TanDa_TanHang");
+//        addEdge("LTK_NgChiThanh", "LTK_TangBatHo");
+//        addEdge("LTK_TangBatHo", "LTK_BaTieu");
+//        addEdge("LTK_BaTieu", "LTK_PHChi");
+//        addEdge("LTK_PHChi", "LTK_HB");
+//        addEdge("PĐTV_NgTrai", "PĐTV_THD");
+//        addEdge("TranHoa_THD", "TranDien_THD");
+//        addEdge("PhamDon_THD", "PhamDon_TanHang");
+//        addEdge("TQP_NgTrai", "TQP_HTLO");
+//        addEdge("TQP_HTLO", "TQP_THD");
+//        addEdge("TQP_THD", "TQP_HB");
+//        addEdge("TQP_HB", "TQP_PHChi");
+//        addEdge("LNH_HB", "LHN_LaoTu");
+//        addEdge("LHN_LaoTu", "LNH_NgTrai");
+//        addEdge("LNH_NgTrai", "LNH_THD");
+//        addEdge("LNH_THD", "LNH_HTLO");
+//        addEdge("ThuanKieu_NgChiThanh", "ThuanKieu_TanThanh");
+//        addEdge("ThuanKieu_TanThanh", "ThuanKieu_PHChi");
+//        addEdge("ThuanKieu_PHChi", "ThuanKieu_TanHung");
+//        addEdge("CVL_HB", "CVL_NgTrai");
+//        addEdge("CVL_NgTrai", "CVL_THD");
+//        addEdge("CVL_THD", "CVL_HTLO_NguyenThi_MacCuu");
+//        addEdge("NguyenThi_VVK", "MacCuu_VVK");
+//        addEdge("MacCuu_VVK", "VanKiep_VVK");
+//        addEdge("HTLO_VVK", "HTLO_NgAnKhuong");
+//        addEdge("NgAnKkhuong_THDuc", "NgAnKhuong_VVK");
         // Các lời gọi addEdge() mới, tập trung vào các tuyến đường ngang
 // Các cạnh được tạo hai chiều (đồ thị vô hướng).
 // Những đường này không trùng lặp với các đường đã trả về trước đó (dựa trên tên đường chính).
 
-        addEdge("Nguyễn_Thị_Nhỏ_Nguyễn_Chí_Thanh", "NgCThanh_HTQ");
-        addEdge("NgCThanh_HTQ", "Tạ_Uyên_Nguyễn_Chí_Thanh");
-        addEdge("Tạ_Uyên_Nguyễn_Chí_Thanh", "DTG_NCT");
-        addEdge("DTG_NCT", "DNT_NCT");
-        addEdge("DNT_NCT", "PCD_NCT");
-        addEdge("PCD_NCT", "ThuanKieu_NgChiThanh");
-        addEdge("ThuanKieu_NgChiThanh", "NQ_NgChiThanh");
-        addEdge("Xóm_Vôi_NT", "PG_NT");
-        addEdge("PG_NT", "PH_NT");
-        addEdge("PH_NT", "HL_NT");
-        addEdge("HL_NT", "DNT_NT");
-        addEdge("DNT_NT", "PCD_NT");
-        addEdge("PCD_NT", "Nguyễn_Văn_Cừ_Nguyễn_Trãi");
-        addEdge("Nguyễn_Văn_Cừ_Nguyễn_Trãi", "NgBieu_NgTrai");
-        addEdge("NgBieu_NgTrai", "NgTrai_AB");
-        addEdge("NgTrai_AB", "NgTrai_LNH");
-        addEdge("NgTrai_LNH", "NgTrai_CVL");
-        addEdge("NgTrai_CVL", "NgTrai_ThuanKieu");
-        addEdge("NgTrai_ThuanKieu", "NgTrai_DNT");
-        addEdge("NgTrai_DNT", "NgTrai_PCD");
-        addEdge("NgTrai_PCD", "NgTrai_Nguyễn_Văn_Cừ");
-        addEdge("Xóm_Vôi_Trần_Chánh_Chiêu", "PG_TCC");
-        addEdge("PG_TCC", "PH_TCC");
-        addEdge("Xóm_Vôi_Trang_Tử", "PG_TT");
-        addEdge("PG_TT", "PH_Trang_Tử");
-        addEdge("Võ_Trường_Toản_HB", "HTQ_HB");
-        addEdge("HTQ_HB", "Tạ_Uyên_Hồng_Bàng");
-        addEdge("Tạ_Uyên_Hồng_Bàng", "DTG_HB");
-        addEdge("DTG_HB", "HL_HB");
-        addEdge("HL_HB", "DNT_HB");
-        addEdge("DNT_HB", "PH_HB");
-        addEdge("PH_HB", "LNH_HB");
-        addEdge("LNH_HB", "TQP_HB");
-        addEdge("TQP_HB", "CVL_HB");
-        addEdge("Nguyễn_Thị_Nhỏ_Tân_Thành", "Tạ_Uyên_Tân_Thành");
-        addEdge("Tạ_Uyên_Tân_Thành", "DTG_TT");
-        addEdge("DTG_TT", "DNT_TT");
-        addEdge("DNT_TT", "PCD_TT");
-        addEdge("PCD_TT", "ThuanKieu_TanThanh");
-        addEdge("ThuanKieu_TanThanh", "HTQ_TT");
-        addEdge("Tạ_Uyên_Phạm_Hữu_Chí", "DTG_PHC");
-        addEdge("DTG_PHC", "DNT_PHC");
-        addEdge("DNT_PHC", "PCD_PHC");
-        addEdge("PCD_PHC", "ThuanKieu_PHChi");
-        addEdge("ThuanKieu_PHChi", "TQP_PHChi");
-        addEdge("DTG_TH", "DNT_TH");
-        addEdge("DNT_TH", "ThuanKieu_TanHung");
-        addEdge("ThuanKieu_TanHung", "Ngã_6_Nguyễn_Tri_Phương");
-        addEdge("Ngã_6_Nguyễn_Tri_Phương", "NK_HB");
-        addEdge("NK_HB", "HB_TanDa");
-        addEdge("TanDa_TanHang", "PhamDon_TanHang");
-        addEdge("Nguyễn_Văn_Cừ_Phan_Văn_Trị", "NgBieu_PhanVanTri");
-        addEdge("NgBieu_NgTrai", "NgTrai_TBTrong");
-        addEdge("NgBieu_THD", "TBTrong_THD");
-        addEdge( "TBTrong_THD", "TBTrong_VVK");
-        addEdge(  "TBTrong_VVK", "VVK_HMD");
-
-        addEdge("NgTrPhuong_ADV", "NgDuyDuong_ADV");
-        addEdge("NgDuyDuong_ADV", "NQ_HV_NGT_ADV");
-        addEdge("Nguyễn_Văn_Cừ_Hùng_Vương", "HV_NgTrPhuong");
-        addEdge("HV_NgTrPhuong", "NgTrPhuong_HV");
-        addEdge("NgTrPhuong_HV", "NgDuyDuong_HV");
-        addEdge("NgDuyDuong_HV", "NQ_HV_NGT_ADV");
-        addEdge("Nguyễn_Văn_Cừ_Trần_Hưng_Đạo", "NgBieu_THD");
-        addEdge("NgBieu_THD", "NgTriPhuong_THD");
-        addEdge("NgTriPhuong_THD", "TanDa_THD");
-        addEdge("TanDa_THD", "TranHoa_THD");
-        addEdge("TranHoa_THD", "TranDien_THD");
-        addEdge("TranDien_THD", "PhamDon_THD");
-        addEdge("PhamDon_THD", "NgAnKkhuong_THDuc");
-        addEdge("NgAnKkhuong_THDuc", "TQP_THD");
-        addEdge("TQP_THD", "LNH_THD");
-        addEdge("LNH_THD", "CVL_THD");
-        addEdge("DTG_THD", "HL_THD");
-        addEdge("HL_THD", "DNT_THD");
-        addEdge("DNT_THD", "PH_THD");
-        addEdge("PH_THD", "VT_THD");
-        addEdge("Nguyễn_Văn_Cừ_Võ_Văn_Kiệt", "NgBieu_VVK");
-        addEdge("NgBieu_VVK", "TBTrong_VVK");
-        addEdge("VVK_HMD", "TTKhai_VVK");
-        addEdge("AB_VVK", "TTKhai_VVK");
-        addEdge("TTKhai_BachVan", "TTKhai_VVK");
-        addEdge("AB_VVK", "NVDung_VVK");
-        addEdge("NgTriPhuong_VVK", "NVDung_VVK");
-        addEdge("NgTriPhuong_VVK", "NQ_VVK");
-
-        addEdge("TanDa_VVK", "NgAnKhuong_VVK");
-        addEdge("NgAnKhuong_VVK", "NVDung_VVK");
-        addEdge("NVDung_VVK", "VVK_NguyenThi");
-        addEdge("VVK_NguyenThi", "VVK_NgAnKhuong");
-        addEdge("VVK_NgAnKhuong", "VVK_TTKhai");
-        addEdge("VVK_TTKhai", "VVK_BHNghia");
-        addEdge("VVK_BHNghia", "VVK_HMD");
-        addEdge("VVK_HMD", "VVK_NgBieu");
-        addEdge("VVK_HMD", "VVK_NgThuc");
-        addEdge("VVK_HMD", "BHNghia_BachVan"); // This creates a loop back which is fine for a graph
-        addEdge("VVK_NgBieu", "VVK_Nguyễn_Văn_Cừ");
-        addEdge("VVK_Nguyễn_Văn_Cừ", "VVK_NQ");
-        addEdge("VVK_NQ", "VVK_HTLO");
-        addEdge("VVK_HTLO", "VVK_VanKiep");
-        addEdge("VVK_VanKiep", "VVK_MacCuu");
-        addEdge("VVK_MacCuu", "VVK_NguyenThi");
-        addEdge("VVK_NguyenThi", "VVK_NgAnKhuong");
-        addEdge("NNT_HTLO", "HL_HTLO");
-        addEdge("HL_HTLO", "DNT_HTLO");
-        addEdge("DNT_HTLO", "KB_HTLO");
-        addEdge("KB_HTLO", "PH_HTLO");
-        addEdge("PH_HTLO", "VT_VCH");
-        addEdge("VT_VCH", "PH_VCH");
-        addEdge("PH_VCH", "CVL_HTLO_NguyenThi_MacCuu");
-        addEdge("CVL_HTLO_NguyenThi_MacCuu", "TQP_HTLO");
-        addEdge("TQP_HTLO", "LNH_HTLO");
-        addEdge("LNH_HTLO", "HTLO_VVK");
-        addEdge("HTLO_VVK", "GC_HTLO");
-        addEdge("GC_HTLO", "NNT_PVK");
-        addEdge("NNT_PVK", "GC_PVK");
-        addEdge("GC_PVK", "KB_PVK");
-        addEdge("KB_PVK", "NNT_BS");
-        addEdge("NNT_BS", "GC_BS");
-        addEdge("GC_BS", "NNT_GP");
-        addEdge("NNT_GP", "GC_GP");
-        addEdge("GC_GP", "NNT_VVK");
-        addEdge("NNT_VVK", "GC_VVK");
-        addEdge("GC_VVK", "KB_VVK");
-        addEdge("KB_VVK", "VT_VVK");
-        addEdge("VT_VVK", "PH_VVK");
-        addEdge("TanDa_VVK", "NQ_VVK");
-        addEdge("AB_VVK", "VVK_MacCuu");
-        addEdge("VVK_MacCuu", "MacCuu_VVK");
-        addEdge("MacCuu_VVK", "VanKiep_VVK");
-        addEdge("VanKiep_VVK", "HTLO_VVK");
-        addEdge("HTLO_VVK", "NguyenThi_VVK");
-        addEdge("NguyenThi_VVK", "NgAnKhuong_VVK");
-        addEdge("HMD_NgThuc", "BHNghia_NgThuc");
-        addEdge("BHNghia_NgThuc", "TTKhai_NgThuc");
-        addEdge("HMD_THD", "BHNghia_THD");
-        addEdge("BHNghia_THD", "TTKhai_THD");
-        addEdge("HMD_PVTri", "BHNghia_PVTri");
-        addEdge("HMD_NgTrai", "NgTrai_TBTrong");
-        addEdge("NgTrai_TBTrong", "NgTrai_BHNghia");
-        addEdge("NgTrai_BHNghia", "NgTrai_TPhu");
-        addEdge("NgTrai_TPhu", "NgTrai_LHPhong");
-        addEdge("NgTrai_LHPhong", "NgTrai_NQ");
-        addEdge("NgTrai_NQ", "NgTrai_NgTriPhuong");
-        addEdge("NgTrai_NgTriPhuong", "NgTrai_AB");
-        addEdge("NgTrai_AB", "NgTrai_LNH");
-        addEdge("NgTrai_LNH", "NgTrai_CVL");
-        addEdge("NgTrai_CVL", "NgTrai_ThuanKieu");
-        addEdge("NgTrai_ThuanKieu", "NgTrai_DNT");
-        addEdge("NgTrai_DNT", "NgTrai_PCD");
-        addEdge("NgTrai_PCD", "NgTrai_Nguyễn_Văn_Cừ");
-        addEdge("HMD_ADV", "YK_ADV");
-        addEdge("YK_ADV", "NgTrPhuong_ADV");
-        addEdge("NgTrPhuong_ADV", "NgDuyDuong_ADV");
-        addEdge("NgDuyDuong_ADV", "NQ_HV_NGT_ADV");
-        addEdge("HMD_TPhu", "AB_TPhu");
-        addEdge("AB_TPhu", "NgTriPhuong_TPhu");
-        addEdge("LHPhong_TranPhu", "SVH_TP_ADV");
-        addEdge("SVH_TP_ADV", "SVH_NgChiThanh");
-        addEdge("SVH_NgChiThanh", "NQ_NgChiThanh");
-        addEdge("BHNghia_BachVan", "TTKhai_BachVan");
-        addEdge("BHNghia_BachVan", "AB_BachVan");
-        addEdge("NgTriPhuong_TPhu", "LHPhong_PVTri");
-        addEdge("LHPhong_PVTri", "LHP_THD");
-        addEdge("NQ_AnDiem", "NQ_THD");
-        addEdge("LTK_NgChiThanh", "LTK_TangBatHo");
-        addEdge("LTK_TangBatHo", "LTK_BaTieu");
-        addEdge("LTK_BaTieu", "LTK_PHChi");
-        addEdge("LTK_PHChi", "LTK_HB");
-        addEdge("HB_NgTrai", "PĐTV_NgTrai");
-        addEdge("PĐTV_NgTrai", "TQP_NgTrai");
-        addEdge("TQP_NgTrai", "LNH_NgTrai");
-        addEdge("PĐTV_THD", "TranHoa_THD");
-        addEdge("TranHoa_THD", "TranDien_THD");
-        addEdge("TranDien_THD", "PhamDon_THD");
-        addEdge("PhamDon_THD", "NgAnKkhuong_THDuc");
-        addEdge("NgAnKkhuong_THDuc", "TQP_THD");
-        addEdge("TQP_THD", "LNH_THD");
-        addEdge("LNH_THD", "CVL_THD");
-        addEdge("LHN_LaoTu", "LNH_THD"); // Assuming LHN is a variation of LNH
-
+//        addEdge("Nguyễn_Thị_Nhỏ_Nguyễn_Chí_Thanh", "NgCThanh_HTQ");
+//        addEdge("NgCThanh_HTQ", "Tạ_Uyên_Nguyễn_Chí_Thanh");
+//        addEdge("Tạ_Uyên_Nguyễn_Chí_Thanh", "DTG_NCT");
+//        addEdge("DTG_NCT", "DNT_NCT");
+//        addEdge("DNT_NCT", "PCD_NCT");
+//        addEdge("PCD_NCT", "ThuanKieu_NgChiThanh");
+//        addEdge("ThuanKieu_NgChiThanh", "NQ_NgChiThanh");
+//        addEdge("Xóm_Vôi_NT", "PG_NT");
+//        addEdge("PG_NT", "PH_NT");
+//        addEdge("PH_NT", "HL_NT");
+//        addEdge("HL_NT", "DNT_NT");
+//        addEdge("DNT_NT", "PCD_NT");
+//        addEdge("PCD_NT", "Nguyễn_Văn_Cừ_Nguyễn_Trãi");
+//        addEdge("Nguyễn_Văn_Cừ_Nguyễn_Trãi", "NgBieu_NgTrai");
+//        addEdge("NgBieu_NgTrai", "NgTrai_AB");
+//        addEdge("NgTrai_AB", "NgTrai_LNH");
+//        addEdge("NgTrai_LNH", "NgTrai_CVL");
+//        addEdge("NgTrai_CVL", "NgTrai_ThuanKieu");
+//        addEdge("NgTrai_ThuanKieu", "NgTrai_DNT");
+//        addEdge("NgTrai_DNT", "NgTrai_PCD");
+//        addEdge("NgTrai_PCD", "NgTrai_Nguyễn_Văn_Cừ");
+//        addEdge("Xóm_Vôi_Trần_Chánh_Chiêu", "PG_TCC");
+//        addEdge("PG_TCC", "PH_TCC");
+//        addEdge("Xóm_Vôi_Trang_Tử", "PG_TT");
+//        addEdge("PG_TT", "PH_Trang_Tử");
+//        addEdge("Võ_Trường_Toản_HB", "HTQ_HB");
+//        addEdge("HTQ_HB", "Tạ_Uyên_Hồng_Bàng");
+//        addEdge("Tạ_Uyên_Hồng_Bàng", "DTG_HB");
+//        addEdge("DTG_HB", "HL_HB");
+//        addEdge("HL_HB", "DNT_HB");
+//        addEdge("DNT_HB", "PH_HB");
+//        addEdge("PH_HB", "LNH_HB");
+//        addEdge("LNH_HB", "TQP_HB");
+//        addEdge("TQP_HB", "CVL_HB");
+//        addEdge("Nguyễn_Thị_Nhỏ_Tân_Thành", "Tạ_Uyên_Tân_Thành");
+//        addEdge("Tạ_Uyên_Tân_Thành", "DTG_TT");
+//        addEdge("DTG_TT", "DNT_TT");
+//        addEdge("DNT_TT", "PCD_TT");
+//        addEdge("PCD_TT", "ThuanKieu_TanThanh");
+//        addEdge("ThuanKieu_TanThanh", "HTQ_TT");
+//        addEdge("Tạ_Uyên_Phạm_Hữu_Chí", "DTG_PHC");
+//        addEdge("DTG_PHC", "DNT_PHC");
+//        addEdge("DNT_PHC", "PCD_PHC");
+//        addEdge("PCD_PHC", "ThuanKieu_PHChi");
+//        addEdge("ThuanKieu_PHChi", "TQP_PHChi");
+//        addEdge("DTG_TH", "DNT_TH");
+//        addEdge("DNT_TH", "ThuanKieu_TanHung");
+//        addEdge("ThuanKieu_TanHung", "Ngã_6_Nguyễn_Tri_Phương");
+//        addEdge("Ngã_6_Nguyễn_Tri_Phương", "NK_HB");
+//        addEdge("NK_HB", "HB_TanDa");
+//        addEdge("TanDa_TanHang", "PhamDon_TanHang");
+//        addEdge("Nguyễn_Văn_Cừ_Phan_Văn_Trị", "NgBieu_PhanVanTri");
+//        addEdge("NgBieu_NgTrai", "NgTrai_TBTrong");
+//        addEdge("NgBieu_THD", "TBTrong_THD");
+//        addEdge( "TBTrong_THD", "TBTrong_VVK");
+//        addEdge(  "TBTrong_VVK", "VVK_HMD");
+//
+//        addEdge("NgTrPhuong_ADV", "NgDuyDuong_ADV");
+//        addEdge("NgDuyDuong_ADV", "NQ_HV_NGT_ADV");
+//        addEdge("Nguyễn_Văn_Cừ_Hùng_Vương", "HV_NgTrPhuong");
+//        addEdge("HV_NgTrPhuong", "NgTrPhuong_HV");
+//        addEdge("NgTrPhuong_HV", "NgDuyDuong_HV");
+//        addEdge("NgDuyDuong_HV", "NQ_HV_NGT_ADV");
+//        addEdge("Nguyễn_Văn_Cừ_Trần_Hưng_Đạo", "NgBieu_THD");
+//        addEdge("NgBieu_THD", "NgTriPhuong_THD");
+//        addEdge("NgTriPhuong_THD", "TanDa_THD");
+//        addEdge("TanDa_THD", "TranHoa_THD");
+//        addEdge("TranHoa_THD", "TranDien_THD");
+//        addEdge("TranDien_THD", "PhamDon_THD");
+//        addEdge("PhamDon_THD", "NgAnKkhuong_THDuc");
+//        addEdge("NgAnKkhuong_THDuc", "TQP_THD");
+//        addEdge("TQP_THD", "LNH_THD");
+//        addEdge("LNH_THD", "CVL_THD");
+//        addEdge("DTG_THD", "HL_THD");
+//        addEdge("HL_THD", "DNT_THD");
+//        addEdge("DNT_THD", "PH_THD");
+//        addEdge("PH_THD", "VT_THD");
+//        addEdge("Nguyễn_Văn_Cừ_Võ_Văn_Kiệt", "NgBieu_VVK");
+//        addEdge("NgBieu_VVK", "TBTrong_VVK");
+//        addEdge("VVK_HMD", "TTKhai_VVK");
+//        addEdge("AB_VVK", "TTKhai_VVK");
+//        addEdge("TTKhai_BachVan", "TTKhai_VVK");
+//        addEdge("AB_VVK", "NVDung_VVK");
+//        addEdge("NgTriPhuong_VVK", "NVDung_VVK");
+//        addEdge("NgTriPhuong_VVK", "NQ_VVK");
+//
+//        addEdge("TanDa_VVK", "NgAnKhuong_VVK");
+//        addEdge("NgAnKhuong_VVK", "NVDung_VVK");
+//        addEdge("NVDung_VVK", "VVK_NguyenThi");
+//        addEdge("VVK_NguyenThi", "VVK_NgAnKhuong");
+//        addEdge("VVK_NgAnKhuong", "VVK_TTKhai");
+//        addEdge("VVK_TTKhai", "VVK_BHNghia");
+//        addEdge("VVK_BHNghia", "VVK_HMD");
+//        addEdge("VVK_HMD", "VVK_NgBieu");
+//        addEdge("VVK_HMD", "VVK_NgThuc");
+//        addEdge("VVK_HMD", "BHNghia_BachVan"); // This creates a loop back which is fine for a graph
+//        addEdge("VVK_NgBieu", "VVK_Nguyễn_Văn_Cừ");
+//        addEdge("VVK_Nguyễn_Văn_Cừ", "VVK_NQ");
+//        addEdge("VVK_NQ", "VVK_HTLO");
+//        addEdge("VVK_HTLO", "VVK_VanKiep");
+//        addEdge("VVK_VanKiep", "VVK_MacCuu");
+//        addEdge("VVK_MacCuu", "VVK_NguyenThi");
+//        addEdge("VVK_NguyenThi", "VVK_NgAnKhuong");
+//        addEdge("NNT_HTLO", "HL_HTLO");
+//        addEdge("HL_HTLO", "DNT_HTLO");
+//        addEdge("DNT_HTLO", "KB_HTLO");
+//        addEdge("KB_HTLO", "PH_HTLO");
+//        addEdge("PH_HTLO", "VT_VCH");
+//        addEdge("VT_VCH", "PH_VCH");
+//        addEdge("PH_VCH", "CVL_HTLO_NguyenThi_MacCuu");
+//        addEdge("CVL_HTLO_NguyenThi_MacCuu", "TQP_HTLO");
+//        addEdge("TQP_HTLO", "LNH_HTLO");
+//        addEdge("LNH_HTLO", "HTLO_VVK");
+//        addEdge("HTLO_VVK", "GC_HTLO");
+//        addEdge("GC_HTLO", "NNT_PVK");
+//        addEdge("NNT_PVK", "GC_PVK");
+//        addEdge("GC_PVK", "KB_PVK");
+//        addEdge("KB_PVK", "NNT_BS");
+//        addEdge("NNT_BS", "GC_BS");
+//        addEdge("GC_BS", "NNT_GP");
+//        addEdge("NNT_GP", "GC_GP");
+//        addEdge("GC_GP", "NNT_VVK");
+//        addEdge("NNT_VVK", "GC_VVK");
+//        addEdge("GC_VVK", "KB_VVK");
+//        addEdge("KB_VVK", "VT_VVK");
+//        addEdge("VT_VVK", "PH_VVK");
+//        addEdge("TanDa_VVK", "NQ_VVK");
+//        addEdge("AB_VVK", "VVK_MacCuu");
+//        addEdge("VVK_MacCuu", "MacCuu_VVK");
+//        addEdge("MacCuu_VVK", "VanKiep_VVK");
+//        addEdge("VanKiep_VVK", "HTLO_VVK");
+//        addEdge("HTLO_VVK", "NguyenThi_VVK");
+//        addEdge("NguyenThi_VVK", "NgAnKhuong_VVK");
+//        addEdge("HMD_NgThuc", "BHNghia_NgThuc");
+//        addEdge("BHNghia_NgThuc", "TTKhai_NgThuc");
+//        addEdge("HMD_THD", "BHNghia_THD");
+//        addEdge("BHNghia_THD", "TTKhai_THD");
+//        addEdge("HMD_PVTri", "BHNghia_PVTri");
+//        addEdge("HMD_NgTrai", "NgTrai_TBTrong");
+//        addEdge("NgTrai_TBTrong", "NgTrai_BHNghia");
+//        addEdge("NgTrai_BHNghia", "NgTrai_TPhu");
+//        addEdge("NgTrai_TPhu", "NgTrai_LHPhong");
+//        addEdge("NgTrai_LHPhong", "NgTrai_NQ");
+//        addEdge("NgTrai_NQ", "NgTrai_NgTriPhuong");
+//        addEdge("NgTrai_NgTriPhuong", "NgTrai_AB");
+//        addEdge("NgTrai_AB", "NgTrai_LNH");
+//        addEdge("NgTrai_LNH", "NgTrai_CVL");
+//        addEdge("NgTrai_CVL", "NgTrai_ThuanKieu");
+//        addEdge("NgTrai_ThuanKieu", "NgTrai_DNT");
+//        addEdge("NgTrai_DNT", "NgTrai_PCD");
+//        addEdge("NgTrai_PCD", "NgTrai_Nguyễn_Văn_Cừ");
+//        addEdge("HMD_ADV", "YK_ADV");
+//        addEdge("YK_ADV", "NgTrPhuong_ADV");
+//        addEdge("NgTrPhuong_ADV", "NgDuyDuong_ADV");
+//        addEdge("NgDuyDuong_ADV", "NQ_HV_NGT_ADV");
+//        addEdge("HMD_TPhu", "AB_TPhu");
+//        addEdge("AB_TPhu", "NgTriPhuong_TPhu");
+//        addEdge("LHPhong_TranPhu", "SVH_TP_ADV");
+//        addEdge("SVH_TP_ADV", "SVH_NgChiThanh");
+//        addEdge("SVH_NgChiThanh", "NQ_NgChiThanh");
+//        addEdge("BHNghia_BachVan", "TTKhai_BachVan");
+//        addEdge("BHNghia_BachVan", "AB_BachVan");
+//        addEdge("NgTriPhuong_TPhu", "LHPhong_PVTri");
+//        addEdge("LHPhong_PVTri", "LHP_THD");
+//        addEdge("NQ_AnDiem", "NQ_THD");
+//        addEdge("LTK_NgChiThanh", "LTK_TangBatHo");
+//        addEdge("LTK_TangBatHo", "LTK_BaTieu");
+//        addEdge("LTK_BaTieu", "LTK_PHChi");
+//        addEdge("LTK_PHChi", "LTK_HB");
+//        addEdge("HB_NgTrai", "PĐTV_NgTrai");
+//        addEdge("PĐTV_NgTrai", "TQP_NgTrai");
+//        addEdge("TQP_NgTrai", "LNH_NgTrai");
+//        addEdge("PĐTV_THD", "TranHoa_THD");
+//        addEdge("TranHoa_THD", "TranDien_THD");
+//        addEdge("TranDien_THD", "PhamDon_THD");
+//        addEdge("PhamDon_THD", "NgAnKkhuong_THDuc");
+//        addEdge("NgAnKkhuong_THDuc", "TQP_THD");
+//        addEdge("TQP_THD", "LNH_THD");
+//        addEdge("LNH_THD", "CVL_THD");
+//        addEdge("LHN_LaoTu", "LNH_THD"); // Assuming LHN is a variation of LNH
+//
 
 
         // Nối các node camera với các giao lộ hoặc node camera khác gần nhất
