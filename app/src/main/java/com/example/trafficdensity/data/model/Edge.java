@@ -44,4 +44,8 @@ public class Edge implements Serializable {
     public void clear(){
 
     }
+
+    public double getWeightedCost() {
+        return  weight;
+    }
 }

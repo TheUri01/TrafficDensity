@@ -107,7 +107,7 @@ public class CameraImageDialogFragment extends DialogFragment {
     // --- Cấu hình API ---
     // Base URL của API backend của bạn (địa chỉ Flask API)
     // Đảm bảo đây là URL có thể truy cập từ thiết bị Android (IP nội bộ, ngrok URL, Cloud IP/Domain)
-    private static final String BASE_API_URL = "http://6666-34-83-127-61.ngrok-free.app/"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY
+    private static final String BASE_API_URL = "https://5bb2-34-75-3-177.ngrok-free.app/"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY
 
     private TrafficApiService trafficApiService; // Biến để giữ đối tượng service
     private int originalImageWidth = 512;

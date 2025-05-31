@@ -126,5 +126,18 @@ public class Node {
     }
 
     public void setDensity(Float aFloat) {
+        this.trafficDensity = aFloat;
+    }
+
+    public boolean hasCamera() {
+        return this.isCameraNode;
+    }
+
+    public void setHasCamera(boolean b) {
+        this.isCameraNode = b;
+    }
+
+    public void setId(String newCameraNodeId) {
+        this.id = newCameraNodeId;
     }
 }

@@ -1,25 +1,24 @@
-package com.example.trafficdensity.ui.pathfinding; // Đảm bảo đúng package của bạn
+package com.example.trafficdensity.ui.pathfinding;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button; // Import Button if using a regular button
-import android.widget.TextView; // Import TextView
-import android.widget.Toast; // Import Toast
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.trafficdensity.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton; // Import FloatingActionButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import com.example.trafficdensity.data.graph.GraphData; // Import GraphData
-import com.example.trafficdensity.CameraInfo; // Import CameraInfo
-import com.example.trafficdensity.data.model.Node; // Import Node
-import com.example.trafficdensity.data.model.Edge; // Import Edge
-import com.example.trafficdensity.algorithm.AStarPathfinder; // Import AStarPathfinder
+import com.example.trafficdensity.data.graph.GraphData;
+import com.example.trafficdensity.CameraInfo;
+import com.example.trafficdensity.data.model.Node;
+import com.example.trafficdensity.data.model.Edge;
+import com.example.trafficdensity.algorithm.AStarPathfinder;
+import com.example.trafficdensity.algorithm.DensityPropagator;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,188 +29,195 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory; // For custom marker icons
-import com.google.android.gms.maps.model.BitmapDescriptor; // Import BitmapDescriptor
-import com.google.android.gms.maps.model.CameraPosition; // Import CameraPosition
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLngBounds;
+import android.location.Location;
 
-// --- Imports cho cập nhật mật độ ---
-import android.os.Handler; // Import Handler
-import android.os.Looper; // Import Looper
-import java.util.concurrent.TimeUnit; // Import TimeUnit
-// --- Imports cho API Call ---
+import android.os.Handler;
+import android.os.Looper;
+import java.util.concurrent.TimeUnit;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import api.TrafficApiService; // Import interface API service
-import api.TrafficDensityReading; // Import data class
-// --- Import cho Vector Drawable to Bitmap ---
+import api.TrafficApiService;
+import com.example.trafficdensity.api.PathfindingCameraDensity;
+
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
-import androidx.core.content.ContextCompat; // Sử dụng ContextCompat để lấy Drawable tương thích
-// ---------------------------------------------
-
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map; // Import Map
-import java.util.HashMap; // Import HashMap
-import java.util.Locale; // Import Locale
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Locale;
 
 
-public class PathfindingMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class PathfindingMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener, GoogleMap.OnMapClickListener {
 
     private static final String TAG = "PathfindingMapActivity";
     private GoogleMap mMap;
-    private GraphData graphData; // Instance của GraphData
-    private List<CameraInfo> cameraInfoList; // Danh sách camera để truyền vào GraphData
+    private GraphData graphData;
+    private List<CameraInfo> cameraInfoList;
 
     private Marker startMarker;
     private Marker endMarker;
-    private Node startNode; // Lưu trữ Node object được chọn làm điểm bắt đầu
-    private Node endNode;   // Lưu trữ Node object được chọn làm điểm kết thúc
+    private Node startNode;
+    private Node endNode;
 
-    private Polyline pathPolyline; // Để lưu trữ polyline của đường đi
+    private Polyline pathPolyline;
+    private List<Polyline> graphPolylines = new ArrayList<>();
 
-    private FloatingActionButton fabFindPath; // Nút tìm đường
+    private FloatingActionButton fabFindPath;
+    private FloatingActionButton fabResetMap;
 
-    // TextViews để hiển thị điểm bắt đầu/kết thúc và kết quả
-    private TextView textStartCamera;
-    private TextView textEndCamera;
+    private TextView textStartName;
+    private TextView textStartDensity;
+    private TextView textEndName;
+    private TextView textEndDensity;
     private TextView textPathResult;
 
-    // --- Cấu hình API ---
-    private static final String BASE_API_URL = "http://f418-35-245-28-142.ngrok-free.app/"; // <-- CẬP NHẬT ĐỊA CHỈ NÀY
+    private static final String BASE_API_URL = "https://571f-34-134-173-55.ngrok-free.app/"; // Vui lòng cập nhật URL này
     private TrafficApiService trafficApiService;
-    // ---------------------
 
-    // --- Handler và Runnable cho cập nhật mật độ định kỳ ---
-    private Handler handler = new Handler(Looper.getMainLooper()); // Chạy trên Main Thread
+    private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable updateDensityRunnable;
-    private static final long UPDATE_DENSITY_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15); // Cập nhật mỗi 15 giây
-    // ------------------------------------------------------
+    private static final long UPDATE_DENSITY_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15);
 
-    // Map để lưu trữ các Marker trên bản đồ, ánh xạ Node ID -> Marker
     private Map<String, Marker> nodeMarkers = new HashMap<>();
-
+    private DensityPropagator densityPropagator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pathfinding_map); // Đảm bảo layout file đúng
+        setContentView(R.layout.activity_pathfinding_map);
 
-        // Ánh xạ TextViews
-        textStartCamera = findViewById(R.id.text_start_camera);
-        textEndCamera = findViewById(R.id.text_end_camera);
+        initializeCameraList();
+
+        textStartName = findViewById(R.id.text_start_name);
+        textStartDensity = findViewById(R.id.text_start_density);
+        textEndName = findViewById(R.id.text_end_name);
+        textEndDensity = findViewById(R.id.text_end_density);
         textPathResult = findViewById(R.id.text_path_result);
 
-
-        // Khởi tạo danh sách camera (sử dụng dummy data tạm thời)
-        // Trong ứng dụng thực tế, dữ liệu này có thể đến từ API hoặc database
-        cameraInfoList = createDummyCameraList(); // Hàm tạo dummy data
-
-        // --- Khởi tạo GraphData với danh sách camera ---
-        // Đây là nơi bạn cần đảm bảo GraphData xử lý việc tạo node duy nhất cho mỗi vị trí.
-        // Logic bên trong constructor hoặc một phương thức buildGraph() của GraphData
-        // cần kiểm tra trùng lặp vị trí khi thêm camera và các điểm giao lộ khác.
         graphData = new GraphData(cameraInfoList);
-        Log.d(TAG, "GraphData initialized with " + (graphData != null ? graphData.getNodes().size() : 0) + " nodes.");
-        // ---------------------------------------------
+        Log.d(TAG, "GraphData initialized with " + graphData.getNodes().size() + " nodes and " + graphData.getEdges().size() + " edges.");
 
+        densityPropagator = new DensityPropagator();
+        Log.d(TAG, "DensityPropagator initialized.");
 
-        // Lấy SupportMapFragment và yêu cầu thông báo khi bản đồ sẵn sàng sử dụng.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map_pathfinding); // Đảm bảo ID fragment đúng trong layout
+                .findFragmentById(R.id.map_pathfinding);
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
+        } else {
+            Log.e(TAG, "Map Fragment is null. Check layout file and ID: map_pathfinding.");
+            Toast.makeText(this, "Lỗi: Không tìm thấy Map Fragment.", Toast.LENGTH_LONG).show();
         }
 
-        // Ánh xạ nút tìm đường
-        fabFindPath = findViewById(R.id.button_find_path); // Đảm bảo ID FAB đúng trong layout
+        fabFindPath = findViewById(R.id.button_find_path);
         fabFindPath.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findPath(); // Gọi hàm tìm đường khi nhấn nút
+                findPath();
             }
         });
-
-        // Vô hiệu hóa nút tìm đường ban đầu
         fabFindPath.setEnabled(false);
 
-        // --- Khởi tạo Retrofit và API Service ---
-        // Kiểm tra xem BASE_API_URL đã được thay đổi chưa
-        if ("YOUR_NGROK_URL_OR_IP/".equals(BASE_API_URL)) {
-            Log.e(TAG, "BASE_API_URL is not updated! Please replace 'YOUR_NGROK_URL_OR_IP/' with your actual backend URL.");
-            Toast.makeText(this, "Lỗi cấu hình API URL.", Toast.LENGTH_LONG).show();
+        fabResetMap = findViewById(R.id.fab_reset_map);
+        if (fabResetMap != null) {
+            fabResetMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    resetMapAndSelection();
+                }
+            });
+        }
+
+        if ("https://571f-34-134-173-55.ngrok-free.app/".equals(BASE_API_URL)) {
+            Log.w(TAG, "BASE_API_URL is the default Ngrok URL. Please update it with your actual backend URL!");
+            Toast.makeText(this, "Cảnh báo: API URL đang dùng mặc định. Vui lòng cập nhật!", Toast.LENGTH_LONG).show();
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_API_URL) // Đặt Base URL của API
-                .addConverterFactory(GsonConverterFactory.create()) // Thêm converter để xử lý JSON
+                .baseUrl(BASE_API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        trafficApiService = retrofit.create(TrafficApiService.class); // Tạo instance của API service
+        trafficApiService = retrofit.create(TrafficApiService.class);
         Log.d(TAG, "Retrofit and TrafficApiService initialized.");
-        // -----------------------------------------------------------------
 
-        // --- Khởi tạo Runnable để cập nhật mật độ định kỳ ---
         updateDensityRunnable = new Runnable() {
             @Override
             public void run() {
                 Log.d(TAG, "Executing updateDensityRunnable. Attempting to fetch density data.");
-                fetchTrafficDensityData(); // Lấy dữ liệu mật độ mới
-
-                // Hẹn giờ chạy lại Runnable sau khoảng thời gian xác định
+                fetchTrafficDensityData();
                 handler.postDelayed(this, UPDATE_DENSITY_INTERVAL_MS);
                 Log.d(TAG, "Density update runnable rescheduled for " + UPDATE_DENSITY_INTERVAL_MS + "ms.");
             }
         };
-        // ----------------------------------------------------
+    }
+
+    private void initializeCameraList() {
+        cameraInfoList = new ArrayList<>();
+        cameraInfoList.add(new CameraInfo("56de42f611f398ec0c481291", "Võ Văn Kiệt - Nguyễn Tri Phương (1)", new LatLng(10.7503914, 106.6690747), "url1"));
+        cameraInfoList.add(new CameraInfo("56de42f611f398ec0c481297", "Võ Văn Kiệt - Nguyễn Tri Phương (2)", new LatLng(10.7503914, 106.6690747), "url2"));
+        cameraInfoList.add(new CameraInfo("56de42f611f398ec0c481293", "Võ Văn Kiệt - Hải Thượng Lãn Ông", new LatLng(10.7499589, 106.6630958), "url3"));
+        cameraInfoList.add(new CameraInfo("5b632a79fd4edb0019c7dc0f", "Nguyễn Tri Phương - Trần Hưng Đạo", new LatLng(10.7521932, 106.6695217), "url4"));
+        cameraInfoList.add(new CameraInfo("662b4efc1afb9c00172d86bc", "Trần Hưng Đạo - Trần Phú", new LatLng(10.7524870, 106.6678037), "url5"));
+        cameraInfoList.add(new CameraInfo("5d8cd1f9766c880017188938", "Nguyễn Tri Phương - Trần Phú", new LatLng(10.7536164, 106.6696310), "url6"));
+        cameraInfoList.add(new CameraInfo("5d8cd49f766c880017188944", "Nguyễn Tri Phương - Nguyễn Trãi", new LatLng(10.7546263, 106.6695642), "url7"));
+        cameraInfoList.add(new CameraInfo("66b1c190779f740018673ed4", "Nguyễn Trãi - Trần Phú", new LatLng(10.7549314, 106.6716376), "url8"));
+        cameraInfoList.add(new CameraInfo("5b632b60fd4edb0019c7dc12", "Hồng Bàng - Ngô Quyền (1)", new LatLng(10.7556201, 106.6663852), "url9"));
+        cameraInfoList.add(new CameraInfo("5deb576d1dc17d7c5515ad20", "Hồng Bàng - Ngô Quyền (2)", new LatLng(10.7556201, 106.6663852), "url10"));
+        cameraInfoList.add(new CameraInfo("63b3c274bfd3d90017e9ab93", "Hồng Bàng - Phù Đổng Thiên Vương", new LatLng(10.7549775, 106.6625513), "url11"));
+        cameraInfoList.add(new CameraInfo("5b728aafca0577001163ff7e", "Hồng Bàng - Châu Văn Liêm", new LatLng(10.7545545, 106.6583560), "url12"));
+        cameraInfoList.add(new CameraInfo("662b4e201afb9c00172d85f9", "Hồng Bàng - Tạ Uyên", new LatLng(10.7537439, 106.6537677), "url13"));
+        cameraInfoList.add(new CameraInfo("5deb576d1dc17d7c5515ad21", "Nút giao ngã 6 Nguyễn Tri Phương", new LatLng(10.7600016, 106.6688883), "url14"));
+        cameraInfoList.add(new CameraInfo("66f126e8538c780017c9362f", "Nguyễn Chí Thanh - Ngô Quyền", new LatLng(10.7592865, 106.6655812), "url15"));
+        cameraInfoList.add(new CameraInfo("66f126e8538c7800172d862f", "Nguyễn Chí Thanh - Nguyễn Kim", new LatLng(10.7587157, 106.6627702), "url16"));
+        cameraInfoList.add(new CameraInfo("662b4e8e1afb9c00172d865c", "Nguyễn Chí Thanh - Lý Thường Kiệt", new LatLng(10.7584792, 106.6615056), "url17"));
+        cameraInfoList.add(new CameraInfo("662b4ecb1afb9c00172d8692", "Nguyễn Chí Thanh - Thuận Kiều", new LatLng(10.7577917, 106.6582849), "url18"));
+        cameraInfoList.add(new CameraInfo("5deb576d1dc17d7c5515ad1f", "Hùng Vương - Ngô Gia Tự", new LatLng(10.7564805, 106.6666292), "url19"));
+        cameraInfoList.add(new CameraInfo("662b4de41afb9c00172d85c5", "Hải Thượng Lãn Ông - Châu Văn Liêm", new LatLng(10.7506780, 106.6592465), "url20"));
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Cấu hình bản đồ
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL); // Hoặc MAP_TYPE_HYBRID, MAP_TYPE_SATELLITE, MAP_TYPE_TERRAIN
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(true); // Cần quyền truy cập vị trí
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
 
-        // Đặt listener cho sự kiện click vào marker
         mMap.setOnMarkerClickListener(this);
+        mMap.setOnMapClickListener(this);
 
-        // --- Vẽ đồ thị lên bản đồ sau khi bản đồ sẵn sàng ---
-        // Đảm bảo graphData đã được khởi tạo trong onCreate()
         if (graphData != null) {
             drawGraphOnMap();
         } else {
             Log.e(TAG, "GraphData is null in onMapReady. Cannot draw graph.");
-            // Có thể hiển thị thông báo lỗi cho người dùng
             Toast.makeText(this, "Lỗi khởi tạo dữ liệu đồ thị.", Toast.LENGTH_LONG).show();
         }
 
-
-        // Di chuyển camera đến một vị trí trung tâm Quận 5 (ví dụ: gần Ngã 6 Nguyễn Tri Phương)
         LatLng centerOfDistrict5 = new LatLng(10.7600, 106.6690);
         CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(centerOfDistrict5)      // Đặt trung tâm bản đồ
-                .zoom(14)           // Đặt mức zoom
-                .tilt(45)           // Đặt góc nghiêng (ví dụ: 45 độ)
-                .bearing(0)         // Đặt hướng (ví dụ: 0 độ - hướng Bắc)
+                .target(centerOfDistrict5)
+                .zoom(14)
+                .tilt(45)
+                .bearing(0)
                 .build();
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
         Log.d(TAG, "Map is ready.");
-
-        // Bắt đầu cập nhật mật độ sau khi bản đồ sẵn sàng và đồ thị đã được xây dựng
         startDensityUpdates();
     }
 
-    // --- Vẽ đồ thị lên bản đồ ---
     private void drawGraphOnMap() {
         if (mMap == null || graphData == null) {
             Log.e(TAG, "Map or GraphData not initialized. Cannot draw graph.");
@@ -220,245 +226,388 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
 
         Log.d(TAG, "Drawing graph on map...");
 
-        // Xóa các marker và polyline cũ (nếu có)
         mMap.clear();
-        nodeMarkers.clear(); // Clear the marker map as well
+        nodeMarkers.clear();
+        graphPolylines.clear();
 
-        // Vẽ các Edge (đường nối)
-        // Duyệt qua danh sách edges từ GraphData
-        // Đảm bảo rằng các edges trong graphData được tạo ra từ các node duy nhất.
         for (Edge edge : graphData.getEdges()) {
             PolylineOptions polylineOptions = new PolylineOptions()
                     .add(new LatLng(edge.getSource().getLatitude(), edge.getSource().getLongitude()))
                     .add(new LatLng(edge.getDestination().getLatitude(), edge.getDestination().getLongitude()))
-                    .width(5) // Độ dày của đường
-                    .color(Color.GRAY); // Màu sắc của đường
+                    .width(5)
+                    .color(Color.GRAY);
 
-            mMap.addPolyline(polylineOptions);
+            graphPolylines.add(mMap.addPolyline(polylineOptions));
         }
         Log.d(TAG, "Drew " + graphData.getEdges().size() + " edges (polylines) on map.");
 
-
-        // Vẽ các Node (marker)
-        // Duyệt qua danh sách nodes từ GraphData
-        // Danh sách này phải chứa các node duy nhất cho mỗi vị trí địa lý.
         List<Node> nodesToDraw = graphData.getNodes();
         if (nodesToDraw.isEmpty()) {
             Log.w(TAG, "GraphData contains no nodes to draw.");
-            return; // Không có node nào để vẽ
+            return;
         }
 
         for (Node node : nodesToDraw) {
+            // Lấy Node object mới nhất từ graphData.nodeMap
+            Node latestNode = graphData.getNodeMap().get(node.getId());
+            if (latestNode == null) {
+                // Should not happen if graphData.getNodes() returns nodes from nodeMap
+                latestNode = node; // Fallback to original node if not found
+            }
+
             MarkerOptions markerOptions = new MarkerOptions()
-                    .position(new LatLng(node.getLatitude(), node.getLongitude()))
-                    .title(node.getName()) // Tên node làm tiêu đề marker
-                    .snippet("ID: " + node.getId() + ", Mật độ: " + String.format(Locale.US, "%.2f", node.getDensity())); // Hiển thị ID và mật độ
+                    .position(new LatLng(latestNode.getLatitude(), latestNode.getLongitude()))
+                    .title(latestNode.getName())
+                    // Cập nhật snippet với density mới nhất
+                    .snippet(String.format(Locale.US, "ID: %s, Mật độ: %.2f", latestNode.getId(), latestNode.getDensity()));
 
-            // Tùy chỉnh icon cho node (sử dụng hàm getNodeMarkerIcon)
-            markerOptions.icon(getNodeMarkerIcon(node));
+            markerOptions.icon(getNodeMarkerIcon(latestNode)); // Sử dụng density mới nhất để chọn icon
 
-            // Lưu trữ Node object trong tag của Marker để dễ dàng truy xuất khi click
             Marker marker = mMap.addMarker(markerOptions);
             if (marker != null) {
-                marker.setTag(node); // Gắn Node object vào tag của marker
-                // Lưu marker vào map để dễ dàng cập nhật màu sau này
-                nodeMarkers.put(node.getId(), marker);
+                marker.setTag(latestNode); // Đảm bảo marker tag là Node object mới nhất
+                nodeMarkers.put(latestNode.getId(), marker);
             } else {
-                Log.e(TAG, "Failed to add marker for node: " + node.getId());
+                Log.e(TAG, "Failed to add marker for node: " + latestNode.getId());
             }
         }
         Log.d(TAG, "Drew " + nodeMarkers.size() + " nodes (markers) on map.");
+
+        // Cập nhật lại start/end marker nếu chúng đã được chọn trước đó
+        if (startNode != null && nodeMarkers.containsKey(startNode.getId())) {
+            startMarker = nodeMarkers.get(startNode.getId());
+            startNode = (Node) startMarker.getTag(); // Lấy node đã cập nhật từ tag
+            if (startMarker != null) startMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+        } else {
+            startNode = null;
+            startMarker = null;
+        }
+        if (endNode != null && nodeMarkers.containsKey(endNode.getId())) {
+            endMarker = nodeMarkers.get(endNode.getId());
+            endNode = (Node) endMarker.getTag(); // Lấy node đã cập nhật từ tag
+            if (endMarker != null) endMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+        } else {
+            endNode = null;
+            endMarker = null;
+        }
+
+        if (pathPolyline != null) {
+            Log.d(TAG, "Path polyline was removed during full redraw. User needs to find path again.");
+            pathPolyline = null;
+        }
     }
 
-    // --- Xử lý khi click vào Marker ---
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
-        // Lấy Node object từ tag của marker
         Object tag = marker.getTag();
         if (tag instanceof Node) {
-            Node clickedNode = (Node) tag;
-            Log.d(TAG, "Clicked on node: " + clickedNode.getName() + " (ID: " + clickedNode.getId() + ")");
-
-            // Chọn điểm bắt đầu hoặc kết thúc
-            if (startNode == null) {
-                // Chọn điểm bắt đầu
-                startNode = clickedNode;
-                startMarker = marker;
-                startMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)); // Đổi màu marker bắt đầu
-                textStartCamera.setText("Điểm Bắt đầu: " + startNode.getName()); // Cập nhật TextView
-                Log.d(TAG, "Start node selected: " + startNode.getName());
-            } else if (endNode == null && !clickedNode.getId().equals(startNode.getId())) {
-                // Chọn điểm kết thúc (phải khác điểm bắt đầu)
-                endNode = clickedNode;
-                endMarker = marker;
-                endMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)); // Đổi màu marker kết thúc
-                textEndCamera.setText("Điểm Kết thúc: " + endNode.getName()); // Cập nhật TextView
-                Log.d(TAG, "End node selected: " + endNode.getName());
-
-                // Kích hoạt nút tìm đường khi cả điểm bắt đầu và kết thúc đã được chọn
-                fabFindPath.setEnabled(true);
-            } else {
-                // Nếu đã chọn cả hai điểm, hoặc click lại vào điểm bắt đầu/kết thúc, reset lựa chọn
-                resetSelection();
-                // Sau khi reset, nếu click vào marker hiện tại, chọn nó làm điểm bắt đầu mới
-                // Điều này cho phép người dùng nhanh chóng chọn lại điểm bắt đầu
-                startNode = clickedNode;
-                startMarker = marker;
-                startMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)); // Đổi màu marker bắt đầu
-                textStartCamera.setText("Điểm Bắt đầu: " + startNode.getName()); // Cập nhật TextView
-                Log.d(TAG, "Start node selected after reset: " + startNode.getName());
+            Node originalTaggedNode = (Node) tag;
+            Node clickedNode = graphData.getNodeMap().get(originalTaggedNode.getId());
+            if (clickedNode == null) {
+                Log.e(TAG, "Clicked node ID not found in graphData.nodeMap: " + originalTaggedNode.getId() + ". Using original tag node.");
+                clickedNode = originalTaggedNode;
             }
 
-            // Trả về true để báo hiệu rằng chúng ta đã xử lý sự kiện click
+            Log.d(TAG, "Clicked on node: " + clickedNode.getName() + " (ID: " + clickedNode.getId() + ", Density: " + String.format(Locale.US, "%.2f", clickedNode.getDensity()) + ")");
+
+            // Cập nhật lại icon của các marker cũ (nếu có)
+            // Đảm bảo rằng startMarker và endMarker luôn trỏ đến marker đúng trên bản đồ
+            // và icon của chúng được cập nhật lại theo trạng thái (start/end) hoặc density
+            if (startMarker != null && !startMarker.equals(marker)) {
+                Node oldStartNode = (Node) startMarker.getTag();
+                if (oldStartNode != null) startMarker.setIcon(getNodeMarkerIcon(oldStartNode)); // Reset màu về density
+            }
+            if (endMarker != null && !endMarker.equals(marker)) {
+                Node oldEndNode = (Node) endMarker.getTag();
+                if (oldEndNode != null) endMarker.setIcon(getNodeMarkerIcon(oldEndNode)); // Reset màu về density
+            }
+
+
+            if (startNode == null) {
+                // Trường hợp 1: Chưa có điểm bắt đầu, đặt clickedNode làm điểm bắt đầu
+                startNode = clickedNode;
+                startMarker = marker;
+                startMarker.setTag(clickedNode); // Cập nhật tag của marker được chọn
+                startMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)); // Đặt màu xanh cho start
+                updateStartInfoUI();
+            } else if (endNode == null && !clickedNode.getId().equals(startNode.getId())) {
+                // Trường hợp 2: Đã có điểm bắt đầu, chưa có điểm kết thúc, đặt clickedNode làm điểm kết thúc
+                endNode = clickedNode;
+                endMarker = marker;
+                endMarker.setTag(clickedNode); // Cập nhật tag của marker được chọn
+                endMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)); // Đặt màu cam cho end
+                updateEndInfoUI();
+                fabFindPath.setEnabled(true);
+            } else if (clickedNode.getId().equals(startNode.getId())) {
+                // Trường hợp 3: Click lại vào điểm bắt đầu hiện tại
+                // Không làm gì hoặc có thể reset chỉ điểm kết thúc nếu muốn chọn lại đường đi
+                Log.d(TAG, "Clicked on current start node. No change in start node.");
+                if (endNode != null) {
+                    resetEndSelection(); // Chỉ reset điểm kết thúc và đường đi
+                }
+            } else if (clickedNode.getId().equals(endNode != null ? endNode.getId() : null)) {
+                // Trường hợp 4: Click lại vào điểm kết thúc hiện tại
+                Log.d(TAG, "Clicked on current end node. No change in end node.");
+                // Có thể reset chỉ điểm kết thúc nếu muốn chọn lại đích
+                resetEndSelection();
+            } else {
+                // Trường hợp 5: Đã có cả start và end, click vào một node mới (không phải start/end hiện tại)
+                // Reset toàn bộ lựa chọn và đặt node mới làm điểm bắt đầu
+                Log.d(TAG, "Clicked on a new node after both start and end were selected. Resetting selection.");
+                resetSelection(); // Reset cả startNode và endNode
+                startNode = clickedNode;
+                startMarker = marker;
+                startMarker.setTag(clickedNode); // Cập nhật tag của marker được chọn
+                startMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                updateStartInfoUI();
+            }
+            // Hiển thị toast với mật độ mới nhất
+            Toast.makeText(this, String.format(Locale.US, "Node: %s\nMật độ: %.2f", clickedNode.getName(), clickedNode.getDensity()), Toast.LENGTH_SHORT).show();
             return true;
         }
-        // Trả về false để hành vi mặc định xảy ra (hiển thị info window)
         return false;
     }
 
-    // --- Reset lựa chọn điểm bắt đầu và kết thúc ---
+    @Override
+    public void onMapClick(@NonNull LatLng latLng) {
+        if (startNode != null || endNode != null) {
+            resetSelection();
+            Toast.makeText(this, "Lựa chọn điểm đã được reset.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void updateStartInfoUI() {
+        if (startNode != null) {
+            textStartName.setText(startNode.getName());
+            textStartDensity.setText(String.format(Locale.US, "Mật độ: %.2f", startNode.getDensity()));
+        } else {
+            textStartName.setText("Chọn điểm bắt đầu...");
+            textStartDensity.setText("Mật độ: N/A");
+        }
+        textPathResult.setText("Kết quả: Chưa tìm đường");
+    }
+
+    private void updateEndInfoUI() {
+        if (endNode != null) {
+            textEndName.setText(endNode.getName());
+            textEndDensity.setText(String.format(Locale.US, "Mật độ: %.2f", endNode.getDensity()));
+        } else {
+            textEndName.setText("Chọn điểm kết thúc...");
+            textEndDensity.setText("Mật độ: N/A");
+        }
+    }
+
     private void resetSelection() {
         Log.d(TAG, "Resetting node selection.");
         if (startMarker != null) {
-            // Đặt lại icon mặc định cho marker bắt đầu dựa trên loại node
             Node startNodeFromTag = (Node) startMarker.getTag();
             if (startNodeFromTag != null) {
-                startMarker.setIcon(getNodeMarkerIcon(startNodeFromTag)); // Sử dụng hàm lấy icon cho node
-            } else {
-                // Fallback về màu mặc định nếu tag bị mất
-                startMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                // Lấy Node mới nhất từ graphData để cập nhật icon đúng màu density
+                Node latestStartNode = graphData.getNodeMap().get(startNodeFromTag.getId());
+                if (latestStartNode != null) {
+                    startMarker.setIcon(getNodeMarkerIcon(latestStartNode));
+                } else {
+                    startMarker.setIcon(BitmapDescriptorFactory.defaultMarker()); // Fallback
+                }
             }
             startMarker = null;
             startNode = null;
-            textStartCamera.setText("Điểm Bắt đầu: Đang chọn..."); // Reset TextView
+            updateStartInfoUI();
         }
         if (endMarker != null) {
-            // Đặt lại icon mặc định cho marker kết thúc dựa trên loại node
             Node endNodeFromTag = (Node) endMarker.getTag();
             if (endNodeFromTag != null) {
-                endMarker.setIcon(getNodeMarkerIcon(endNodeFromTag)); // Sử dụng hàm lấy icon cho node
-            } else {
-                // Fallback về màu mặc định nếu tag bị mất
-                endMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                // Lấy Node mới nhất từ graphData để cập nhật icon đúng màu density
+                Node latestEndNode = graphData.getNodeMap().get(endNodeFromTag.getId());
+                if (latestEndNode != null) {
+                    endMarker.setIcon(getNodeMarkerIcon(latestEndNode));
+                } else {
+                    endMarker.setIcon(BitmapDescriptorFactory.defaultMarker()); // Fallback
+                }
             }
             endMarker = null;
             endNode = null;
-            textEndCamera.setText("Điểm Kết thúc: Đang chọn..."); // Reset TextView
+            updateEndInfoUI();
         }
 
-        // Xóa polyline đường đi cũ (nếu có)
         if (pathPolyline != null) {
             pathPolyline.remove();
             pathPolyline = null;
         }
 
-        // Reset TextView kết quả
         textPathResult.setText("Kết quả: Chưa tìm đường");
-
-        // Vô hiệu hóa nút tìm đường
         fabFindPath.setEnabled(false);
     }
 
-    // --- Hàm tìm đường (sẽ sử dụng AStarPathfinder) ---
+    private void resetMapAndSelection() {
+        Log.d(TAG, "Resetting map and selection.");
+        resetSelection();
+        drawGraphOnMap(); // Vẽ lại đồ thị để đảm bảo các marker có màu đúng
+        Toast.makeText(this, "Bản đồ và lựa chọn đã được đặt lại.", Toast.LENGTH_SHORT).show();
+    }
+    private void resetEndSelection() {
+        Log.d(TAG, "Resetting end node selection and path.");
+        if (endMarker != null) {
+            Node endNodeFromTag = (Node) endMarker.getTag();
+            if (endNodeFromTag != null) {
+                // Lấy Node mới nhất từ graphData để cập nhật icon đúng màu density
+                Node latestEndNode = graphData.getNodeMap().get(endNodeFromTag.getId());
+                if (latestEndNode != null) {
+                    endMarker.setIcon(getNodeMarkerIcon(latestEndNode));
+                } else {
+                    endMarker.setIcon(BitmapDescriptorFactory.defaultMarker()); // Fallback
+                }
+            }
+            endMarker = null;
+            endNode = null;
+            updateEndInfoUI();
+        }
+
+        if (pathPolyline != null) {
+            pathPolyline.remove();
+            pathPolyline = null;
+        }
+        fabFindPath.setEnabled(false);
+        textPathResult.setText("Kết quả: Chưa tìm đường"); // Reset kết quả đường đi
+    }
+
     private void findPath() {
-        // Kiểm tra lại xem cả hai điểm đã được chọn và graphData đã sẵn sàng chưa
         if (startNode != null && endNode != null && graphData != null) {
             Log.d(TAG, "Finding path from " + startNode.getName() + " to " + endNode.getName());
 
-            // Xóa polyline đường đi cũ (nếu có) trước khi vẽ đường mới
             if (pathPolyline != null) {
                 pathPolyline.remove();
                 pathPolyline = null;
             }
 
-            // --- Gọi thuật toán A* ---
-            // Khởi tạo AStarPathfinder với dữ liệu đồ thị từ GraphData
-            // Đảm bảo graphData.getNodeMap() và graphData.getGraphEdgesMap()
-            // chứa dữ liệu đồ thị đã được xử lý trùng lặp node.
             AStarPathfinder pathfinder = new AStarPathfinder(graphData.getNodeMap(), graphData.getGraphEdgesMap());
-
-            // Tìm đường đi (truyền Node object)
             List<Node> path = pathfinder.findPath(startNode, endNode);
 
-            // Hiển thị đường đi trên bản đồ
             if (path != null && !path.isEmpty()) {
                 Log.d(TAG, "Path found with " + path.size() + " nodes.");
                 PolylineOptions pathOptions = new PolylineOptions()
-                        .width(10) // Độ dày của đường đi
-                        .color(Color.RED); // Màu đỏ cho đường đi
+                        .width(10)
+                        .color(Color.RED);
 
-                for (Node node : path) {
-                    pathOptions.add(new LatLng(node.getLatitude(), node.getLongitude()));
+                StringBuilder pathNames = new StringBuilder("Đường đi: ");
+                double totalDistance = 0;
+                double totalDensityCost = 0; // Đây là tổng chi phí mật độ (dựa trên weightedCost của A*)
+
+                for (int i = 0; i < path.size(); i++) {
+                    Node currentNode = path.get(i);
+                    pathOptions.add(new LatLng(currentNode.getLatitude(), currentNode.getLongitude()));
+                    pathNames.append(currentNode.getName());
+
+                    if (i < path.size() - 1) {
+                        Node nextNode = path.get(i + 1);
+                        pathNames.append(" -> ");
+
+                        // Tính toán khoảng cách địa lý cho từng phân đoạn
+                        float[] distanceResults = new float[1];
+                        Location.distanceBetween(currentNode.getLatitude(), currentNode.getLongitude(),
+                                nextNode.getLatitude(), nextNode.getLongitude(), distanceResults);
+                        totalDistance += distanceResults[0];
+
+                        // Lấy cạnh giữa currentNode và nextNode để tính chi phí mật độ đã dùng trong A*
+                        // Cần tìm cạnh cụ thể nếu muốn totalDensityCost phản ánh chính xác gScore của A*
+                        Edge segmentEdge = findEdge(currentNode, nextNode);
+                        if (segmentEdge != null) {
+                            totalDensityCost += segmentEdge.getWeightedCost(); // Cộng dồn chi phí đã có trọng số density
+                        } else {
+                            Log.w(TAG, "Edge not found for path segment: " + currentNode.getName() + " -> " + nextNode.getName());
+                            // Fallback to simple density cost if edge not found
+                            totalDensityCost += (currentNode.getDensity() + nextNode.getDensity()) / 2.0 * distanceResults[0];
+                        }
+                    }
                 }
 
                 pathPolyline = mMap.addPolyline(pathOptions);
-                textPathResult.setText("Kết quả: Tìm thấy đường đi (" + path.size() + " điểm)"); // Cập nhật TextView kết quả
+                textPathResult.setText(String.format(Locale.US, "Đường đi: %s\nKhoảng cách: %.2f m\nTổng chi phí mật độ: %.2f",
+                        pathNames.toString(), totalDistance, totalDensityCost));
+                Toast.makeText(this, "Đường đi đã được tìm thấy!", Toast.LENGTH_LONG).show();
+
+                if (path.size() > 1) {
+                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                    for (Node node : path) {
+                        builder.include(new LatLng(node.getLatitude(), node.getLongitude()));
+                    }
+                    final LatLngBounds bounds = builder.build();
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                }
             } else {
                 Log.w(TAG, "No path found.");
-                textPathResult.setText("Kết quả: Không tìm thấy đường đi"); // Cập nhật TextView kết quả
+                textPathResult.setText("Kết quả: Không tìm thấy đường đi");
                 Toast.makeText(this, "Không tìm thấy đường đi giữa hai điểm này.", Toast.LENGTH_SHORT).show();
             }
-
-            // Sau khi tìm đường, có thể reset lựa chọn hoặc giữ nguyên tùy ý
-            // resetSelection(); // Tùy chọn: reset sau khi tìm đường
         } else {
             Log.w(TAG, "Start or end node not selected, or graph data not available.");
             Toast.makeText(this, "Vui lòng chọn điểm bắt đầu và kết thúc.", Toast.LENGTH_SHORT).show();
         }
     }
 
-    // --- Phương thức để lấy BitmapDescriptor cho marker dựa trên Node ---
-    // Nếu là node camera, chọn màu theo mật độ. Nếu không, dùng màu mặc định.
+    /**
+     * Helper method to find an edge between two nodes.
+     * @param source The source node.
+     * @param destination The destination node.
+     * @return The Edge object if found, null otherwise.
+     */
+    private Edge findEdge(Node source, Node destination) {
+        List<Edge> edges = graphData.getGraphEdgesMap().get(source.getId());
+        if (edges != null) {
+            for (Edge edge : edges) {
+                if (edge.getDestination().getId().equals(destination.getId())) {
+                    return edge;
+                }
+            }
+        }
+        return null;
+    }
+
     private BitmapDescriptor getNodeMarkerIcon(Node node) {
-        if (node == null) return BitmapDescriptorFactory.defaultMarker(); // Xử lý trường hợp null
+        if (node == null) return BitmapDescriptorFactory.defaultMarker();
+
+        float density = (float) node.getDensity();
+        int drawableResId;
 
         if (node.isCameraNode()) {
-            // Nếu là node camera, chọn màu theo mật độ
-            float density = node.getDensity();
-            // Sử dụng ngưỡng mật độ tương tự như Home Fragment
-            if (density < 0.3) { // Mật độ thấp (ví dụ: < 30%)
-                return bitmapDescriptorFromVector(this, R.drawable.ic_camera_green); // Icon xanh lá
-            } else if (density < 0.7) { // Mật độ trung bình (ví dụ: 30% - 70%)
-                return bitmapDescriptorFromVector(this, R.drawable.ic_camera_yellow); // Icon vàng
-            } else { // Mật độ cao (ví dụ: > 70%)
-                return bitmapDescriptorFromVector(this, R.drawable.ic_camera_red); // Icon đỏ
+            if (density < 0.3) {
+                drawableResId = R.drawable.ic_camera_green;
+            } else if (density < 0.7) {
+                drawableResId = R.drawable.ic_camera_yellow;
+            } else {
+                drawableResId = R.drawable.ic_camera_red;
             }
         } else {
-            // Nếu không phải node camera, dùng icon mặc định (ví dụ: chấm tròn màu xám)
-            // Bạn cần tạo drawable cho icon node mặc định (ví dụ: ic_intersection_grey.xml)
-            return bitmapDescriptorFromVector(this, R.drawable.ic_intersection_grey); // <-- CẦN TẠO DRAWABLE NÀY
-            // Hoặc sử dụng marker mặc định của Google Maps với màu tùy chỉnh:
-            // return BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE); // Ví dụ màu xanh lam nhạt
+            // Đối với các node giao lộ không phải camera, chúng ta sử dụng density đã lan truyền
+            // và áp dụng cùng logic màu sắc.
+            if (density < 0.3) {
+                drawableResId = R.drawable.ic_intersection_grey; // Giả sử bạn có icon riêng cho giao lộ
+            } else if (density < 0.7) {
+                drawableResId = R.drawable.ic_intersection_grey;
+            } else {
+                drawableResId = R.drawable.ic_intersection_grey;
+            }
+            // Nếu bạn không có icon riêng cho giao lộ, bạn có thể dùng chung với camera
+            // drawableResId = R.drawable.ic_camera_green; // hoặc yellow/red
         }
+        return bitmapDescriptorFromVector(this, drawableResId);
     }
-    // ---------------------------------------------------------------------
 
-    // --- HELPER METHOD: Chuyển Vector Drawable Resource sang BitmapDescriptor ---
     private BitmapDescriptor bitmapDescriptorFromVector(android.content.Context context, int vectorDrawableResourceId) {
-        // Lấy Drawable từ resource ID
         Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
         if (vectorDrawable == null) {
             Log.e(TAG, "Could not find drawable resource: " + vectorDrawableResourceId);
-            return BitmapDescriptorFactory.defaultMarker(); // Trả về marker mặc định nếu không tìm thấy drawable
+            return BitmapDescriptorFactory.defaultMarker();
         }
-
-        // Tạo Bitmap có kích thước của Drawable
-        Bitmap bitmap = Bitmap.createBitmap(vectorDrawable.getIntrinsicWidth(),
-                vectorDrawable.getIntrinsicHeight(),
-                Bitmap.Config.ARGB_8888);
-
-        // Vẽ Drawable lên Bitmap
+        int width = vectorDrawable.getIntrinsicWidth();
+        int height = vectorDrawable.getIntrinsicHeight();
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         vectorDrawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         vectorDrawable.draw(canvas);
-
-        // Tạo BitmapDescriptor từ Bitmap
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-    // --------------------------------------------------------------------------
 
-    // --- Phương thức để cập nhật màu sắc của các marker hiện có khi có dữ liệu mật độ mới ---
-    // Phương thức này chỉ cập nhật màu cho các node camera
     private void updateNodeMarkerColors() {
         if (mMap == null || nodeMarkers.isEmpty() || graphData == null || graphData.getNodeMap().isEmpty()) {
             Log.d(TAG, "Cannot update node marker colors: Map, Markers, or NodeMap are empty/null.");
@@ -467,72 +616,65 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
 
         Log.d(TAG, "Updating node marker colors based on latest density data...");
 
-        // Lặp qua tất cả các marker đang có trên bản đồ
-        for (Map.Entry<String, Marker> entry : nodeMarkers.entrySet()) {
-            String nodeId = entry.getKey();
-            Marker marker = entry.getValue();
+        for (Node node : graphData.getNodeMap().values()) {
+            Marker marker = nodeMarkers.get(node.getId());
 
-            // Lấy Node tương ứng từ map trong GraphData
-            Node node = graphData.getNodeMap().get(nodeId);
-
-            if (node != null) {
-                // Chỉ cập nhật màu nếu node là camera node
-                if (node.isCameraNode()) {
-                    float density = node.getDensity(); // Lấy mật độ mới nhất từ Node
-
-                    // Lấy icon marker phù hợp với mật độ mới
-                    BitmapDescriptor newIcon = getNodeMarkerIcon(node); // Sử dụng hàm chọn icon cho node
-
-                    // Cập nhật icon cho marker trên bản đồ
-                    if (marker != null && newIcon != null) {
-                        marker.setIcon(newIcon);
-                        // Cập nhật snippet để hiển thị mật độ mới nhất
-                        marker.setSnippet("ID: " + nodeId + ", Mật độ: " + String.format(Locale.US, "%.2f", density));
-                        // Log.d(TAG, "Updated marker color and snippet for node ID: " + nodeId + " with density: " + density); // Log này có thể quá nhiều
-                    } else if (marker == null) {
-                        Log.w(TAG, "Marker is null for node ID: " + nodeId + " when attempting to update color.");
-                    } else { // newIcon == null
-                        Log.e(TAG, "Failed to create new icon for node ID: " + nodeId + " with density: " + density + ". Drawable conversion failed.");
-                    }
+            if (marker != null) {
+                if ((startMarker != null && marker.equals(startMarker)) ||
+                        (endMarker != null && marker.equals(endMarker))) {
+                    marker.setTag(node);
                 } else {
-                    // Node không phải camera, màu marker không thay đổi dựa trên mật độ
-                    // Log.d(TAG, "Node " + nodeId + " is not a camera node, skipping color update.");
+                    BitmapDescriptor newIcon = getNodeMarkerIcon(node);
+                    if (newIcon != null) {
+                        marker.setIcon(newIcon);
+                    } else {
+                        Log.e(TAG, "Failed to create new icon for node ID: " + node.getId() + " with density: " + node.getDensity());
+                    }
+                    marker.setTag(node);
                 }
+                marker.setSnippet(String.format(Locale.US, "ID: %s, Mật độ: %.2f", node.getId(), node.getDensity()));
             } else {
-                Log.w(TAG, "Node not found in map for ID: " + nodeId + " when attempting to update color.");
+                Log.w(TAG, "Marker not found in nodeMarkers for node ID: " + node.getId() + ". This node might not have a marker or map was cleared.");
             }
         }
-        Log.d(TAG, "Finished updating node marker colors.");
-    }
-    // --------------------------------------------------------------------------------------
 
-    // --- Phương thức để bắt đầu chu kỳ cập nhật mật độ định kỳ ---
+        // CẬP NHẬT startNode và endNode với dữ liệu mới nhất
+        if (startNode != null) {
+            Node updatedStartNode = graphData.getNodeMap().get(startNode.getId());
+            if (updatedStartNode != null) {
+                startNode = updatedStartNode;
+                // Chỉ cập nhật UI density, KHÔNG reset path result
+                textStartDensity.setText(String.format(Locale.US, "Mật độ: %.2f", startNode.getDensity()));
+            }
+        }
+        if (endNode != null) {
+            Node updatedEndNode = graphData.getNodeMap().get(endNode.getId());
+            if (updatedEndNode != null) {
+                endNode = updatedEndNode;
+                // Chỉ cập nhật UI density, KHÔNG reset path result
+                textEndDensity.setText(String.format(Locale.US, "Mật độ: %.2f", endNode.getDensity()));
+            }
+        }
+
+        Log.d(TAG, "Finished updating node marker colors and UI info.");
+    }
+
     private void startDensityUpdates() {
-        // Chỉ bắt đầu nếu Runnable, API service đã sẵn sàng và đồ thị đã được xây dựng (graphData không null)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (updateDensityRunnable != null && trafficApiService != null && graphData != null && !graphData.getNodes().isEmpty() && !handler.hasCallbacks(updateDensityRunnable)) {
-                // Lần fetch đầu tiên ngay lập lập tức
-                fetchTrafficDensityData();
-
-                // Hẹn giờ cho các lần fetch tiếp theo
-                handler.postDelayed(updateDensityRunnable, UPDATE_DENSITY_INTERVAL_MS);
-                Log.d(TAG, "Density update runnable started.");
-            } else {
-                Log.d(TAG, "Density update runnable already scheduled, not ready, or graph not loaded in onStart, skipping postDelayed.");
-            }
+        if (updateDensityRunnable != null && trafficApiService != null && graphData != null && !graphData.getNodes().isEmpty()) {
+            fetchTrafficDensityData();
+            handler.postDelayed(updateDensityRunnable, UPDATE_DENSITY_INTERVAL_MS);
+            Log.d(TAG, "Density update runnable started and scheduled.");
+        } else {
+            Log.d(TAG, "Density update runnable already scheduled, not ready, or graph not loaded. Skipping initial postDelayed.");
         }
     }
-    // -----------------------------------------------------------
 
-    // --- Phương thức để lấy dữ liệu mật độ giao thông từ API (chỉ mật độ) ---
     private void fetchTrafficDensityData() {
-        if (trafficApiService == null || graphData == null || graphData.getNodes().isEmpty()) {
+        if (trafficApiService == null || graphData == null || graphData.getNodeMap().isEmpty()) {
             Log.e(TAG, "API service is null or graph nodes are not loaded, cannot fetch density data.");
-            // Toast.makeText(this, "Chưa tải xong thông tin camera.", Toast.LENGTH_SHORT).show(); // Có thể gây spam toast
             return;
         }
 
-        // Lấy danh sách tất cả camera IDs từ các Node trong đồ thị đã được đánh dấu là camera node
         List<String> cameraIds = new ArrayList<>();
         for (Node node : graphData.getNodes()) {
             if (node.isCameraNode()) {
@@ -541,99 +683,124 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
         }
 
         if (cameraIds.isEmpty()) {
-            Log.d(TAG, "No camera nodes found in the graph. Skipping density fetch.");
-            return; // Không có camera nào để fetch mật độ
+            Log.d(TAG, "No camera nodes found in the graph. Skipping density fetch, but propagating with default values (0.0).");
+            densityPropagator.propagateDensity(graphData.getNodeMap(), graphData.getGraphEdgesMap());
+            if (mMap != null && !nodeMarkers.isEmpty()) {
+                updateNodeMarkerColors();
+            }
+            return;
         }
 
-        // Tạo cuộc gọi API để lấy mật độ cho các camera ID này
-        // Bạn cần có một endpoint trong backend trả về danh sách TrafficDensityReading dựa trên danh sách ID
-        // và một phương thức tương ứng trong TrafficApiService interface.
-        // Giả định phương thức đó là getLatestTrafficDensities(String commaSeparatedCameraIds)
-        Call<List<TrafficDensityReading>> call = trafficApiService.getLatestTrafficDensities(String.join(",", cameraIds)); // <-- CẦN TRIỂN KHAI PHƯƠNG THỨC NÀY HOẶC DÙNG PHƯƠNG THỨC CŨ NẾU PHÙ HỢP
+        List<String> limitedCameraIds = cameraIds.subList(0, Math.min(cameraIds.size(), 20));
+        String cameraIdsString = String.join(",", limitedCameraIds);
+        Log.d(TAG, "Requesting densities for " + limitedCameraIds.size() + " cameras: " + cameraIdsString);
 
-        Log.d(TAG, "Fetching latest traffic densities from API for " + cameraIds.size() + " cameras.");
 
-        call.enqueue(new Callback<List<TrafficDensityReading>>() {
+        Call<List<PathfindingCameraDensity>> call = trafficApiService.getLatestTrafficDensitiesForPathfinding(cameraIdsString);
+
+        call.enqueue(new Callback<List<PathfindingCameraDensity>>() {
             @Override
-            public void onResponse(@NonNull Call<List<TrafficDensityReading>> call, @NonNull Response<List<TrafficDensityReading>> response) {
+            public void onResponse(@NonNull Call<List<PathfindingCameraDensity>> call, @NonNull Response<List<PathfindingCameraDensity>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<TrafficDensityReading> readings = response.body();
+                    List<PathfindingCameraDensity> readings = response.body();
                     Log.d(TAG, "API Response Successful. Received " + readings.size() + " density readings.");
 
                     if (!readings.isEmpty()) {
-                        // --- Cập nhật mật độ cho các Node trong đồ thị đã đánh dấu là camera node ---
-                        // Logic này dựa trên việc các node trong graphData đã được tạo duy nhất.
-                        Map<String, Float> latestDensitiesMap = new HashMap<>();
-                        for (TrafficDensityReading reading : readings) {
-                            latestDensitiesMap.put(reading.getCameraId(), reading.getDensity());
-                        }
-
                         int updatedCount = 0;
-                        // Lặp qua các Node trong đồ thị và cập nhật mật độ nếu nó là camera node
-                        // Sử dụng graphData.getNodeMap() để tra cứu Node nhanh hơn
-                        for (String cameraId : latestDensitiesMap.keySet()) {
-                            Node node = graphData.getNodeMap().get(cameraId);
+                        for (PathfindingCameraDensity reading : readings) {
+                            // CHUẨN HÓA ID TỪ API TRƯỚC KHI TRA CỨU TRONG nodeMap
+                            // Giả sử getCameraId() trả về ID kỹ thuật (ví dụ: _id từ MongoDB)
+                            // Nếu nó trả về tên giao lộ, bạn cần normalizeNodeId(reading.getCameraId())
+                            // Vì cameraInfoList của bạn dùng ID kỹ thuật, nên chỉ cần lấy ID trực tiếp.
+                            // Tuy nhiên, nếu cameraInfoList sử dụng tên giao lộ, thì cần normalize.
+                            // Dựa vào các CameraInfo bạn cung cấp (dạng "56de42f611f398ec0c481291"),
+                            // có vẻ nó là ID kỹ thuật.
+
+                            // Kiểm tra lại: nếu CameraInfo.getId() của bạn là tên giao lộ
+                            // (ví dụ: "Nguyễn Chí Thanh - Nguyễn Kim")
+                            // thì cần normalize nó khi khởi tạo CameraInfo
+                            // hoặc normalize reading.getCameraId() ở đây.
+                            // Dựa trên CameraInfo bạn cung cấp, có vẻ ID là dạng kỹ thuật và không cần normalize
+                            // nếu API cũng trả về dạng đó.
+
+                            // Tuy nhiên, để đảm bảo an toàn, hãy luôn chuẩn hóa ID khi truy xuất
+                            // nếu có khả năng format khác nhau giữa API và cách lưu trữ.
+                            // Nếu camera.getId() trong CameraInfo đã là dạng chuẩn hóa,
+                            // và API.getCameraId() cũng là dạng đó, thì normalizeNodeId là không cần thiết.
+                            // Nhưng để khắc phục lỗi "Density: 0.00" mà bạn gặp,
+                            // có lẽ có sự không khớp trong ID.
+
+                            // Tốt nhất là chắc chắn ID được chuẩn hóa khi thêm vào nodeMap và khi tra cứu
+                            // Cách thêm cameraInfoList vào GraphData:
+                            // graphData.loadCameraNodes(cameraInfoList); // Hàm này có normalizeNodeId cho CameraInfo.getId()
+                            // Vậy, khi lấy từ API, nếu reading.getCameraId() KHÔNG phải ID đã chuẩn hóa,
+                            // thì phải chuẩn hóa nó.
+
+                            // Dựa vào log "Updated camera node Nguyễn Chí Thanh - Nguyễn Kim with Density: 0.00"
+                            // có thể thấy node.getName() được dùng, và API trả về camera ID.
+                            // Vấn đề có thể là ID trong `reading.getCameraId()` không khớp với key trong `nodeMap`
+                            // sau khi `graphData.loadCameraNodes` đã chuẩn hóa ID.
+
+                            String apiCameraId = reading.getCameraId(); // Lấy ID từ API
+                            Log.d(TAG, "API ID : " + apiCameraId + " Density: " + reading.getDensity());
+
+                            Node node = graphData.getNodeMap().get(apiCameraId);
+
                             if (node != null && node.isCameraNode()) {
-                                node.setDensity(latestDensitiesMap.get(cameraId)); // Cập nhật mật độ
+                                node.setDensity(reading.getDensity());
                                 updatedCount++;
+                                Log.d(TAG, "SUCCESS: Updated camera node " + node.getName() + " (ID: " + node.getId() + ") with Density: " + String.format(Locale.US, "%.2f", node.getDensity()));
+                            } else {
+                                Log.w(TAG, "WARNING: API returned density for unknown or non-camera node ID (after normalization): " + apiCameraId + " (Original API ID: " + apiCameraId + ")");
                             }
                         }
-                        Log.d(TAG, "Updated densities for " + updatedCount + " camera nodes in the graph.");
+                        Log.d(TAG, "Updated densities for " + updatedCount + " camera nodes from API.");
 
-                        // Cập nhật màu sắc các marker trên bản đồ (chỉ các marker của camera node sẽ thay đổi màu)
+                        densityPropagator.propagateDensity(graphData.getNodeMap(), graphData.getGraphEdgesMap());
+
                         if (mMap != null && !nodeMarkers.isEmpty()) {
-                            updateNodeMarkerColors(); // <-- GỌI PHƯƠNG THỨC CẬP NHẬT MÀU MARKER NODE
+                            updateNodeMarkerColors(); // Gọi để cập nhật màu marker và snippet
                         } else {
-                            Log.w(TAG, "Map or node markers not ready when attempting to update marker colors after density fetch.");
+                            Log.w(TAG, "Map or node markers not ready when attempting to update marker colors after density fetch/propagation.");
                         }
 
                     } else {
-                        Log.w(TAG, "API Response body for density is empty.");
-                        // Tùy chọn: Xử lý khi không có dữ liệu mật độ trả về
+                        Log.w(TAG, "API Response body for density is empty. Propagating with default values (0.0).");
+                        densityPropagator.propagateDensity(graphData.getNodeMap(), graphData.getGraphEdgesMap());
+                        if (mMap != null && !nodeMarkers.isEmpty()) {
+                            updateNodeMarkerColors();
+                        }
                     }
 
                 } else {
                     Log.e(TAG, "API Call for density Failed. Response code: " + response.code() + ", Message: " + response.message());
-                    // Tùy chọn: Xử lý lỗi API mật độ
-                    // Toast.makeText(PathfindingMapActivity.this, "Lỗi tải dữ liệu mật độ: " + response.message(), Toast.LENGTH_SHORT).show(); // Có thể gây spam toast
-                }
-                // Cập nhật trạng thái nút tìm đường sau khi fetch dữ liệu (đảm bảo pathfinder đã init)
-                // Mật độ được cập nhật không ảnh hưởng đến việc init pathfinder, chỉ ảnh hưởng đến kết quả tìm đường
-                // updateFindButtonState(); // Không cần gọi ở đây vì mật độ không ảnh hưởng đến việc nút có được enable hay không
+                    densityPropagator.propagateDensity(graphData.getNodeMap(), graphData.getGraphEdgesMap());
+                    if (mMap != null && !nodeMarkers.isEmpty()) {
+                        updateNodeMarkerColors();
+                    }}
             }
 
             @Override
-            public void onFailure(@NonNull Call<List<TrafficDensityReading>> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<List<PathfindingCameraDensity>> call, @NonNull Throwable t) {
                 Log.e(TAG, "API Call for density Failed (Network Error): " + t.getMessage(), t);
-                // Tùy chọn: Xử lý lỗi mạng mật độ
-                // Toast.makeText(PathfindingMapActivity.this, "Lỗi mạng khi tải dữ liệu mật độ.", Toast.LENGTH_SHORT).show(); // Có thể gây spam toast
-                // updateFindButtonState(); // Không cần gọi ở đây
-            }
+                densityPropagator.propagateDensity(graphData.getNodeMap(), graphData.getGraphEdgesMap());
+                if (mMap != null && !nodeMarkers.isEmpty()) {
+                    updateNodeMarkerColors();
+                }}
         });
     }
-    // ----------------------------------------------------------------------------------
-
 
     @Override
     public void onStart() {
         super.onStart();
         Log.d(TAG, "onStart");
-        // Bắt đầu chu kỳ cập nhật mật độ khi Activity hiển thị
-        // Chỉ bắt đầu nếu Runnable, API service đã sẵn sàng và đồ thị đã được xây dựng (graphData không null)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            if (updateDensityRunnable != null && trafficApiService != null && graphData != null && !graphData.getNodes().isEmpty() && !handler.hasCallbacks(updateDensityRunnable)) {
-                startDensityUpdates();
-            } else {
-                Log.d(TAG, "Density update runnable already scheduled, not ready, or graph not loaded in onStart, skipping postDelayed.");
-            }
-        }
+        startDensityUpdates();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause");
-        // Dừng cập nhật khi Activity bị tạm dừng
         handler.removeCallbacks(updateDensityRunnable);
         Log.d(TAG, "Density update runnable stopped in onPause.");
     }
@@ -642,38 +809,6 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy");
-        // Giải phóng API service nếu cần
         trafficApiService = null;
-        // Giải phóng pathfinder nếu cần
-        // pathfinder = null; // Pathfinder được tạo trong findPath(), không cần giải phóng ở đây
-        // Giải phóng GraphData và dữ liệu của nó khi Activity bị hủy hoàn toàn
-        graphData = null; // Điều này sẽ giúp Garbage Collector giải phóng nodes, edges, nodeMap
-    }
-
-
-    // --- Hàm tạo danh sách CameraInfo dummy ---
-    private List<CameraInfo> createDummyCameraList() {
-        List<CameraInfo> dummyList = new ArrayList<>();
-        dummyList.add(new CameraInfo("56de42f611f398ec0c481291", "Võ Văn Kiệt - Nguyễn Tri Phương 1", new LatLng(10.7503914, 106.6690747), "url1"));
-        dummyList.add(new CameraInfo("56de42f611f398ec0c481297", "Võ Văn Kiệt - Nguyễn Tri Phương 2", new LatLng(10.7504000, 106.6698932), "url2"));
-        dummyList.add(new CameraInfo("56de42f611f398ec0c481293", "Võ Văn Kiệt - Hải Thượng Lãn Ông", new LatLng(10.7499589, 106.6630958), "url3"));
-        dummyList.add(new CameraInfo("5b632a79fd4edb0019c7dc0f", "Nguyễn Tri Phương - Trần Hưng Đạo", new LatLng(10.7521932, 106.6695217), "url4"));
-        dummyList.add(new CameraInfo("662b4efc1afb9c00172d86bc", "Trần Hưng Đạo - Trần Phú", new LatLng(10.7524870, 106.6678037), "url5"));
-        dummyList.add(new CameraInfo("5d8cd1f9766c880017188938", "Nguyễn Tri Phương - Trần Phú", new LatLng(10.7536164, 106.6696310), "url6"));
-        dummyList.add(new CameraInfo("5d8cd49f766c880017188944", "Nguyễn Tri Phương - Nguyễn Trãi", new LatLng(10.7546263, 106.6695642), "url7"));
-        dummyList.add(new CameraInfo("66b1c190779f740018673ed4", "Nguyễn Trãi - Trần Phú", new LatLng(10.7549314, 106.6716376), "url8"));
-        dummyList.add(new CameraInfo("5b632b60fd4edb0019c7dc12", "Hồng Bàng - Ngô Quyền 1", new LatLng(10.7556201, 106.6663852), "url9"));
-        dummyList.add(new CameraInfo("5deb576d1dc17d7c5515ad20", "Hồng Bàng - Ngô Quyền 2", new LatLng(10.7561475, 106.6661542), "url10"));
-        dummyList.add(new CameraInfo("63b3c274bfd3d90017e9ab93", "Hồng Bàng - Phù Đổng Thiên Vương", new LatLng(10.7549775, 106.6625513), "url11"));
-        dummyList.add(new CameraInfo("5b728aafca0577001163ff7e", "Hồng Bàng - Châu Văn Liêm", new LatLng(10.7545545, 106.6583560), "url12"));
-        dummyList.add(new CameraInfo("662b4e201afb9c00172d85f9", "Hồng Bàng - Tạ Uyên", new LatLng(10.7537439, 106.6537677), "url13"));
-        dummyList.add(new CameraInfo("5deb576d1dc17d7c5515ad21", "Nút giao ngã 6 Nguyễn Tri Phương", new LatLng(10.7600016, 106.6688883), "url14"));
-        dummyList.add(new CameraInfo("66f126e8538c780017c9362f", "Nguyễn Chí Thanh - Ngô Quyền", new LatLng(10.7592865, 106.6655812), "url15"));
-        dummyList.add(new CameraInfo("66f126e8538c7800172d862f", "Nguyễn Chí Thanh - Nguyễn Kim", new LatLng(10.7587157, 106.6627702), "url16")); // Sửa ID trùng lặp
-        dummyList.add(new CameraInfo("662b4e8e1afb9c00172d865c", "Nguyễn Chí Thanh - Lý Thường Kiệt", new LatLng(10.7584792, 106.6615056), "url17"));
-        dummyList.add(new CameraInfo("662b4ecb1afb9c00172d8692", "Nguyễn Chí Thanh - Thuận Kiều", new LatLng(10.7577917, 106.6582849), "url18"));
-        dummyList.add(new CameraInfo("5deb576d1dc17d7c5515ad1f", "Hùng Vương - Ngô Gia Tự", new LatLng(10.7564805, 106.6666292), "url19"));
-        dummyList.add(new CameraInfo("662b4de41afb9c00172d85c5", "Hải Thượng Lãn Ông - Châu Văn Liêm", new LatLng(10.7506780, 106.6592465), "url20"));
-        return dummyList;
     }
 }
