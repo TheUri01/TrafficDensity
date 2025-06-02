@@ -1,5 +1,5 @@
 package com.example.trafficdensity.ui.dialog; // Đảm bảo đúng package của bạn
-
+import com.example.trafficdensity.util.Constants;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -92,11 +92,11 @@ public class CameraImageDialogFragment extends DialogFragment {
     private Handler handler = new Handler(); // Dùng Handler để chạy Runnable trên Main Thread
     private Runnable updateImageRunnable;
     // Thời gian cập nhật ảnh: 15 giây
-    private static final long UPDATE_IMAGE_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15);
+    private static final long UPDATE_IMAGE_INTERVAL_MS = Constants.UPDATE_IMAGE_INTERVAL_MS;
 
     // Thời gian cập nhật dữ liệu mật độ (có thể khác với cập nhật ảnh)
     // Đặt cùng tần suất với script Python gửi dữ liệu (ví dụ: 15 giây)
-    private static final long UPDATE_DENSITY_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15);
+    private static final long UPDATE_DENSITY_INTERVAL_MS = Constants.UPDATE_DENSITY_INTERVAL_MS;
 
 
     private static final String TAG = "CameraImageDialog"; // Tag cho Log
@@ -107,7 +107,7 @@ public class CameraImageDialogFragment extends DialogFragment {
     // --- Cấu hình API ---
     // Base URL của API backend của bạn (địa chỉ Flask API)
     // Đảm bảo đây là URL có thể truy cập từ thiết bị Android (IP nội bộ, ngrok URL, Cloud IP/Domain)
-    private static final String BASE_API_URL = "https://5bb2-34-75-3-177.ngrok-free.app/"; // <-- THAY ĐỔI ĐỊA CHỈ NÀY
+    private static final String BASE_API_URL = Constants.API_URL; // <-- THAY ĐỔI ĐỊA CHỈ NÀY
 
     private TrafficApiService trafficApiService; // Biến để giữ đối tượng service
     private int originalImageWidth = 512;

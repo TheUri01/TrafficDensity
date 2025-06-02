@@ -1,5 +1,5 @@
 package com.example.trafficdensity.ui.home; // Đảm bảo đúng package của bạn
-
+import com.example.trafficdensity.util.Constants;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     // --- Cấu hình API ---
     // Base URL của API backend của bạn (ngrok hoặc IP máy chủ)
     // THAY ĐỔI ĐỊA CHỈ NÀY BẰNG URL NGROK HOẶC ĐỊA CHỈ IP THỰC TẾ CỦA BẠN
-    private static final String BASE_API_URL = "http://6666-34-83-127-61.ngrok-free.app"; // <-- CẬP NHẬT ĐỊA CHỈ NÀY
+    private static final String BASE_API_URL = Constants.API_URL; // <-- CẬP NHẬT ĐỊA CHỈ NÀY
 
     private TrafficApiService trafficApiService; // Biến để giữ đối tượng service
     // ---------------------
@@ -80,7 +80,7 @@ public class HomeFragment extends Fragment implements OnMapReadyCallback, Google
     // --- Handler và Runnable cho cập nhật mật độ định kỳ ---
     private Handler handler = new Handler(Looper.getMainLooper()); // Chạy trên Main Thread
     private Runnable updateDensityRunnable;
-    private static final long UPDATE_DENSITY_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15); // Cập nhật mỗi 15 giây
+    private static final long UPDATE_DENSITY_INTERVAL_MS = Constants.UPDATE_DENSITY_INTERVAL_MS; // Cập nhật mỗi 15 giây
     // ------------------------------------------------------
 
 

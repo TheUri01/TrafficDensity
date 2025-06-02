@@ -3,7 +3,7 @@ package com.example.trafficdensity.ui.fullscreen; // Đảm bảo đúng package
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.trafficdensity.util.Constants;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.WindowManager; // Để ẩn thanh trạng thái
@@ -89,7 +89,7 @@ public class FullScreenImageActivity extends AppCompatActivity {
     // Sử dụng Looper.getMainLooper() để đảm bảo Handler chạy trên Main Thread
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable updateDensityRunnable;
-    private static final long UPDATE_DENSITY_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15); // Cập nhật mỗi 15 giây
+    private static final long UPDATE_DENSITY_INTERVAL_MS = Constants.UPDATE_DENSITY_INTERVAL_MS; // Cập nhật mỗi 15 giây
     // ----------------------------------------------
 
     // --- API Service ---

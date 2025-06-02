@@ -2,7 +2,7 @@ package com.example.trafficdensity.ui.pathfinding;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.trafficdensity.util.Constants;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -82,12 +82,12 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
     private TextView textEndDensity;
     private TextView textPathResult;
 
-    private static final String BASE_API_URL = "https://571f-34-134-173-55.ngrok-free.app/"; // Vui lòng cập nhật URL này
+    private static final String BASE_API_URL = Constants.API_URL; // Vui lòng cập nhật URL này
     private TrafficApiService trafficApiService;
 
     private Handler handler = new Handler(Looper.getMainLooper());
     private Runnable updateDensityRunnable;
-    private static final long UPDATE_DENSITY_INTERVAL_MS = TimeUnit.SECONDS.toMillis(15);
+    private static final long UPDATE_DENSITY_INTERVAL_MS = Constants.UPDATE_DENSITY_INTERVAL_MS;
 
     private Map<String, Marker> nodeMarkers = new HashMap<>();
     private DensityPropagator densityPropagator;
@@ -506,13 +506,13 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
                         float[] distanceResults = new float[1];
                         Location.distanceBetween(currentNode.getLatitude(), currentNode.getLongitude(),
                                 nextNode.getLatitude(), nextNode.getLongitude(), distanceResults);
-                        totalDistance += distanceResults[0];
+                        totalDistance += AStarPathfinder.sigmoid(distanceResults[0]);
 
                         // Lấy cạnh giữa currentNode và nextNode để tính chi phí mật độ đã dùng trong A*
                         // Cần tìm cạnh cụ thể nếu muốn totalDensityCost phản ánh chính xác gScore của A*
                         Edge segmentEdge = findEdge(currentNode, nextNode);
                         if (segmentEdge != null) {
-                            totalDensityCost += segmentEdge.getWeightedCost(); // Cộng dồn chi phí đã có trọng số density
+                            totalDensityCost += AStarPathfinder.sigmoid((float)segmentEdge.getWeightedCost()) + currentNode.getDensity(); // Cộng dồn chi phí đã có trọng số density
                         } else {
                             Log.w(TAG, "Edge not found for path segment: " + currentNode.getName() + " -> " + nextNode.getName());
                             // Fallback to simple density cost if edge not found
@@ -522,7 +522,7 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
                 }
 
                 pathPolyline = mMap.addPolyline(pathOptions);
-                textPathResult.setText(String.format(Locale.US, "Đường đi: %s\nKhoảng cách: %.2f m\nTổng chi phí mật độ: %.2f",
+                textPathResult.setText(String.format(Locale.US, "Đường đi: %s\nKhoảng cách: %.3f \nTổng chi phí mật độ: %.3f",
                         pathNames.toString(), totalDistance, totalDensityCost));
                 Toast.makeText(this, "Đường đi đã được tìm thấy!", Toast.LENGTH_LONG).show();
 

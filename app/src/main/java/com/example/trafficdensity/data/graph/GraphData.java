@@ -782,6 +782,8 @@ public class GraphData {
         addEdge(normalizeNodeId("PhamDon - THD"), normalizeNodeId("PhamDon - TanHang"));
         addEdge(normalizeNodeId("PhamDon - TanHang"), normalizeNodeId("TQP - NgTrai"));
         addEdge(normalizeNodeId("TQP - VVK"), normalizeNodeId("TQP - HTLO"));
+        addEdge(normalizeNodeId("TQP - VVK"), normalizeNodeId("MacCuu - VVK"));
+        addEdge(normalizeNodeId("TQP - VVK"), normalizeNodeId("HTLO - VVK"));
         addEdge(normalizeNodeId("TQP - HTLO"), normalizeNodeId("TQP - THD"));
         addEdge(normalizeNodeId("TQP - THD"), normalizeNodeId("TQP - HB"));
         addEdge(normalizeNodeId("TQP - THD"), normalizeNodeId("LNH - THD"));
@@ -814,6 +816,7 @@ public class GraphData {
         addEdge(normalizeNodeId("662b4ecb1afb9c00172d8692"), normalizeNodeId("ThuanKieu - NgChiThanh")); // Camera 18 (Nguyễn Chí Thanh - Thuận Kiều)
         addEdge(normalizeNodeId("ThuanKieu- TanThanh"), normalizeNodeId("ThuanKieu - PHChi"));
         addEdge(normalizeNodeId("ThuanKieu - PHChi"), normalizeNodeId("ThuanKieu - TanHung"));
+        addEdge(normalizeNodeId("ThuanKieu - PHChi"), normalizeNodeId("PCD-PHC"));
         addEdge(normalizeNodeId("ThuanKieu - TanHung"), normalizeNodeId("CVL - HB"));
         addEdge(normalizeNodeId("CVL - HB"), normalizeNodeId("CVL - NgTrai"));
         addEdge(normalizeNodeId("CVL - NgTrai"), normalizeNodeId("CVL - THD"));
@@ -822,7 +825,6 @@ public class GraphData {
         addEdge(normalizeNodeId("NguyenThi - VVK"), normalizeNodeId("NgAnKhuong-VVK"));
         addEdge(normalizeNodeId("NgAnKhuong - THDuc"), normalizeNodeId("NgAnKhuong-VVK"));
         addEdge(normalizeNodeId("NguyenThi - VVK"), normalizeNodeId("MacCuu-VVK"));
-        addEdge(normalizeNodeId("MacCuu-VVK"), normalizeNodeId("HTLO - VVK"));
         addEdge(normalizeNodeId("TQP - HTLO"), normalizeNodeId("HTLO - VVK"));
         addEdge(normalizeNodeId("TQP - HTLO"), normalizeNodeId("LNH - HTLO"));
         addEdge(normalizeNodeId("56de42f611f398ec0c481293"), normalizeNodeId("HTLO - VVK")); // Camera 3 (Võ Văn Kiệt - Hải Thượng Lãn Ông)
@@ -830,6 +832,7 @@ public class GraphData {
         addEdge(normalizeNodeId("PH-THDuc"), normalizeNodeId("NgAnKhuong - THDuc"));
         addEdge(normalizeNodeId("662b4de41afb9c00172d85c5"), normalizeNodeId("CVL - HTLO")); // Camera 20 (Hải Thượng Lãn Ông - Châu Văn Liêm)
         addEdge(normalizeNodeId("662b4de41afb9c00172d85c5"), normalizeNodeId("LNH - HTLO")); // Camera 20 (Hải Thượng Lãn Ông - Châu Văn Liêm)
+        addEdge(normalizeNodeId("662b4de41afb9c00172d85c5"), normalizeNodeId("CVL - HTLO - NguyenThi - MacCuu")); // Camera 20 (Hải Thượng Lãn Ông - Châu Văn Liêm)
 
         addEdge(normalizeNodeId("HTLO - NgAnKhuong"), normalizeNodeId("CVL - HTLO - NguyenThi - MacCuu"));
         addEdge(normalizeNodeId("HTLO - NgAnKhuong"), normalizeNodeId("NgAnKhuong - THDuc"));

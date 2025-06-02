@@ -88,8 +88,8 @@ public class AStarPathfinder {
      * @param x Giá trị đầu vào
      * @return Giá trị sau khi áp dụng sigmoid (trong khoảng 0 đến 1)
      */
-    private double sigmoid(double x) {
-        return 1.0 / (1.0 + Math.exp(-x));
+    public static double sigmoid(float x) {
+        return 1.0 / (1.0 + Math.exp(-Math.sqrt(x)));
     }
 
     /**
@@ -114,10 +114,10 @@ public class AStarPathfinder {
         // Nếu scaling_factor = 2000, khoảng cách 1000m -> sigmoid(0.5) ~ 0.62
         // Chọn một giá trị phù hợp với phạm vi khoảng cách giữa các node của bạn.
         // Giá trị này cần được điều chỉnh thực tế.
-        double distance_scaling_factor = 1000.0; // <-- ĐIỀU CHỈNH GIÁ TRỊ NÀY
+        float distance_scaling_factor = 1000.0f; // <-- ĐIỀU CHỈNH GIÁ TRỊ NÀY
 
-        double scaled_distance = distance_meters / distance_scaling_factor;
-        double sigmoid_scaled_distance = sigmoid(scaled_distance);
+        float scaled_distance = (float) distance_meters / distance_scaling_factor;
+        float sigmoid_scaled_distance = (float) sigmoid(scaled_distance);
 
         // Trả về giá trị sigmoid của khoảng cách đã scale làm chi phí cho cạnh.
         // G(t) tích lũy sẽ là tổng các giá trị sigmoid này.
