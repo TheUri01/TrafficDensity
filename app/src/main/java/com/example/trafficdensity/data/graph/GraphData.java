@@ -50,111 +50,111 @@ public class GraphData {
         // Mặc định tất cả các node này đều không có camera (false)
         addNode(new Node(normalizeNodeId("Nguyễn Thị Nhỏ- Nguyễn Chí Thanh"), "Nguyễn Thị Nhỏ - Nguyễn Chí Thanh", 10.756380, 106.651143, false));
         addNode(new Node(normalizeNodeId("Nguyễn Thị Nhỏ-Tân Thành"), "Nguyễn Thị Nhỏ - Tân Thành", 10.755275, 106.650992, false));
-        addNode(new Node(normalizeNodeId("NTN - HBàng"), "NTN - HBàng", 10.753520, 106.650820, false));
-        addNode(new Node(normalizeNodeId("NTN-TCChiếu"), "NTN-TCChiếu", 10.752342, 106.650691, false));
-        addNode(new Node(normalizeNodeId("NTN-TTử"), "NTN-TTử", 10.751497, 106.650566, false));
-        addNode(new Node(normalizeNodeId("NgCThanh- HTQ"), "NgCThanh - HTQ", 10.756636, 106.652819, false));
-        addNode(new Node(normalizeNodeId("HTQ-TT"), "HTQ-TT", 10.755537, 106.652903, false));
-        addNode(new Node(normalizeNodeId("HTQ -HB"), "HTQ -HB", 10.753628, 106.652996, false));
-        addNode(new Node(normalizeNodeId("Võ Trường Toản - HB"), "Võ Trường Toản - HB", 10.753569, 106.651767, false));
-        addNode(new Node(normalizeNodeId("Xóm Vôi -NT"), "Xóm Vôi -NT", 10.753056, 106.651746, false));
+        addNode(new Node(normalizeNodeId("NTN - HBàng"), "Nguyễn Thị Nhỏ - Hồng Bàng", 10.753520, 106.650820, false));
+        addNode(new Node(normalizeNodeId("NTN-TCChiếu"), "Nguyễn Thị Nhỏ - Trần Chánh Chiếu", 10.752342, 106.650691, false));
+        addNode(new Node(normalizeNodeId("NTN-TTử"), "Nguyễn Thị Nhỏ - Trang Tử", 10.751497, 106.650566, false));
+        addNode(new Node(normalizeNodeId("NgCThanh- HTQ"), "Nguyễn Chí Thanh - Hà Tôn Quyền", 10.756636, 106.652819, false));
+        addNode(new Node(normalizeNodeId("HTQ-TT"), "Hà Tôn Quyền - Tân Thành", 10.755537, 106.652903, false));
+        addNode(new Node(normalizeNodeId("HTQ -HB"), "Hà Tôn Quyền - Hồng Bàng", 10.753628, 106.652996, false));
+        addNode(new Node(normalizeNodeId("Võ Trường Toản - HB"), "Võ Trường Toản - Hồng Bàng", 10.753569, 106.651767, false));
+        addNode(new Node(normalizeNodeId("Xóm Vôi -NT"), "Xóm Vôi - Nguyễn Trãi", 10.753056, 106.651746, false));
         addNode(new Node(normalizeNodeId("Xóm Vôi - Trần Chánh Chiêu"), "Xóm Vôi - Trần Chánh Chiêu", 10.752268, 106.651791, false));
         addNode(new Node(normalizeNodeId("Xóm Vôi -Trang Tử"), "Xóm Vôi - Trang Tử", 10.751494, 106.651806, false));
         addNode(new Node(normalizeNodeId("Tạ Uyên - Nguyễn Chí Thanh"), "Tạ Uyên - Nguyễn Chí Thanh", 10.756785, 106.653652, false));
         addNode(new Node(normalizeNodeId("Tạ Uyên - Tân Thành"), "Tạ Uyên - Tân Thành", 10.755678, 106.653716, false));
         addNode(new Node(normalizeNodeId("Tạ Uyên - Phạm Hữu Chí"), "Tạ Uyên - Phạm Hữu Chí", 10.754972, 106.653748, false));
         addNode(new Node(normalizeNodeId("Tạ Uyên - Hồng Bàng"), "Tạ Uyên - Hồng Bàng", 10.753865, 106.653802, false)); // Camera 13 (Hồng Bàng - Tạ Uyên) gần đây
-        addNode(new Node(normalizeNodeId("PG-NT"), "PG-NT", 10.752720, 106.652852, false));
-        addNode(new Node(normalizeNodeId("PG-TCC"), "PG-TCC", 10.752172, 106.652741, false));
-        addNode(new Node(normalizeNodeId("PG-TT"), "PG-TT", 10.751607, 106.652588, false));
-        addNode(new Node(normalizeNodeId("PH-NT"), "PH-NT", 10.752790, 106.653523, false));
-        addNode(new Node(normalizeNodeId("PHung-NT"), "Phùng Hưng -Nguyễn Trãi", 10.752914, 106.657413, false));
-        addNode(new Node(normalizeNodeId("PH-TCC"), "PH-TCC", 10.752124, 106.653387, false));
-        addNode(new Node(normalizeNodeId("PH-TrangTử"), "PH-Trang Tử", 10.751652, 106.653255, false));
-        addNode(new Node(normalizeNodeId("DTG-NCT"), "DTG-NCT", 10.757012, 106.654541, false));
-        addNode(new Node(normalizeNodeId("DTG-TT"), "DTG-TT", 10.755837, 106.654743, false));
-        addNode(new Node(normalizeNodeId("DTG-PHC"), "DTG-PHC", 10.755191, 106.654848, false));
-        addNode(new Node(normalizeNodeId("DTG-TH"), "DTG-TH", 10.754508, 106.654981, false));
-        addNode(new Node(normalizeNodeId("DTG-HB"), "DTG-HB", 10.754056, 106.655071, false));
-        addNode(new Node(normalizeNodeId("DTG-NgT"), "DTG-NgT", 10.752835, 106.655259, false));
-        addNode(new Node(normalizeNodeId("DTG-THD"), "DTG-THD", 10.752007, 106.655392, false));
-        addNode(new Node(normalizeNodeId("DTG-HTLO"), "DTG-HTLO", 10.751061, 106.655474, false));
-        addNode(new Node(normalizeNodeId("NNT-LVS"), "NNT-LVS", 10.751082, 106.653309, false));
-        addNode(new Node(normalizeNodeId("NNT-HTLO"), "NNT-HTLO", 10.750465, 106.653392, false));
-        addNode(new Node(normalizeNodeId("NNT-PVK"), "NNT-PVK", 10.748933, 106.653767, false));
-        addNode(new Node(normalizeNodeId("NNT-BS"), "NNT-BS", 10.748574, 106.653866, false));
-        addNode(new Node(normalizeNodeId("NNT-GP"), "NNT-GP", 10.747490, 106.654303, false));
-        addNode(new Node(normalizeNodeId("NNT-VVK"), "NNT-VVK", 10.746744, 106.654735, false));
-        addNode(new Node(normalizeNodeId("TT-LVS"), "TT-LVS", 10.751135, 106.653769, false));
-        addNode(new Node(normalizeNodeId("HL-HB"), "HL-HB", 10.753736, 106.654388, false));
-        addNode(new Node(normalizeNodeId("HL-NT"), "HL-NT", 10.752875, 106.654413, false));
-        addNode(new Node(normalizeNodeId("HL-THD"), "HL-THD", 10.751977, 106.654414, false));
-        addNode(new Node(normalizeNodeId("HL- HTLO"), "HL- HTLO", 10.751106, 106.654422, false));
-        addNode(new Node(normalizeNodeId("GC-HTLO"), "GC-HTLO", 10.750751, 106.654526, false));
-        addNode(new Node(normalizeNodeId("GC-PVK"), "GC-PVK", 10.749130, 106.654970, false));
-        addNode(new Node(normalizeNodeId("GC-BS"), "GC-BS", 10.748743, 106.655062, false));
-        addNode(new Node(normalizeNodeId("GC-GP"), "GC-GP", 10.747910, 106.655300, false));
-        addNode(new Node(normalizeNodeId("GC-VVK"), "GC-VVK", 10.747198, 106.655528, false));
-        addNode(new Node(normalizeNodeId("DNT-NCT"), "DNT-NCT", 10.757318, 106.656008, false));
-        addNode(new Node(normalizeNodeId("DNT-TT"), "DNT-TT", 10.756068, 106.656067, false));
-        addNode(new Node(normalizeNodeId("DNT-PHC"), "DNT-PHC", 10.755417, 106.656079, false));
-        addNode(new Node(normalizeNodeId("DNT-TH"), "DNT-TH", 10.754744, 106.656109, false));
-        addNode(new Node(normalizeNodeId("DNT-HB"), "DNT-HB", 10.754250, 106.656125, false));
-        addNode(new Node(normalizeNodeId("DNT-NT"), "DNT-NT", 10.752893, 106.656131, false));
-        addNode(new Node(normalizeNodeId("DNT-THD"), "DNT-THD", 10.751988, 106.656049, false));
-        addNode(new Node(normalizeNodeId("DNT-HTLO"), "DNT-HTLO", 10.751029, 106.655963, false));
-        addNode(new Node(normalizeNodeId("KB-HTLO"), "KB-HTLO", 10.750758, 106.655718, false));
-        addNode(new Node(normalizeNodeId("KB-PVK"), "KB-PVK", 10.749289, 106.655907, false));
-        addNode(new Node(normalizeNodeId("KB-VVK"), "KB-VVK", 10.747780, 106.656543, false));
-        addNode(new Node(normalizeNodeId("VT-VCH"), "VT-VCH", 10.750258, 106.656057, false));
-        addNode(new Node(normalizeNodeId("VT-PH"), "VT-PH", 10.749700, 106.656139, false));
-        addNode(new Node(normalizeNodeId("VT-THD"), "VT-THD", 10.749115, 106.656298, false));
-        addNode(new Node(normalizeNodeId("VT-VVK"), "VT-VVK", 10.747900, 106.656799, false));
-        addNode(new Node(normalizeNodeId("PCD-NCT"), "PCD-NCT", 10.757514, 106.657118, false));
-        addNode(new Node(normalizeNodeId("PCD-TT"), "PCD-TT", 10.756247, 106.657168, false));
-        addNode(new Node(normalizeNodeId("PCD-PHC"), "PCD-PHC", 10.755592, 106.657178, false));
-        addNode(new Node(normalizeNodeId("PH-HB"), "PH-HB", 10.754254, 106.657307, false));
-        addNode(new Node(normalizeNodeId("PH-LT"), "PH-LT", 10.753569, 106.657380, false));
-        addNode(new Node(normalizeNodeId("PH-NT"), "PH-NT", 10.752950, 106.657412, false));
+        addNode(new Node(normalizeNodeId("PG-NT"), "Phú Giáo - Nguyễn Trãi", 10.752720, 106.652852, false));
+        addNode(new Node(normalizeNodeId("PG-TCC"), "Phú Giáo - Trần Chánh Chiếu", 10.752172, 106.652741, false));
+        addNode(new Node(normalizeNodeId("PG-TT"), "Phú Giáo - Trang Tử", 10.751607, 106.652588, false));
+        addNode(new Node(normalizeNodeId("PH-NT"), "Phú Hữu - Nguyễn Trãi", 10.752790, 106.653523, false));
+        addNode(new Node(normalizeNodeId("PHung-NT"), "Phùng Hưng - Nguyễn Trãi", 10.752914, 106.657413, false));
+        addNode(new Node(normalizeNodeId("PH-TCC"), "Phú Hữu - Trần Chánh Chiếu", 10.752124, 106.653387, false));
+        addNode(new Node(normalizeNodeId("PH-TrangTử"), "Phú Hữu - Trang Tử", 10.751652, 106.653255, false));
+        addNode(new Node(normalizeNodeId("DTG-NCT"), "Dương Tử Giang - Nguyễn Chí Thanh", 10.757012, 106.654541, false));
+        addNode(new Node(normalizeNodeId("DTG-TT"), "Dương Tử Giang - Tân Thành", 10.755837, 106.654743, false));
+        addNode(new Node(normalizeNodeId("DTG-PHC"), "Dương Tử Giang - Phạm Hữu Chí", 10.755191, 106.654848, false));
+        addNode(new Node(normalizeNodeId("DTG-TH"), "Dương Tử Giang - Tân Hưng", 10.754508, 106.654981, false));
+        addNode(new Node(normalizeNodeId("DTG-HB"), "Dương Tử Giang - Hồng Bàng", 10.754056, 106.655071, false));
+        addNode(new Node(normalizeNodeId("DTG-NgT"), "Dương Tử Giang - Nguyễn Trãi", 10.752835, 106.655259, false));
+        addNode(new Node(normalizeNodeId("DTG-THD"), "Dương Tử Giang - Trần Hưng Đạo", 10.752007, 106.655392, false));
+        addNode(new Node(normalizeNodeId("DTG-HTLO"), "Dương Tử Giang - Hải Thượng Lãn Ông", 10.751061, 106.655474, false));
+        addNode(new Node(normalizeNodeId("NNT-LVS"), "Ngô Nhân Tịnh -Lê Quang Sung", 10.751082, 106.653309, false));
+        addNode(new Node(normalizeNodeId("NNT-HTLO"), "Ngô Nhân Tịnh - Hải Thượng Lãn Ông", 10.750465, 106.653392, false));
+        addNode(new Node(normalizeNodeId("NNT-PVK"), "Ngô Nhân Tịnh - Phan Văn Khỏe", 10.748933, 106.653767, false));
+        addNode(new Node(normalizeNodeId("NNT-BS"), "Ngô Nhân Tịnh - Bãi Sậy", 10.748574, 106.653866, false));
+        addNode(new Node(normalizeNodeId("NNT-GP"), "Ngô Nhân Tịnh - Gia Phú", 10.747490, 106.654303, false));
+        addNode(new Node(normalizeNodeId("NNT-VVK"), "Ngô Nhân Tịnh - Võ Văn Kiệt", 10.746744, 106.654735, false));
+        addNode(new Node(normalizeNodeId("TT-LVS"), "Trang Tử - Lê Quang Sung", 10.751135, 106.653769, false));
+        addNode(new Node(normalizeNodeId("HL-HB"), "Học Lạc - Hồng Bàng", 10.753736, 106.654388, false));
+        addNode(new Node(normalizeNodeId("HL-NT"), "Học Lạc - NT", 10.752875, 106.654413, false));
+        addNode(new Node(normalizeNodeId("HL-THD"), "Học Lạc - Trần Hưng Đạo", 10.751977, 106.654414, false));
+        addNode(new Node(normalizeNodeId("HL- HTLO"), "Học Lạc - Hải Thượng Lãn Ông", 10.751106, 106.654422, false));
+        addNode(new Node(normalizeNodeId("GC-HTLO"), "Gò Công - Hải Thượng Lãn Ông", 10.750751, 106.654526, false));
+        addNode(new Node(normalizeNodeId("GC-PVK"), "Gò Công - Phan Văn Khỏe", 10.749130, 106.654970, false));
+        addNode(new Node(normalizeNodeId("GC-BS"), "Gò Công - Bãi Sậy", 10.748743, 106.655062, false));
+        addNode(new Node(normalizeNodeId("GC-GP"), "Gò Công - Gia Phú", 10.747910, 106.655300, false));
+        addNode(new Node(normalizeNodeId("GC-VVK"), "Gò Công - Võ Văn Kiệt", 10.747198, 106.655528, false));
+        addNode(new Node(normalizeNodeId("DNT-NCT"), "Đỗ Ngọc Thạch- Nguyễn Chí Thanh", 10.757318, 106.656008, false));
+        addNode(new Node(normalizeNodeId("DNT-TT"), "Đỗ Ngọc Thạch - Tân Thành", 10.756068, 106.656067, false));
+        addNode(new Node(normalizeNodeId("DNT-PHC"), "Đỗ Ngọc Thạch - Phạm Hữu Chí", 10.755417, 106.656079, false));
+        addNode(new Node(normalizeNodeId("DNT-TH"), "Đỗ Ngọc Thạch - Tân Hưng", 10.754744, 106.656109, false));
+        addNode(new Node(normalizeNodeId("DNT-HB"), "Đỗ Ngọc Thạch - Hồng Bàng", 10.754250, 106.656125, false));
+        addNode(new Node(normalizeNodeId("DNT-NT"), "Đỗ Ngọc Thạch - Nguyễn Trãi", 10.752893, 106.656131, false));
+        addNode(new Node(normalizeNodeId("DNT-THD"), "Đỗ Ngọc Thạch - Trần Hưng Đạo", 10.751988, 106.656049, false));
+        addNode(new Node(normalizeNodeId("DNT-HTLO"), "Đỗ Ngọc Thạch - Hải Thượng Lãn Ông", 10.751029, 106.655963, false));
+        addNode(new Node(normalizeNodeId("KB-HTLO"), "Kim Biên - Hải Thượng Lãn Ông", 10.750758, 106.655718, false));
+        addNode(new Node(normalizeNodeId("KB-PVK"), "Kim Biên - Phan Văn Khỏe", 10.749289, 106.655907, false));
+        addNode(new Node(normalizeNodeId("KB-VVK"), "Kim Biên - Võ Văn Kiệt", 10.747780, 106.656543, false));
+        addNode(new Node(normalizeNodeId("VT-VCH"), "Vạn Tượng - Vũ Chí Hiếu", 10.750258, 106.656057, false));
+        addNode(new Node(normalizeNodeId("VT-PH"), "Vạn Tượng - Phùng Hưng", 10.749700, 106.656139, false));
+        addNode(new Node(normalizeNodeId("VT-THD"), "Vạn Tượng - Trần Hưng Đạo", 10.749115, 106.656298, false));
+        addNode(new Node(normalizeNodeId("VT-VVK"), "Vạn Tượng - Võ Văn Kiệt", 10.747900, 106.656799, false));
+        addNode(new Node(normalizeNodeId("PCD-NCT"), "Phó Cơ Điều-Nguyễn Chí Thanh", 10.757514, 106.657118, false));
+        addNode(new Node(normalizeNodeId("PCD-TT"), "Phó Cơ Điều - Tân Thành", 10.756247, 106.657168, false));
+        addNode(new Node(normalizeNodeId("PCD-PHC"), "Phó Cơ Điều - Phạm Hữu Chí", 10.755592, 106.657178, false));
+        addNode(new Node(normalizeNodeId("PH-HB"), "Phùng Hưng - Hồng Bàng", 10.754254, 106.657307, false));
+        addNode(new Node(normalizeNodeId("PH-LT"), "Phùng Hưng - Lão Tử", 10.753569, 106.657380, false));
+        addNode(new Node(normalizeNodeId("PH-NT"), "Phùng Hưng - Nguyễn Trãi", 10.752950, 106.657412, false));
         addNode(new Node(normalizeNodeId("PH-THDuc"), "Phùng Hưng - Trịnh Hoài Đức", 10.749347, 106.657461, false));
         addNode(new Node(normalizeNodeId("PH-HTLO"), "Phùng Hưng - Hải Thượng Lãng Ông", 10.750930, 106.657408, false));
-        addNode(new Node(normalizeNodeId("PH-VCH"), "PH-VCH", 10.750260, 106.657412, false));
-        addNode(new Node(normalizeNodeId("PH-THD"), "Phùng Hưng-Trần Hưng Đạo", 10.751966, 106.657507, false)); // Đổi ID để tránh trùng lặp
+        addNode(new Node(normalizeNodeId("PH-VCH"), "Phùng Hưng - Vũ Chí Hiếu", 10.750260, 106.657412, false));
+        addNode(new Node(normalizeNodeId("PH-THD"), "Phùng Hưng - Trần Hưng Đạo", 10.751966, 106.657507, false)); // Đổi ID để tránh trùng lặp
         addNode(new Node(normalizeNodeId("PH-VVK"), "Phùng Hưng - Võ Văn Kiệt", 10.748298, 106.657650, false));
-        addNode(new Node(normalizeNodeId("Nguyễn Văn Cừ -Nguyễn Trãi"), "Nguyễn Văn Cừ -Nguyễn Trãi", 10.759393, 106.683999, false));
+        addNode(new Node(normalizeNodeId("Nguyễn Văn Cừ -Nguyễn Trãi"), "Nguyễn Văn Cừ - Nguyễn Trãi", 10.759393, 106.683999, false));
         addNode(new Node(normalizeNodeId("Nguyễn Văn Cừ -An Dương Vương"), "Nguyễn Văn Cừ -An Dương Vương", 10.761153, 106.683287, false));
         addNode(new Node(normalizeNodeId("Nguyễn Văn Cừ - Hùng Vương"), "Nguyễn Văn Cừ - Hùng Vương", 10.765392, 106.681374, false));
         addNode(new Node(normalizeNodeId("Nguyễn Văn Cừ - Phan Văn Trị"), "Nguyễn Văn Cừ - Phan Văn Trị", 10.757955, 106.684545, false));
         addNode(new Node(normalizeNodeId("Nguyễn Văn Cừ -Trần Hưng Đạo"), "Nguyễn Văn Cừ -Trần Hưng Đạo", 10.756368, 106.685074, false));
         addNode(new Node(normalizeNodeId("Nguyễn Văn Cừ - Võ Văn Kiệt"), "Nguyễn Văn Cừ - Võ Văn Kiệt", 10.754050, 106.686635, false));
-        addNode(new Node(normalizeNodeId("NgBieu - VVK"), "NgBieu - VVK", 10.751950, 106.683855, false));
-        addNode(new Node(normalizeNodeId("NgBieu - CDat"), "NgBieu - CDat", 10.754668, 106.684143, false));
-        addNode(new Node(normalizeNodeId("NgBieu - THD"), "NgBieu - THD", 10.755956, 106.683697, false));
-        addNode(new Node(normalizeNodeId("NgBieu - PhanVanTri"), "NgBieu - PhanVanTri", 10.757360, 106.683173, false));
-        addNode(new Node(normalizeNodeId("NgBieu - NgTrai"), "NgBieu - NgTrai", 10.758932, 106.682609, false));
-        addNode(new Node(normalizeNodeId("NgTrai - TBTrong"), "NgTrai - TBTrong", 10.758314, 106.680747, false));
+        addNode(new Node(normalizeNodeId("NgBieu - VVK"), "Nguyễn Biểu - Võ Văn Kiệt", 10.751950, 106.683855, false));
+        addNode(new Node(normalizeNodeId("NgBieu - CDat"), "Nguyễn Biểu - Cao Đạt", 10.754668, 106.684143, false));
+        addNode(new Node(normalizeNodeId("NgBieu - THD"), "Nguyễn Biểu - Trần Hưng Đạo", 10.755956, 106.683697, false));
+        addNode(new Node(normalizeNodeId("NgBieu - PhanVanTri"), "Nguyễn Biểu - Phan Văn Trị", 10.757360, 106.683173, false));
+        addNode(new Node(normalizeNodeId("NgBieu - NgTrai"), "Nguyễn Biểu - Nguyễn Trãi", 10.758932, 106.682609, false));
+        addNode(new Node(normalizeNodeId("NgTrai - TBTrong"), "Nguyễn Trãi - Trần Bình Trọng", 10.758314, 106.680747, false));
         addNode(new Node(normalizeNodeId("TBTrong - ADV"), "Trần Bình Trọng - An Dương Vương",10.759837, 106.680153, false));
         addNode(new Node(normalizeNodeId("TBTrong - THD"), "Trần Bình Trọng - Trần Hưng Đạo",10.755411, 106.681397, false));
         addNode(new Node(normalizeNodeId("TBTrong - VVK"), "Trần Bình Trọng - Võ Văn Kiệt",10.752227, 106.682138, false));
 
-        addNode(new Node(normalizeNodeId("TBTrong - TranPhu"), "TBTrong - TranPhu", 10.762590, 106.679082, false));
-        addNode(new Node(normalizeNodeId("TBTrong - HV"), "TBTrong - HV", 10.763634, 106.678649, false));
-        addNode(new Node(normalizeNodeId("HV - LHPhong"), "HV - LHPhong", 10.762191, 106.676446, false));
-        addNode(new Node(normalizeNodeId("LHPhong - TranPhu"), "LHPhong - TranPhu", 10.760491, 106.677076, false));
-        addNode(new Node(normalizeNodeId("LHPhong - ADV"), "LHPhong - ADV", 10.758859, 106.677653, false));
-        addNode(new Node(normalizeNodeId("LHPhong - NgTrai"), "LHPhong - NgTrai", 10.757267, 106.678238, false));
-        addNode(new Node(normalizeNodeId("LHPhong - PVTri"), "LHPhong - PVTri", 10.755941, 106.678500, false));
-        addNode(new Node(normalizeNodeId("LHP - THD"), "LHP - THD", 10.754814, 106.678948, false));
-        addNode(new Node(normalizeNodeId("VVK - HMD"), "VVK - HMD", 10.752155, 106.677204, false));
-        addNode(new Node(normalizeNodeId("HMD - NgThuc"), "HMD - NgThuc", 10.753357, 106.677047, false));
-        addNode(new Node(normalizeNodeId("HMD - THD"), "HMD - THD", 10.754158, 106.676849, false));
-        addNode(new Node(normalizeNodeId("HMD - PVTri"), "HMD - PVTri", 10.755339, 106.676525, false));
-        addNode(new Node(normalizeNodeId("HMD - NgTrai"), "HMD - NgTrai", 10.756377, 106.676263, false));
-        addNode(new Node(normalizeNodeId("HMD - ADV"), "HMD - ADV", 10.758125, 106.675743, false));
-        addNode(new Node(normalizeNodeId("HMD - TPhu"), "HMD - TPhu", 10.758862, 106.675537, false));
-        addNode(new Node(normalizeNodeId("TNTon - HV"), "TNTon - HV", 10.761204, 106.674974, false));
-        addNode(new Node(normalizeNodeId("SVH - HV"), "SVH - HV", 10.760166, 106.673288, false));
-        addNode(new Node(normalizeNodeId("SVH - TP - ADV"), "SVH - TP - ADV", 10.757476, 106.673949, false));
+        addNode(new Node(normalizeNodeId("TBTrong - TranPhu"), "Trần Bình Trọng - Trần Phú", 10.762590, 106.679082, false));
+        addNode(new Node(normalizeNodeId("TBTrong - HV"), "Trần Bình Trọng - Hùng Vương", 10.763634, 106.678649, false));
+        addNode(new Node(normalizeNodeId("HV - LHPhong"), "Hùng Vương - Lê Hồng Phong", 10.762191, 106.676446, false));
+        addNode(new Node(normalizeNodeId("LHPhong - TranPhu"), "Lê Hồng Phong - Trần Phú", 10.760491, 106.677076, false));
+        addNode(new Node(normalizeNodeId("LHPhong - ADV"), "Lê Hồng Phong - An Dương Vương", 10.758859, 106.677653, false));
+        addNode(new Node(normalizeNodeId("LHPhong - NgTrai"), "Lê Hồng Phong - Nguyễn Trãi", 10.757267, 106.678238, false));
+        addNode(new Node(normalizeNodeId("LHPhong - PVTri"), "Lê Hồng Phong - Phan Văn Trị", 10.755941, 106.678500, false));
+        addNode(new Node(normalizeNodeId("LHP - THD"), "Lê Hồng Phong - Trần Hưng Đạo", 10.754814, 106.678948, false));
+        addNode(new Node(normalizeNodeId("VVK - HMD"), "Võ Văn Kiệt - Huỳnh Mẫn Đạt", 10.752155, 106.677204, false));
+        addNode(new Node(normalizeNodeId("HMD - NgThuc"), "Huỳnh Mẫn Đạt - Nghĩa Thục", 10.753357, 106.677047, false));
+        addNode(new Node(normalizeNodeId("HMD - THD"), "Huỳnh Mẫn Đạt - Trần Hưng Đạo", 10.754158, 106.676849, false));
+        addNode(new Node(normalizeNodeId("HMD - PVTri"), "Huỳnh Mẫn Đạt - Phan Văn Trị", 10.755339, 106.676525, false));
+        addNode(new Node(normalizeNodeId("HMD - NgTrai"), "Huỳnh Mẫn Đạt - Nguyễn Trãi", 10.756377, 106.676263, false));
+        addNode(new Node(normalizeNodeId("HMD - ADV"), "Huỳnh Mẫn Đạt - An Dương Vương", 10.758125, 106.675743, false));
+        addNode(new Node(normalizeNodeId("HMD - TPhu"), "Huỳnh Mẫn Đạt - Trần Phú", 10.758862, 106.675537, false));
+        addNode(new Node(normalizeNodeId("TNTon - HV"), "Trần Nhân Tôn - Hùng Vương", 10.761204, 106.674974, false));
+        addNode(new Node(normalizeNodeId("SVH - HV"), "Sư Vạn Hạnh - Hùng Vương", 10.760166, 106.673288, false));
+        addNode(new Node(normalizeNodeId("SVH - TP - ADV"), "Sư Vạn Hạnh - Trần Phú - An Dương Vương", 10.757476, 106.673949, false));
         addNode(new Node(normalizeNodeId("NgDuyDuong - NgChiThanh"), "Nguyễn Duy Dương - Nguyễn Chí Thanh", 10.760293, 106.671063, false));
         addNode(new Node(normalizeNodeId("SVH - NgChiThanh"), "Sư Vạn Hạnh - Nguyễn Chí Thanh", 10.760747, 106.673165, false));
         addNode(new Node(normalizeNodeId("56de42f611f398ec0c481291"), "Võ Văn Kiệt - Nguyễn Tri Phương (1)", 10.7503914, 106.6690747, true));
@@ -177,82 +177,82 @@ public class GraphData {
         addNode(new Node(normalizeNodeId("662b4ecb1afb9c00172d8692"), "Nguyễn Chí Thanh - Thuận Kiều", 10.7577917, 106.6582849, true));
         addNode(new Node(normalizeNodeId("5deb576d1dc17d7c5515ad1f"), "Hùng Vương - Ngô Gia Tự", 10.7564805, 106.6666292, true));
         addNode(new Node(normalizeNodeId("662b4de41afb9c00172d85c5"), "Hải Thượng Lãn Ông - Châu Văn Liêm", 10.7506780, 106.6592465, true));
-        addNode(new Node(normalizeNodeId("YK - HV"), "YK - HV", 10.759634, 106.672456, false));
-        addNode(new Node(normalizeNodeId("YK - ADV"), "YK - ADV", 10.757344, 106.672986, false));
-        addNode(new Node(normalizeNodeId("NgTrai - BHNghia"), "NgTrai - BHNghia", 10.755520, 106.674277, false));
-        addNode(new Node(normalizeNodeId("BHNghia - PVTri"), "BHNghia - PVTri", 10.754621, 106.674514, false));
-        addNode(new Node(normalizeNodeId("BHNghia - THD"), "BHNghia - THD", 10.753613, 106.674773, false));
-        addNode(new Node(normalizeNodeId("BHNghia - NgThuc"), "BHNghia - NgThuc", 10.752711, 106.675027, false));
-        addNode(new Node(normalizeNodeId("BHNghia - BachVan"), "BHNghia - BachVan", 10.751649, 106.675292, false));
-        addNode(new Node(normalizeNodeId("BHNghia - DaoTan"), "BHNghia - DaoTan", 10.750771, 106.675534, false));
-        addNode(new Node(normalizeNodeId("TTKhai - VVK"), "TTKhai - VVK", 10.749738, 106.675387, false));
-        addNode(new Node(normalizeNodeId("TTKhai - BachVan"), "TTKhai - BachVan", 10.751375, 106.674421, false));
-        addNode(new Node(normalizeNodeId("TTKhai - NgThuc"), "TTKhai - NgThuc", 10.752362, 106.673899, false));
-        addNode(new Node(normalizeNodeId("TTKhai - THD"), "TTKhai - THD", 10.753249, 106.673429, false));
-        addNode(new Node(normalizeNodeId("NgTrai - TPhu"), "NgTrai - TPhu", 10.755063, 106.671965, false)); // Camera 8 gần đây
-        addNode(new Node(normalizeNodeId("NgDuyDuong - ADV"), "NgDuyDuong - ADV", 10.757070, 106.671796, false));
-        addNode(new Node(normalizeNodeId("NgDuyDuong - HV"), "NgDuyDuong - HV", 10.758906, 106.671370, false));
-        addNode(new Node(normalizeNodeId("NgTrPhuong - HV"), "NgTrPhuong - HV", 10.757693, 106.669411, false));
-        addNode(new Node(normalizeNodeId("NgTrPhuong - ADV"), "NgTrPhuong - ADV", 10.756674, 106.669588, false));
-        addNode(new Node(normalizeNodeId("NgTrPhuong - NgTrai"), "NgTrPhuong - NgTrai", 10.754641, 106.669570, false)); // Camera 7 gần đây
-        addNode(new Node(normalizeNodeId("NgTriPhuong - TPhu"), "NgTriPhuong - TPhu", 10.753436, 106.669527, false)); // Camera 6 gần đây
-        addNode(new Node(normalizeNodeId("NgTriPhuong - THD"), "NgTriPhuong - THD", 10.752711, 106.669460, false)); // Camera 4 gần đây
-        addNode(new Node(normalizeNodeId("NgTriPhuong - VVK"), "NgTriPhuong - VVK", 10.750857, 106.669424, false)); // Camera 1 và 2 gần đây
-        addNode(new Node(normalizeNodeId("AB - NgTrai"), "AB - NgTrai", 10.754832, 106.670862, false));
-        addNode(new Node(normalizeNodeId("AB - TPhu"), "AB - TPhu", 10.754451, 106.671231, false));
-        addNode(new Node(normalizeNodeId("AB - THD"), "AB - THD", 10.752945, 106.672096, false));
-        addNode(new Node(normalizeNodeId("AB - BachVan"), "AB - BachVan", 10.750982, 106.672968, false));
-        addNode(new Node(normalizeNodeId("AB - VVK"), "AB - VVK", 10.749401, 106.673420, false));
-        addNode(new Node(normalizeNodeId("NVDung - VVK"), "NVDung - VVK", 10.750557, 106.671180, false));
-        addNode(new Node(normalizeNodeId("NVDung - THD"), "NVDung - THD", 10.752826, 106.671110, false));
-        addNode(new Node(normalizeNodeId("NQ - VVK"), "NQ - VVK", 10.750792, 106.666877, false));
-        addNode(new Node(normalizeNodeId("NQ - THD"), "NQ - THD", 10.752460, 106.666757, false)); // Camera 5 gần đây
-        addNode(new Node(normalizeNodeId("NQ - NgTrai"), "NQ - NgTrai", 10.753962, 106.666609, false));
-        addNode(new Node(normalizeNodeId("NQ - MTT"), "NQ - MTT", 10.755139, 106.666454, false));
-        addNode(new Node(normalizeNodeId("NQ - HV - NGT - ADV"), "NQ - HV - NGT - ADV", 10.756212, 106.666227, false)); // Camera 9 và 10 gần đây
-        addNode(new Node(normalizeNodeId("NQ - AnDiem"), "NQ - AnDiem", 10.751762, 106.666824, false));
-        addNode(new Node(normalizeNodeId("NQ - NgChiThanh"), "NQ - NgChiThanh", 10.759199, 106.665592, false)); // Camera 15 gần đây
+        addNode(new Node(normalizeNodeId("YK - HV"), "Yết Kiêu - Hùng Vương", 10.759634, 106.672456, false));
+        addNode(new Node(normalizeNodeId("YK - ADV"), "Yết Kiêu - An Dương Vương", 10.757344, 106.672986, false));
+        addNode(new Node(normalizeNodeId("NgTrai - BHNghia"), "Nguyễn Trãi - Bùi Hữu Nghĩa", 10.755520, 106.674277, false));
+        addNode(new Node(normalizeNodeId("BHNghia - PVTri"), "Bùi Hữu Nghĩa - Phan Văn Trị", 10.754621, 106.674514, false));
+        addNode(new Node(normalizeNodeId("BHNghia - THD"), "Bùi Hữu Nghĩa - Trần Hưng Đạo", 10.753613, 106.674773, false));
+        addNode(new Node(normalizeNodeId("BHNghia - NgThuc"), "Bùi Hữu Nghĩa - Nghĩa Thục", 10.752711, 106.675027, false));
+        addNode(new Node(normalizeNodeId("BHNghia - BachVan"), "Bùi Hữu Nghĩa - Bạch Vân", 10.751649, 106.675292, false));
+        addNode(new Node(normalizeNodeId("BHNghia - DaoTan"), "Bùi Hữu Nghĩa - Đào Tấn", 10.750771, 106.675534, false));
+        addNode(new Node(normalizeNodeId("TTKhai - VVK"), "Trần Tuấn Khải - Võ Văn Kiệt", 10.749738, 106.675387, false));
+        addNode(new Node(normalizeNodeId("TTKhai - BachVan"), "Trần Tuấn Khải - Bạch Vân", 10.751375, 106.674421, false));
+        addNode(new Node(normalizeNodeId("TTKhai - NgThuc"), "Trần Tuấn Khải - Nghĩa Thục", 10.752362, 106.673899, false));
+        addNode(new Node(normalizeNodeId("TTKhai - THD"), "Trần Tuấn Khải - Trần Hưng Đạo", 10.753249, 106.673429, false));
+        addNode(new Node(normalizeNodeId("NgTrai - TPhu"), "Nguyễn Trãi - Trần Phú", 10.755063, 106.671965, false)); // Camera 8 gần đây
+        addNode(new Node(normalizeNodeId("NgDuyDuong - ADV"), "Nguyễn Duy Dương - An Dương Vương", 10.757070, 106.671796, false));
+        addNode(new Node(normalizeNodeId("NgDuyDuong - HV"), "Nguyễn Duy Dương - Hùng Vương", 10.758906, 106.671370, false));
+        addNode(new Node(normalizeNodeId("NgTrPhuong - HV"), "Nguyễn Tri Phương - Hùng Vương", 10.757693, 106.669411, false));
+        addNode(new Node(normalizeNodeId("NgTrPhuong - ADV"), "Nguyễn Tri Phương - An Dương Vương", 10.756674, 106.669588, false));
+        addNode(new Node(normalizeNodeId("NgTrPhuong - NgTrai"), "Nguyễn Tri Phương - Nguyễn Trãi", 10.754641, 106.669570, false)); // Camera 7 gần đây
+        addNode(new Node(normalizeNodeId("NgTriPhuong - TPhu"), "Nguyễn Tri Phương - Trần Phú", 10.753436, 106.669527, false)); // Camera 6 gần đây
+        addNode(new Node(normalizeNodeId("NgTriPhuong - THD"), "Nguyễn Tri Phương - Trần Hưng Đạo", 10.752711, 106.669460, false)); // Camera 4 gần đây
+        addNode(new Node(normalizeNodeId("NgTriPhuong - VVK"), "Nguyễn Tri Phương - Võ Văn Kiệt", 10.750857, 106.669424, false)); // Camera 1 và 2 gần đây
+        addNode(new Node(normalizeNodeId("AB - NgTrai"), "An Bình - Nguyễn Trãi", 10.754832, 106.670862, false));
+        addNode(new Node(normalizeNodeId("AB - TPhu"), "An Bình - Trần Phú", 10.754451, 106.671231, false));
+        addNode(new Node(normalizeNodeId("AB - THD"), "An Bình - Trần Hưng Đạo", 10.752945, 106.672096, false));
+        addNode(new Node(normalizeNodeId("AB - BachVan"), "An Bình - Bạch Vân", 10.750982, 106.672968, false));
+        addNode(new Node(normalizeNodeId("AB - VVK"), "An Bình - Võ Văn Kiệt", 10.749401, 106.673420, false));
+        addNode(new Node(normalizeNodeId("NVDung - VVK"), "Nguyễn Văn Đừng - Võ Văn Kiệt", 10.750557, 106.671180, false));
+        addNode(new Node(normalizeNodeId("NVDung - THD"), "Nguyễn Văn Đừng - Trần Hưng Đạo", 10.752826, 106.671110, false));
+        addNode(new Node(normalizeNodeId("NQ - VVK"), "Ngô Quyền - Võ Văn Kiệt", 10.750792, 106.666877, false));
+        addNode(new Node(normalizeNodeId("NQ - THD"), "Ngô Quyền - Trần Hưng Đạo", 10.752460, 106.666757, false)); // Camera 5 gần đây
+        addNode(new Node(normalizeNodeId("NQ - NgTrai"), "Ngô Quyền - Nguyễn Trãi", 10.753962, 106.666609, false));
+        addNode(new Node(normalizeNodeId("NQ - MTT"), "Ngô Quyền - Mạc Thiên Tích", 10.755139, 106.666454, false));
+        addNode(new Node(normalizeNodeId("NQ - HV - NGT - ADV"), "Ngô Quyền - Hùng Vương - Ngô Gia Tự - An Dương Vương", 10.756212, 106.666227, false)); // Camera 9 và 10 gần đây
+        addNode(new Node(normalizeNodeId("NQ - AnDiem"), "Ngô Quyền - AnDiem", 10.751762, 106.666824, false));
+        addNode(new Node(normalizeNodeId("NQ - NgChiThanh"), "Ngô Quyền - Nguyễn Chí Thanh", 10.759199, 106.665592, false)); // Camera 15 gần đây
         addNode(new Node(normalizeNodeId("Ngã 6 Nguyễn Tri Phương"), "Ngã 6 Nguyễn Tri Phương", 10.759863, 106.668913, false)); // Camera 14 gần đây
-        addNode(new Node(normalizeNodeId("NK - NgChiThanh"), "NK - NgChiThanh", 10.758635, 106.662749, false)); // Camera 16 gần đây
-        addNode(new Node(normalizeNodeId("NK - TangBatHo"), "NK - TangBatHo", 10.758009, 106.662859, false));
-        addNode(new Node(normalizeNodeId("NK - BaTrieu"), "NK - BaTrieu", 10.757403, 106.662999, false));
-        addNode(new Node(normalizeNodeId("NK - PHChi"), "NK - PHChi", 10.756814, 106.663149, false));
-        addNode(new Node(normalizeNodeId("NK - HB "), "NK - HB", 10.755546, 106.663392, false));
-        addNode(new Node(normalizeNodeId("HB - TanDa"), "HB - TanDa", 10.755483, 106.663793, false));
+        addNode(new Node(normalizeNodeId("NK - NgChiThanh"), "Nguyễn Kim - Nguyễn Chí Thanh", 10.758635, 106.662749, false)); // Camera 16 gần đây
+        addNode(new Node(normalizeNodeId("NK - TangBatHo"), "Nguyễn Kim - Tăng Bạt Hổ", 10.758009, 106.662859, false));
+        addNode(new Node(normalizeNodeId("NK - BaTrieu"), "Nguyễn Kim - Bà Triệu", 10.757403, 106.662999, false));
+        addNode(new Node(normalizeNodeId("NK - PHChi"), "Nguyễn Kim - Phạm Hữu Chí", 10.756814, 106.663149, false));
+        addNode(new Node(normalizeNodeId("NK - HB "), "Nguyễn Kim - Hồng Bàng", 10.755546, 106.663392, false));
+        addNode(new Node(normalizeNodeId("HB - TanDa"), "Hồng Bàng - Tản Đà", 10.755483, 106.663793, false));
         addNode(new Node(normalizeNodeId("TanDa- NgTrai"), "Tản Đà - Nguyễn Trãi", 10.753553, 106.664182, false));
-        addNode(new Node(normalizeNodeId("TanDa - THD"), "TanDa - THD", 10.752248, 106.664390, false));
-        addNode(new Node(normalizeNodeId("TanDa - VVK"), "TanDa - VVK", 10.750664, 106.664770, false));
-        addNode(new Node(normalizeNodeId("TanDa - TanHang"), "TanDa - TanHang", 10.751542, 106.664533, false));
-        addNode(new Node(normalizeNodeId("LTK - NgChiThanh"), "LTK - NgChiThanh", 10.758372, 106.661468, false)); // Camera 17 gần đây
-        addNode(new Node(normalizeNodeId("LTK - TangBatHo"), "LTK - TangBatHo", 10.757785, 106.661667, false));
-        addNode(new Node(normalizeNodeId("LTK - BaTieu"), "LTK - BaTieu", 10.757161, 106.661857, false));
-        addNode(new Node(normalizeNodeId("LTK - PHChi"), "LTK - PHChi", 10.756639, 106.662009, false));
-        addNode(new Node(normalizeNodeId("LTK - HB"), "LTK - HB", 10.755371, 106.662398, false)); // Camera 11 (Hồng Bàng - Phù Đổng Thiên Vương) gần đây
-        addNode(new Node(normalizeNodeId("PĐTV - NgTrai"), "PĐTV - NgTrai", 10.753299, 106.662842, false));
-        addNode(new Node(normalizeNodeId("TranHoa - THD"), "TranHoa - THD", 10.752138, 106.662753, false));
-        addNode(new Node(normalizeNodeId("PhamDon - THD"), "PhamDon - THD", 10.752187, 106.663292, false));
-        addNode(new Node(normalizeNodeId("PhamDon - TanHang"), "PhamDon - TanHang", 10.751521, 106.663334, false));
+        addNode(new Node(normalizeNodeId("TanDa - THD"), "Tản Đà - Trần Hưng Đạo", 10.752248, 106.664390, false));
+        addNode(new Node(normalizeNodeId("TanDa - VVK"), "Tản Đà - Võ Văn Kiệt", 10.750664, 106.664770, false));
+        addNode(new Node(normalizeNodeId("TanDa - TanHang"), "Tản Đà - TanHang", 10.751542, 106.664533, false));
+        addNode(new Node(normalizeNodeId("LTK - NgChiThanh"), "Lý Thường Kiệt - Nguyễn Chí Thanh", 10.758372, 106.661468, false)); // Camera 17 gần đây
+        addNode(new Node(normalizeNodeId("LTK - TangBatHo"), "Lý Thường Kiệt - Tăng Bạt Hổ", 10.757785, 106.661667, false));
+        addNode(new Node(normalizeNodeId("LTK - BaTieu"), "Lý Thường Kiệt - Bà Triệu", 10.757161, 106.661857, false));
+        addNode(new Node(normalizeNodeId("LTK - PHChi"), "Lý Thường Kiệt - Phạm Hữu Chí", 10.756639, 106.662009, false));
+        addNode(new Node(normalizeNodeId("LTK - HB"), "Lý Thường Kiệt - Hồng Bàng", 10.755371, 106.662398, false)); // Camera 11 (Hồng Bàng - Phù Đổng Thiên Vương) gần đây
+        addNode(new Node(normalizeNodeId("PĐTV - NgTrai"), "Phù Đổng Thiên Vương - Nguyễn Trãi", 10.753299, 106.662842, false));
+        addNode(new Node(normalizeNodeId("TranHoa - THD"), "Trần Hòa - Trần Hưng Đạo", 10.752138, 106.662753, false));
+        addNode(new Node(normalizeNodeId("PhamDon - THD"), "Phạm Đôn - Trần Hưng Đạo", 10.752187, 106.663292, false));
+        addNode(new Node(normalizeNodeId("PhamDon - TanHang"), "Phạm Đôn - TanHang", 10.751521, 106.663334, false));
         addNode(new Node(normalizeNodeId("TQP - VVK"), "Triệu Quang Phục - Võ Văn Kiệt", 10.749661, 106.661570, false));
-        addNode(new Node(normalizeNodeId("TQP - HTLO"), "TQP - HTLO", 10.751137, 106.661477, false));
-        addNode(new Node(normalizeNodeId("TQP - THD"), "TQP - THD", 10.752032, 106.661462, false));
-        addNode(new Node(normalizeNodeId("TQP - HB"), "TQP - HB", 10.755049, 106.661505, false));
-        addNode(new Node(normalizeNodeId("TQP - PHChi"), "TQP - PHChi", 10.756312, 106.661180, false));
-        addNode(new Node(normalizeNodeId("LNH - HB"), "LNH - HB", 10.754952, 106.660344, false));
-        addNode(new Node(normalizeNodeId("LHN - LaoTu"), "LHN - LaoTu", 10.753838, 106.660136, false));
-        addNode(new Node(normalizeNodeId("LNH - NgTrai"), "LNH - NgTrai", 10.753033, 106.659999, false));
-        addNode(new Node(normalizeNodeId("LNH - THD"), "LNH - THD", 10.752019, 106.660041, false));
-        addNode(new Node(normalizeNodeId("LNH - HTLO"), "LNH - HTLO", 10.750541, 106.660324, false));
-        addNode(new Node(normalizeNodeId("ThuanKieu - NgChiThanh"), "ThuanKieu - NgChiThanh", 10.757741, 106.658293, false)); // Camera 18 gần đây
-        addNode(new Node(normalizeNodeId("ThuanKieu- TanThanh"), "ThuanKieu- TanThanh", 10.756445, 106.658372, false));
-        addNode(new Node(normalizeNodeId("ThuanKieu - PHChi"), "ThuanKieu - PHChi", 10.755768, 106.658397, false));
-        addNode(new Node(normalizeNodeId("ThuanKieu - TanHung"), "ThuanKieu - TanHung", 10.755113, 106.658393, false));
-        addNode(new Node(normalizeNodeId("CVL - HB"), "CVL - HB", 10.754541, 106.658402, false)); // Camera 12 (Hồng Bàng - Châu Văn Liêm) gần đây
-        addNode(new Node(normalizeNodeId("CVL - NgTrai"), "CVL - NgTrai", 10.752999, 106.658748, false));
-        addNode(new Node(normalizeNodeId("CVL - THD"), "CVL - THD", 10.752025, 106.658948, false));
-        addNode(new Node(normalizeNodeId("CVL - HTLO - NguyenThi - MacCuu"), "CVL - HTLO - NguyenThi - MacCuu", 10.750867, 106.659203, false));
-        addNode(new Node(normalizeNodeId("NguyenThi - VVK"), "NguyenThi - VVK", 10.748696, 106.658845, false));
-        addNode(new Node(normalizeNodeId("MacCuu-VVK"), "MacCuu-VVK", 10.749053, 106.659865, false));
-        addNode(new Node(normalizeNodeId("HTLO - NgAnKhuong"), "HTLO - NgAnKhuong", 10.750624, 106.658410, false)); // Camera 20 gần đây
+        addNode(new Node(normalizeNodeId("TQP - HTLO"), "Triệu Quang Phục - Hải Thượng Lãn Ông", 10.751137, 106.661477, false));
+        addNode(new Node(normalizeNodeId("TQP - THD"), "Triệu Quang Phục - Trần Hưng Đạo", 10.752032, 106.661462, false));
+        addNode(new Node(normalizeNodeId("TQP - HB"), "Triệu Quang Phục - Hồng Bàng", 10.755049, 106.661505, false));
+        addNode(new Node(normalizeNodeId("TQP - PHChi"), "Triệu Quang Phục - Phạm Hữu Chí", 10.756312, 106.661180, false));
+        addNode(new Node(normalizeNodeId("LNH - HB"), "Lương Nhữ Học - Hồng Bàng", 10.754952, 106.660344, false));
+        addNode(new Node(normalizeNodeId("LHN - LaoTu"), "Lương Nhữ Học - Lão Tử", 10.753838, 106.660136, false));
+        addNode(new Node(normalizeNodeId("LNH - NgTrai"), "Lương Nhữ Học - Nguyễn Trãi", 10.753033, 106.659999, false));
+        addNode(new Node(normalizeNodeId("LNH - THD"), "Lương Nhữ Học - Trần Hưng Đạo", 10.752019, 106.660041, false));
+        addNode(new Node(normalizeNodeId("LNH - HTLO"), "Lương Nhữ Học - Hải Thượng Lãn Ông", 10.750541, 106.660324, false));
+        addNode(new Node(normalizeNodeId("ThuanKieu - NgChiThanh"), "Thuận Kiều - Nguyễn Chí Thanh", 10.757741, 106.658293, false)); // Camera 18 gần đây
+        addNode(new Node(normalizeNodeId("ThuanKieu- TanThanh"), "Thuận Kiều- TanThanh", 10.756445, 106.658372, false));
+        addNode(new Node(normalizeNodeId("ThuanKieu - PHChi"), "Thuận Kiều - Phạm Hữu Chí", 10.755768, 106.658397, false));
+        addNode(new Node(normalizeNodeId("ThuanKieu - TanHung"), "Thuận Kiều - Tân Hưng", 10.755113, 106.658393, false));
+        addNode(new Node(normalizeNodeId("CVL - HB"), "Châu Văn Liêm - Hồng Bàng", 10.754541, 106.658402, false)); // Camera 12 (Hồng Bàng - Châu Văn Liêm) gần đây
+        addNode(new Node(normalizeNodeId("CVL - NgTrai"), "Châu Văn Liêm - Nguyễn Trãi", 10.752999, 106.658748, false));
+        addNode(new Node(normalizeNodeId("CVL - THD"), "Châu Văn Liêm - Trần Hưng Đạo", 10.752025, 106.658948, false));
+        addNode(new Node(normalizeNodeId("CVL - HTLO - NguyenThi - MacCuu"), "Châu Văn Liêm - Hải Thượng Lãn Ông - Nguyễn Thi - Mạc Cửu", 10.750867, 106.659203, false));
+        addNode(new Node(normalizeNodeId("NguyenThi - VVK"), "Nguyễn Thi - Võ Văn Kiệt", 10.748696, 106.658845, false));
+        addNode(new Node(normalizeNodeId("MacCuu-VVK"), "Mạc Cửu - Võ Văn Kiệt", 10.749053, 106.659865, false));
+        addNode(new Node(normalizeNodeId("HTLO - NgAnKhuong"), "Hải Thượng Lãn Ông - Nguyễn An Khương", 10.750624, 106.658410, false)); // Camera 20 gần đây
         addNode(new Node(normalizeNodeId("NgAnKhuong - THDuc"), "Nguyễn An Khương - Trịnh Hoài Đức", 10.749405, 106.658304, false));
         addNode(new Node(normalizeNodeId("NgAnKhuong - VVK"), "Nguyễn An Khương - Võ Văn Kiệt", 10.748498, 106.658301, false));
         addNode(new Node(normalizeNodeId("HungVuong - NgoGiaTu"), "Hùng Vương - Ngô Gia Tự", 10.7564805, 106.6666292, false));

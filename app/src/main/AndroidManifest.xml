@@ -31,7 +31,6 @@
             android:theme="@style/Theme.TrafficDensity.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -42,13 +41,12 @@
             android:theme="@style/Theme.TrafficDensity.Fullscreen"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="fullSensor" />
+
         <activity
             android:name=".ui.pathfinding.PathfindingMapActivity"
             android:label="Path Finding"
-            android:theme="@style/Theme.AppCompat"
+            android:theme="@style/Theme.TrafficDensity"
             android:configChanges="orientation|screenSize" />
-
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
