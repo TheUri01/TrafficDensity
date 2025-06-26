@@ -89,7 +89,7 @@ public class AStarPathfinder {
      * @return Giá trị sau khi áp dụng sigmoid (trong khoảng 0 đến 1)
      */
     public static double sigmoid(float x) {
-        return 1.0 / (1.0 + Math.exp(-Math.sqrt(x)));
+        return 1.0 / (1.0 + Math.exp(-x));
     }
 
     /**

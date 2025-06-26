@@ -318,7 +318,7 @@ public class CameraImageDialogFragment extends DialogFragment {
             // Endpoint phục vụ ảnh là /api/images/<camera_id>
             // Vậy URL cần là BASE_API_URL + "api/images/" + cameraId
 
-            String imageUrlToLoad = BASE_API_URL + "api/images/" + cameraId + "_" + currentTimestamp;
+            String imageUrlToLoad = BASE_API_URL + "/api/images/" + cameraId + "_" + currentTimestamp;
 
 
             Log.d(TAG, "Attempting to load processed image from URL: " + imageUrlToLoad);
@@ -483,7 +483,7 @@ public class CameraImageDialogFragment extends DialogFragment {
         // Chỉ mở khi có URL ảnh hợp lệ
         if (currentImagePath != null && !currentImagePath.isEmpty()) {
             // Xây dựng URL đầy đủ đến endpoint /api/images/<camera_id> của Flask API
-            String fullImageUrl = BASE_API_URL + "api/images/" + cameraId + "_" + currentTimestamp;
+            String fullImageUrl = BASE_API_URL + "/api/images/" + cameraId + "_" + currentTimestamp;
 
             Intent intent = new Intent(getActivity(), FullScreenImageActivity.class);
             intent.putExtra(EXTRA_CAMERA_ID, cameraId);

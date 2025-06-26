@@ -300,6 +300,7 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
     @Override
     public boolean onMarkerClick(@NonNull Marker marker) {
         Object tag = marker.getTag();
+        var temp = marker;
         if (tag instanceof Node) {
             Node originalTaggedNode = (Node) tag;
             Node clickedNode = graphData.getNodeMap().get(originalTaggedNode.getId());
@@ -333,6 +334,8 @@ public class PathfindingMapActivity extends AppCompatActivity implements OnMapRe
             } else if (endNode == null && !clickedNode.getId().equals(startNode.getId())) {
                 // Trường hợp 2: Đã có điểm bắt đầu, chưa có điểm kết thúc, đặt clickedNode làm điểm kết thúc
                 endNode = clickedNode;
+                startNode = startNode;
+                startMarker = temp;
                 endMarker = marker;
                 endMarker.setTag(clickedNode); // Cập nhật tag của marker được chọn
                 endMarker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE)); // Đặt màu cam cho end
